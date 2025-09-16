@@ -26,7 +26,7 @@ export async function createDatabaseIfNotExists() {
 
     //se captura el error en caso de que algo falle
     } catch (error){
-        console.error('Error al verificar/crear la base de datos:', error.message);
+        console.error('Error al verificar/crear la base de datos:', error.message); //mensaje de error
         process.exit(1); //detener el servidor si falla
     }
 }
