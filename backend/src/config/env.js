@@ -1,6 +1,6 @@
 // src/config/env.js
 
-//En esta carpeta centraliza las variables de entorno en un objeto llamado config, para poder usarlos más comodamente
+//En este archivo centraliza las variables de entorno en un objeto llamado config, para poder usarlos más comodamente
 import dotenv from 'dotenv'; //importando el módulo dotenv para trabajar con variables de entorno
 dotenv.config(); //punto de entrada para las variables de entorno
 
