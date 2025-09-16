@@ -1,4 +1,4 @@
-// config/env.js
+// src/config/env.js
 
 //En esta carpeta centraliza las variables de entorno en un objeto llamado config, para poder usarlos más comodamente
 import dotenv from 'dotenv'; //importando el módulo dotenv para trabajar con variables de entorno
@@ -23,6 +23,7 @@ export const config = {
     user: validateEnvVariable('DB_USER', process.env.DB_USER),
     pass: validateEnvVariable('DB_PASS', process.env.DB_PASS),
     host: validateEnvVariable('DB_HOST', process.env.DB_HOST),
+    port: validateEnvVariable('DB_PORT', process.env.DB_PORT),
   },
   jwt: {
     accessSecret: validateEnvVariable('ACCESS_TOKEN_SECRET', process.env.ACCESS_TOKEN_SECRET),
