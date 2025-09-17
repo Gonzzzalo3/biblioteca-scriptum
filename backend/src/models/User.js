@@ -81,3 +81,19 @@ export const User = sequelize.define('User', {
 }, {
     tableName: 'users', // nombre fijo de la tabla
 });
+
+User.beforeCreate(async (user) => {
+  if (user.contraseña) {
+    user.contraseña = await bcrypt.hash(user.contraseña, 10);
+  }
+});
+
+User.beforeUpdate(async (user) => {
+  if (user.changed('contraseña')) {
+    user.contraseña = await bcrypt.hash(user.contraseña, 10);
+  }
+});
+
+User.prototype.validarContraseña = function (password) {
+  return bcrypt.compare(password, this.contraseña);
+};
