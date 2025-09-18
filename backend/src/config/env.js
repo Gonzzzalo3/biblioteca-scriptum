@@ -34,4 +34,12 @@ export const config = {
   cors: {
     origin: process.env.CORS_ORIGIN || null,
   },
+
+  mail: {
+    host: validateEnvVariable('MAIL_HOST', process.env.MAIL_HOST),
+    port: parseInt(validateEnvVariable('MAIL_PORT', process.env.MAIL_PORT)),
+    secure: process.env.MAIL_SECURE === 'true',
+    user: validateEnvVariable('MAIL_USER', process.env.MAIL_USER),
+    pass: validateEnvVariable('MAIL_PASS', process.env.MAIL_PASS)
+  }
 };
