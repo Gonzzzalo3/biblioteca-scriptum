@@ -5,7 +5,7 @@
 // Roles de usuario en el sistema
 export const ROLES = Object.freeze({ 
   BIBLIOTECARIO: 'bibliotecario',
-  USUARIO: 'cliente',
+  CLIENTE: 'cliente',
 });
 
 // Estados de un usuario en el sistema
