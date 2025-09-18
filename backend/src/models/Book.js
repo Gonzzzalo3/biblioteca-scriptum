@@ -59,7 +59,7 @@ export const Book = sequelize.define('Book', {
 Book.beforeCreate((book) => {
   if (book.titulo) book.titulo = book.titulo.trim();
   if (book.autor) book.autor = book.autor.trim();
-  if (!book.portada) book.portada = '/public/img/default.jpg';
+  if (!book.portada) book.portada = '/public/img/libros/default.jpg';
 });
 
 Book.beforeUpdate((book) => {

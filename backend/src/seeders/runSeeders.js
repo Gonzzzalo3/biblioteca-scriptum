@@ -6,7 +6,7 @@ import { seedComentarios } from './05-comments.seeder.js';
 import { seedRecomendaciones } from './06-recommendations.seeder.js';
 import { seedSugerencias } from './09-suggestions.seeder.js';
 
-async function runAllSeeders() {
+export async function runAllSeeders() {
     await seedCategorias();
     await seedLibros();
     await seedEjemplares();
