@@ -17,6 +17,6 @@ export async function seedEjemplares() {
     }
   }
 
-  await Exemplary.bulkCreate(ejemplares);
+  await Exemplary.bulkCreate(ejemplares, { individualHooks: true });
   console.log('Ejemplares insertados correctamente');
 }

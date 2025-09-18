@@ -43,6 +43,8 @@ export async function seedCategorias() {
       nombre: 'Psicología',
       descripcion: 'Libros sobre comportamiento humano, emociones y procesos mentales.',
     },
-  ]);
+  ], {
+    individualHooks: true
+  });
   console.log('Categorías insertadas correctamente');
 }

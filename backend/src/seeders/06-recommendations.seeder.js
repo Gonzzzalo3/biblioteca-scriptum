@@ -44,6 +44,8 @@ export async function seedRecomendaciones() {
       id_usuario: 4,
       id_libro: 20 // Fundación
     }
-  ]);
+  ], {
+    individualHooks: true
+  });
   console.log('Recomendaciones insertadas correctamente');
 }

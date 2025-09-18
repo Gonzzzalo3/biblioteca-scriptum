@@ -108,6 +108,8 @@ export async function seedComentarios() {
       calificacion: 4,
       visible: true
     }
-  ]);
+  ], {
+    individualHooks: true
+  });
   console.log('Comentarios insertados correctamente');
 }

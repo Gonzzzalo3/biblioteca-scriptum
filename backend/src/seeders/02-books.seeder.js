@@ -246,6 +246,8 @@ export async function seedLibros() {
       isbn: '9788499086357',
       stock: 3
     }
-  ]);
+  ], {
+    individualHooks: true
+  });
   console.log('Libros insertados correctamente');
 }

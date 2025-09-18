@@ -44,6 +44,8 @@ export async function seedUsuarios() {
       estado: USER_STATUS.ACTIVO,
       is_verified: true
     }
-  ]);
+  ], {
+    individualHooks: true
+  });
   console.log('Usuarios insertados correctamente');
 }

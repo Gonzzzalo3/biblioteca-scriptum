@@ -56,6 +56,8 @@ export async function seedSugerencias() {
       tipo: SUGGESTION_TYPES.MEJORA_VISUAL,
       detalles: 'Las miniaturas de portada se ven pixeladas en pantallas grandes.'
     }
-  ]);
+  ], {
+    individualHooks: true
+  });
   console.log('Sugerencias insertadas correctamente');
 }
