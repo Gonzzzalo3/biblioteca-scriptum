@@ -31,3 +31,9 @@ export const SUGGESTION_TYPES = Object.freeze({
   EXPERIENCIA_USUARIO: 'experiencia_usuario',       
   GESTION_BIBLIOTECA: 'gestion_biblioteca',         
 });
+
+export const RESERVATION_STATUS = Object.freeze({
+  RESERVADO: 'reservado',
+  PRESTADO: 'prestado',
+  CANCELADO: "canncelado",
+});
