@@ -37,3 +37,9 @@ export const RESERVATION_STATUS = Object.freeze({
   PRESTADO: 'prestado',
   CANCELADO: "canncelado",
 });
+
+export const RESERVATION_ACTIONS = Object.freeze({
+  RESERVAR: 'reservar',
+  PRESTAR: 'prestar',
+  CANCELAR: 'cancelar',
+});
