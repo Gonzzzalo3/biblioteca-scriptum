@@ -2,6 +2,7 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 
+
 export const Book = sequelize.define('Book', {
   id: {
     type: DataTypes.INTEGER,
@@ -56,15 +57,24 @@ export const Book = sequelize.define('Book', {
   tableName: 'books',
 });
 
+// Hook antes de crear un libro
 Book.beforeCreate((book) => {
   if (book.titulo) book.titulo = book.titulo.trim();
   if (book.autor) book.autor = book.autor.trim();
-  if (!book.portada) book.portada = '/public/img/libros/default.jpg';
+
+  if (!book.portada || book.portada.trim() === '') {
+    book.portada = '/img/libros/default.jpg';
+  }
 });
 
+// Hook antes de actualizar un libro
 Book.beforeUpdate((book) => {
   if (book.changed('titulo')) book.titulo = book.titulo.trim();
   if (book.changed('autor')) book.autor = book.autor.trim();
+
+  if (book.changed('portada') && (!book.portada || book.portada.trim() === '')) {
+    book.portada = '/img/libros/default.jpg';
+  }
 });
 
 Book.prototype.estaDisponible = function () {

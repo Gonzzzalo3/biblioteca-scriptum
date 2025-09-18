@@ -2,6 +2,7 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 import { ROLES, USER_STATUS } from '../config/constants.js';
+import bcrypt from 'bcrypt';
 
 export const User = sequelize.define('User', {
     id: {
@@ -86,11 +87,19 @@ User.beforeCreate(async (user) => {
   if (user.contraseña) {
     user.contraseña = await bcrypt.hash(user.contraseña, 10);
   }
+
+  if (!user.img || user.img.trim() === '') {
+    user.img = '/img/usuarios/default.jpg';
+  }
 });
 
 User.beforeUpdate(async (user) => {
   if (user.changed('contraseña')) {
     user.contraseña = await bcrypt.hash(user.contraseña, 10);
+  }
+
+  if (user.changed('img') && (!user.img || user.img.trim() === '')) {
+    user.img = '/img/usuarios/default.jpg';
   }
 });
 
