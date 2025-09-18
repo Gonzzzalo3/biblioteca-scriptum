@@ -8,6 +8,7 @@ import { config } from "./config/env.js";
 
 //modelos
 import { User } from "./models/User.js";
+import { Category } from "./models/Category.js";
 
 //función flecha que comienza a iniciar secuencialmente todas las funciones necesarias para el arranque del servidor
 (async () => {
