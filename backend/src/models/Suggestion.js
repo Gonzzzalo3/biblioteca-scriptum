@@ -1,0 +1,32 @@
+// src/models/Suggestion.js
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../config/db.js';
+import { SUGGESTION_TYPES } from '../config/constants.js';
+
+export const Suggestion = sequelize.define('Suggestion', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+
+  id_sugerencia: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+
+  tipo: {
+    type: DataTypes.ENUM(...Object.values(SUGGESTION_TYPES)),
+    allowNull: false,
+  },
+
+  detalles: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+}, {
+  tableName: 'suggestions',
+});

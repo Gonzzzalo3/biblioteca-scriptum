@@ -55,12 +55,12 @@ export const User = sequelize.define('User', {
     },
 
     img: {
-        type: DataTypes.STRING(255), // URL o nombre de archivo
+        type: DataTypes.STRING(255), 
         allowNull: true,
     },
 
     verify_code: {
-        type: DataTypes.STRING(10), // códigos cortos de verificación
+        type: DataTypes.STRING(10), 
         allowNull: true,
     },
 
@@ -70,7 +70,7 @@ export const User = sequelize.define('User', {
     },
 
     reset_code: {
-        type: DataTypes.STRING(10), // códigos cortos de reseteo
+        type: DataTypes.STRING(10),
         allowNull: true,
     },
 
@@ -79,7 +79,7 @@ export const User = sequelize.define('User', {
         allowNull: true,
     },
 }, {
-    tableName: 'users', // nombre fijo de la tabla
+    tableName: 'users', 
 });
 
 User.beforeCreate(async (user) => {
