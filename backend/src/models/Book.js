@@ -1,8 +1,8 @@
-// src/models/Libro.js
+// src/models/Book.js
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 
-export const Libro = sequelize.define('Libro', {
+export const Book = sequelize.define('Book', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -40,9 +40,8 @@ export const Libro = sequelize.define('Libro', {
     allowNull: false,
     defaultValue: 0,
     validate: {
-        min: 0,
-      }
-      
+      min: 0,
+    },
   },
 
   id_categoria: {
@@ -54,26 +53,20 @@ export const Libro = sequelize.define('Libro', {
     },
   },
 }, {
-  tableName: 'libros',
+  tableName: 'books',
 });
 
-Libro.beforeCreate((libro) => {
-    if (libro.titulo) libro.titulo = libro.titulo.trim();
-    if (libro.autor) libro.autor = libro.autor.trim();
-  });
-  
-  Libro.beforeUpdate((libro) => {
-    if (libro.changed('titulo')) libro.titulo = libro.titulo.trim();
-    if (libro.changed('autor')) libro.autor = libro.autor.trim();
-  });  
+Book.beforeCreate((book) => {
+  if (book.titulo) book.titulo = book.titulo.trim();
+  if (book.autor) book.autor = book.autor.trim();
+  if (!book.portada) book.portada = '/public/img/default.jpg';
+});
 
-Libro.beforeCreate((libro) => {
-    if (!libro.portada) {
-        libro.portada = '/public/img/default.jpg';
-    }
-  });
-  
-  Libro.prototype.estaDisponible = function () {
-    return this.stock > 0;
-  };
-  
+Book.beforeUpdate((book) => {
+  if (book.changed('titulo')) book.titulo = book.titulo.trim();
+  if (book.changed('autor')) book.autor = book.autor.trim();
+});
+
+Book.prototype.estaDisponible = function () {
+  return this.stock > 0;
+};
