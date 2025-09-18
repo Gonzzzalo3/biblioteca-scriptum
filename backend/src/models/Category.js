@@ -9,12 +9,12 @@ export const Category = sequelize.define('Category', {
     primaryKey: true,
   },
 
-  name: {
+  nombre: {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
 
-  description: {
+  descripcion: {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
@@ -23,13 +23,13 @@ export const Category = sequelize.define('Category', {
 });
 
 Category.beforeCreate((category) => {
-  if (category.name) {
-    category.name = category.name.trim().toLowerCase();
+  if (category.nombre) {
+    category.nombre = category.nombre.trim().toLowerCase();
   }
 });
 
 Category.beforeUpdate((category) => {
-  if (category.changed('name')) {
-    category.name = category.name.trim().toLowerCase();
+  if (category.changed('nombre')) {
+    category.nombre = category.nombre.trim().toLowerCase();
   }
 });
