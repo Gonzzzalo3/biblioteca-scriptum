@@ -9,6 +9,15 @@ export const Book = sequelize.define('Book', {
     primaryKey: true,
   },
 
+  id_categoria: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'categories',
+      key: 'id',
+    },
+  },
+
   titulo: {
     type: DataTypes.STRING(150),
     allowNull: false,
@@ -41,15 +50,6 @@ export const Book = sequelize.define('Book', {
     defaultValue: 0,
     validate: {
       min: 0,
-    },
-  },
-
-  id_categoria: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'categories',
-      key: 'id',
     },
   },
 }, {

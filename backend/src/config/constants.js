@@ -23,6 +23,7 @@ export const EXEMPLARY_STATUS = Object.freeze({
   NO_DISPONIBLE: 'no_disponible',
 });
 
+//tipos de sugerencias que el usuario puede realizar a la biblioteca
 export const SUGGESTION_TYPES = Object.freeze({
   LIBRO_RECOMENDADO: 'libro_recomendado',           
   ERROR_EN_CONTENIDO: 'error_en_contenido',        
@@ -32,12 +33,14 @@ export const SUGGESTION_TYPES = Object.freeze({
   GESTION_BIBLIOTECA: 'gestion_biblioteca',         
 });
 
+//Estados de una reserva en el sistema
 export const RESERVATION_STATUS = Object.freeze({
   RESERVADO: 'reservado',
   PRESTADO: 'prestado',
   CANCELADO: "canncelado",
 });
 
+//Acciones de una reserva en el sistema (muy similar a los estados)
 export const RESERVATION_ACTIONS = Object.freeze({
   RESERVAR: 'reservar',
   PRESTAR: 'prestar',

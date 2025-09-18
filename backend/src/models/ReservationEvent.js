@@ -23,11 +23,6 @@ export const ReservationEvent = sequelize.define('ReservationEvent', {
     type: DataTypes.ENUM(...Object.values(RESERVATION_ACTIONS)),
     allowNull: false,
   },
-
-  detalles: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
 }, {
   tableName: 'reservation_events',
 });

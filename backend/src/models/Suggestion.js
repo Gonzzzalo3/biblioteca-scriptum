@@ -10,9 +10,13 @@ export const Suggestion = sequelize.define('Suggestion', {
     primaryKey: true,
   },
 
-  id_sugerencia: {
+  id_usuario: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: 'users',
+      key: 'id',
+    },
   },
 
   tipo: {

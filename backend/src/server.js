@@ -9,6 +9,13 @@ import { config } from "./config/env.js";
 //modelos
 import { User } from "./models/User.js";
 import { Category } from "./models/Category.js";
+import { Book } from "./models/Book.js";
+import { Comment } from "./models/Comment.js";
+import { Exemplary } from "./models/Exemplary.js";
+import { Recommendation } from "./models/Recommendation.js"
+import { Reservation } from "./models/Reservation.js"
+import { ReservationEvent } from "./models/ReservationEvent.js";
+import { Suggestion } from "./models/Suggestion.js";
 
 //función flecha que comienza a iniciar secuencialmente todas las funciones necesarias para el arranque del servidor
 (async () => {
