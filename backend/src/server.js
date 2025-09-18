@@ -26,7 +26,7 @@ import { Suggestion } from "./models/Suggestion.js";
     //inicio del servidor
     app.listen(config.server.port, () => {
         console.log(
-        `🚀 Servidor escuchando en http://localhost:${config.server.port}`
+        `Servidor escuchando en http://localhost:${config.server.port}`
         );
     });
 })();
