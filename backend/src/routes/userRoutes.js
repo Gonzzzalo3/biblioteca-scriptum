@@ -7,30 +7,25 @@ import { viewPublicProfileController } from '../controllers/User/viewPublicProfi
 import { changePasswordController } from '../controllers/User/changePassword.controller.js';
 import { listUsersController } from '../controllers/User/listUsers.controller.js';
 import { updateUserStatusController } from '../controllers/User/updateUserStatus.controller.js';
+import { deleteProfileController } from '../controllers/User/deleteProfile.controller.js';
 import { verificarToken } from '../middlewares/auth.js';
 import { authorizeRole } from '../middlewares/authRole.js';
+import { validateUserStatus } from '../middlewares/validateUserStatus.js';
 import { ROLES } from '../config/constants.js';
-import { deleteProfileController } from '../controllers/User/deleteProfile.controller.js';
 
 const router = express.Router();
 
-// Ver perfil propio
-router.get('/profile', verificarToken, viewProfileController);
-
-// Editar perfil propio
-router.put('/profile', verificarToken, editProfileController);
-
-// Ver perfil público de otro usuario
+// Public profile (no token required)
 router.get('/profile/:id', viewPublicProfileController);
 
-// Cambiar contraseña
-router.put('/change-password', verificarToken, changePasswordController);
+// Protected routes (require token + active status)
+router.get('/profile', verificarToken, validateUserStatus, viewProfileController);
+router.put('/profile', verificarToken, validateUserStatus, editProfileController);
+router.put('/change-password', verificarToken, validateUserStatus, changePasswordController);
+router.delete('/profile', verificarToken, validateUserStatus, deleteProfileController);
 
-router.delete('/profile', verificarToken, deleteProfileController);
-
-
-//funcionalidades del bibliotecario
-router.get('/clients', verificarToken, authorizeRole(ROLES.BIBLIOTECARIO), listUsersController);
-router.put('/update-status/:id', verificarToken, authorizeRole(ROLES.BIBLIOTECARIO), updateUserStatusController);
+// Admin-only routes (bibliotecario)
+router.get('/clients', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), listUsersController);
+router.put('/update-status/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateUserStatusController);
 
 export default router;
