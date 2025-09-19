@@ -1,4 +1,4 @@
-// src/controllers/auth/registerController.js
+// src/controllers/auth/register.controller.js
 import { User } from '../../models/index.js';
 import { transporter } from '../../config/mailer.js';
 import { config } from '../../config/env.js';

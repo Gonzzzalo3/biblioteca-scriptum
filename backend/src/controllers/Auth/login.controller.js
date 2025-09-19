@@ -1,4 +1,4 @@
-// src/controllers/login.controller.js
+// src/controllers/auth/login.controller.js
 
 import { generateAccessToken, generateRefreshToken } from '../../utils/jwt.js';
 import { User } from '../../models/User.js';

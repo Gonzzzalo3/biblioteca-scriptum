@@ -1,4 +1,4 @@
-// src/controllers/auth/verifyController.js
+// src/controllers/auth/verify.controller.js
 import { User } from '../../models/index.js';
 import bcrypt from 'bcrypt';
 
