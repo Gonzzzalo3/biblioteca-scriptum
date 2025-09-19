@@ -4,20 +4,22 @@ import bcrypt from 'bcrypt';
 
 export async function verifyController(req, res) {
   try {
-    const { correo, codigo } = req.body;
+    const { codigo } = req.body;
 
-    if (!correo || !codigo) {
-      return res.status(400).json({ mensaje: 'Correo y código son obligatorios.' });
+    if (!codigo || codigo.trim() === '') {
+      return res.status(400).json({ mensaje: 'Código de verificación requerido.' });
     }
 
-    const usuario = await User.findOne({ where: { correo } });
+    const { id } = req.usuario; // extraído del token por el middleware
+
+    const usuario = await User.findByPk(id);
 
     if (!usuario) {
       return res.status(404).json({ mensaje: 'Usuario no encontrado.' });
     }
 
     if (usuario.is_verified) {
-      return res.status(200).json({ mensaje: 'La cuenta ya está verificada.' });
+      return res.status(400).json({ mensaje: 'La cuenta ya está verificada.' });
     }
 
     const esValido = await bcrypt.compare(codigo, usuario.verify_code);
