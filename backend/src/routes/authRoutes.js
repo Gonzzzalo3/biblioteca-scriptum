@@ -6,6 +6,8 @@ import { forgotPasswordController } from '../controllers/Auth/forgotPassword.con
 import { verifyCodeToResetPassController } from '../controllers/Auth/verifyCodeToResetPass.controller.js';
 import { resetPasswordController } from '../controllers/Auth/resetPassword.controller.js';
 import { verificarToken } from '../middlewares/auth.js';
+import { refreshTokenController } from '../controllers/Auth/refreshToken.controller.js';
+
 
 const router = express.Router();
 
@@ -18,5 +20,8 @@ router.post('/verify', verificarToken, verifyController);
 router.post('/forgot-password', forgotPasswordController); // Paso 1
 router.post('/verify-reset-code', verifyCodeToResetPassController); // Paso 2
 router.post('/reset-password', resetPasswordController); // Paso 3
+
+// token que actualiza
+router.post('/refresh-token', refreshTokenController);
 
 export default router;
