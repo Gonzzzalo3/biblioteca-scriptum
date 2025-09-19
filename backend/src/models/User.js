@@ -61,7 +61,7 @@ export const User = sequelize.define('User', {
     },
 
     verify_code: {
-        type: DataTypes.STRING(10), 
+        type: DataTypes.STRING(255), 
         allowNull: true,
     },
 
@@ -71,7 +71,7 @@ export const User = sequelize.define('User', {
     },
 
     reset_code: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
 
@@ -88,6 +88,14 @@ User.beforeCreate(async (user) => {
     user.contraseña = await bcrypt.hash(user.contraseña, 10);
   }
 
+  if (user.verify_code) {
+    user.verify_code = await bcrypt.hash(user.verify_code, 10);
+  }
+
+  if (user.reset_code) {
+    user.reset_code = await bcrypt.hash(user.reset_code, 10);
+  }
+
   if (!user.img || user.img.trim() === '') {
     user.img = '/img/usuarios/default.jpg';
   }
@@ -96,6 +104,14 @@ User.beforeCreate(async (user) => {
 User.beforeUpdate(async (user) => {
   if (user.changed('contraseña')) {
     user.contraseña = await bcrypt.hash(user.contraseña, 10);
+  }
+
+  if (user.changed('verify_code') && user.verify_code) {
+    user.verify_code = await bcrypt.hash(user.verify_code, 10);
+  }
+
+  if (user.changed('reset_code') && user.reset_code) {
+    user.reset_code = await bcrypt.hash(user.reset_code, 10);
   }
 
   if (user.changed('img') && (!user.img || user.img.trim() === '')) {
