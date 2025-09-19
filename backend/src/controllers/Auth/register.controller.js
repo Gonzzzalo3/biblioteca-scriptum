@@ -2,27 +2,24 @@
 import { User } from '../../models/index.js';
 import { transporter } from '../../config/mailer.js';
 import { config } from '../../config/env.js';
+import { generateAccessToken, generateRefreshToken } from '../../utils/jwt.js';
 import crypto from 'crypto';
 
 export async function registerController(req, res) {
   try {
     const { nombres, apellidos, correo, celular, contraseña } = req.body;
 
-    // Validación básica
     if (!nombres || !apellidos || !correo || !contraseña) {
       return res.status(400).json({ mensaje: 'Faltan campos obligatorios.' });
     }
 
-    // Verificar si el correo ya está registrado
     const usuarioExistente = await User.findOne({ where: { correo } });
     if (usuarioExistente) {
       return res.status(409).json({ mensaje: 'El correo ya está registrado.' });
     }
 
-    // Generar código de verificación de 6 dígitos
     const verifyCode = crypto.randomInt(100000, 999999).toString();
 
-    // Crear el usuario (el modelo hashea contraseña y verify_code automáticamente)
     const nuevoUsuario = await User.create({
       nombres,
       apellidos,
@@ -33,7 +30,6 @@ export async function registerController(req, res) {
       is_verified: false
     });
 
-    // Enviar correo con el código de verificación
     await transporter.sendMail({
       from: `"Scriptum Biblioteca" <${config.mail.user}>`,
       to: nuevoUsuario.correo,
@@ -46,9 +42,35 @@ export async function registerController(req, res) {
       `
     });
 
-    return res.status(201).json({
-      mensaje: 'Usuario registrado correctamente. Revisa tu correo para verificar tu cuenta.'
-    });
+    // Generar tokens
+    const payload = {
+      id: nuevoUsuario.id,
+      correo: nuevoUsuario.correo,
+      rol: nuevoUsuario.rol
+    };
+
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    res
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict',
+        maxAge: 15 * 24 * 60 * 60 * 1000
+      })
+      .status(201)
+      .json({
+        mensaje: 'Usuario registrado. Revisa tu correo para verificar tu cuenta.',
+        usuario: {
+          id: nuevoUsuario.id,
+          nombres: nuevoUsuario.nombres,
+          correo: nuevoUsuario.correo,
+          rol: nuevoUsuario.rol,
+          is_verified: nuevoUsuario.is_verified
+        },
+        accessToken
+      });
 
   } catch (error) {
     console.error('Error en registro:', error);

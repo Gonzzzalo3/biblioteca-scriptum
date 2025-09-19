@@ -17,7 +17,7 @@ export function verificarToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, config.jwt.accessSecret);
-    req.user = decoded;
+    req.usuario = decoded;
     next();
   } catch (error) {
     const mensaje =

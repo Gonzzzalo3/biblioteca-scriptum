@@ -39,7 +39,7 @@ export async function loginController(req, res) {
     .json({
       usuario: {
         id: usuario.id,
-        nombre: usuario.nombre,
+        nombres: usuario.nombre,
         correo: usuario.correo,
         rol: usuario.rol,
       },
