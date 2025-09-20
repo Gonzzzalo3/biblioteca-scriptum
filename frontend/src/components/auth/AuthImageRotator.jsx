@@ -1,3 +1,5 @@
+// src/components/auth/AuthImageRotator.jsx
+
 import { useState, useEffect } from 'react';
 
 const imagenes = [
@@ -9,21 +11,29 @@ const imagenes = [
 
 export default function AuthImageRotator() {
   const [index, setIndex] = useState(0);
+  const [fade, setFade] = useState(true);
 
   useEffect(() => {
     const intervalo = setInterval(() => {
-      setIndex((prev) => (prev + 1) % imagenes.length);
-    }, 7000); // cambia cada 5 segundos
+      setFade(false); // inicia fade-out
 
-    return () => clearInterval(intervalo); // limpia el intervalo al desmontar
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % imagenes.length);
+        setFade(true); // inicia fade-in
+      }, 500); // duración del fade-out
+    }, 7000);
+
+    return () => clearInterval(intervalo);
   }, []);
 
   return (
-    <div className="w-1/2 bg-green-100 flex items-center justify-center">
+    <div className="w-1/2 h-screen bg-black relative overflow-hidden">
       <img
         src={imagenes[index]}
         alt="Imagen educativa"
-        className="max-h-[80%] object-contain transition-opacity duration-500"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+          fade ? 'opacity-100' : 'opacity-0'
+        }`}
       />
     </div>
   );
