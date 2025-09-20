@@ -9,6 +9,7 @@ import bookRoutes from './bookRoutes.js';
 import exemplaryRoutes from './exemplaryRoutes.js';
 import reservationRoutes from './reservationRoutes.js';
 import commentRoutes from './commentRoutes.js';
+import recommendationRoutes from './recommendationRoutes.js';
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use('/book', bookRoutes);
 router.use('/exemplary', exemplaryRoutes);
 router.use('/reservation', reservationRoutes);
 router.use('/comment', commentRoutes)
+router.use('/recommendation', recommendationRoutes)
 
 export default router;
