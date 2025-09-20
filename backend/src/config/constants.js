@@ -37,7 +37,8 @@ export const SUGGESTION_TYPES = Object.freeze({
 export const RESERVATION_STATUS = Object.freeze({
   RESERVADO: 'reservado',
   PRESTADO: 'prestado',
-  CANCELADO: "canncelado",
+  CANCELADO: 'cancelado',
+  DEVUELTO: 'devuelto'
 });
 
 //Acciones de una reserva en el sistema (muy similar a los estados)
@@ -45,4 +46,5 @@ export const RESERVATION_ACTIONS = Object.freeze({
   RESERVAR: 'reservar',
   PRESTAR: 'prestar',
   CANCELAR: 'cancelar',
+  DEVOLVER: "devolver"
 });
