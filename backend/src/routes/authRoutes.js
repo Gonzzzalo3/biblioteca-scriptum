@@ -7,6 +7,7 @@ import { verifyCodeToResetPassController } from '../controllers/Auth/verifyCodeT
 import { resetPasswordController } from '../controllers/Auth/resetPassword.controller.js';
 import { verificarToken } from '../middlewares/auth.js';
 import { refreshTokenController } from '../controllers/Auth/refreshToken.controller.js';
+import { validateUserStatus } from '../middlewares/validateUserStatus.js';
 
 
 const router = express.Router();
@@ -14,7 +15,7 @@ const router = express.Router();
 // Autenticación
 router.post('/login', loginController);
 router.post('/register', registerController);
-router.post('/verify', verificarToken, verifyController);
+router.post('/verify', validateUserStatus, verificarToken, verifyController);
 
 // Recuperación de contraseña
 router.post('/forgot-password', forgotPasswordController); // Paso 1

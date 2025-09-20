@@ -16,7 +16,7 @@ import { ROLES } from '../config/constants.js';
 const router = express.Router();
 
 // Public profile (no token required)
-router.get('/profile/:id', viewPublicProfileController);
+router.get('/profile/:id', validateUserStatus, viewPublicProfileController);
 
 // Protected routes (require token + active status)
 router.get('/profile', verificarToken, validateUserStatus, viewProfileController);

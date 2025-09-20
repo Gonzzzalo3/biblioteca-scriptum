@@ -23,8 +23,8 @@ router.put('/:id/desactivar', verificarToken, validateUserStatus, authorizeRole(
 router.put('/:id/restaurar', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), restoreCommentController);
 
 // Público / Cliente
-router.get('/libro/:id_libro', viewCommentsController); // Ver comentarios visibles de un libro
-router.get('/libro/:id_libro/resumen', getBookRatingSummaryController); // Ver resumen de calificaciones
+router.get('/libro/:id_libro', validateUserStatus, viewCommentsController); // Ver comentarios visibles de un libro
+router.get('/libro/:id_libro/resumen', validateUserStatus, getBookRatingSummaryController); // Ver resumen de calificaciones
 
 // Cliente autenticado
 router.post('/', verificarToken, validateUserStatus, authorizeRole(ROLES.CLIENTE), createCommentController);

@@ -16,10 +16,10 @@ import { ROLES } from '../config/constants.js';
 
 const router = express.Router();
 
-router.get('/popular', getMostPopularBooksController);
-router.get('/category/:id_categoria', getBooksByCategoryController);
-router.get('/search', searchBooksController);
-router.get('/:id', getBookDetailController);
+router.get('/popular', validateUserStatus, getMostPopularBooksController);
+router.get('/category/:id_categoria', validateUserStatus, getBooksByCategoryController);
+router.get('/search', validateUserStatus, searchBooksController);
+router.get('/:id', validateUserStatus, getBookDetailController);
 
 router.post('/', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), createBookController);
 router.put('/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateBookController);

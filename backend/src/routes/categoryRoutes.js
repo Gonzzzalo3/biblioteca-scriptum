@@ -12,7 +12,7 @@ import { ROLES } from '../config/constants.js';
 
 const router = express.Router();
 
-router.get('/', listAllCategoriesController);
+router.get('/', validateUserStatus, listAllCategoriesController);
 
 router.post('/', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), createCategoryController);
 router.put('/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateCategoryController);
