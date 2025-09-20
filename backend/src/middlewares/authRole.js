@@ -1,4 +1,4 @@
-// src/middlewares/authorizeRole.js
+// src/middlewares/authRole.js
 
 export function authorizeRole(...rolesPermitidos) {
   return (req, res, next) => {
