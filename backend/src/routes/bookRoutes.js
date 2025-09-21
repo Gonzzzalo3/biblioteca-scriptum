@@ -13,17 +13,18 @@ import { verificarToken } from '../middlewares/auth.js';
 import { validateUserStatus } from '../middlewares/validateUserStatus.js';
 import { authorizeRole } from '../middlewares/authRole.js';
 import { ROLES } from '../config/constants.js';
+import { validateVerificationStatus } from '../middlewares/validateVerificationStatus.js';
 
 const router = express.Router();
 
-router.get('/popular', validateUserStatus, getMostPopularBooksController);
-router.get('/category/:id_categoria', validateUserStatus, getBooksByCategoryController);
-router.get('/search', validateUserStatus, searchBooksController);
-router.get('/:id', validateUserStatus, getBookDetailController);
+router.get('/popular', validateVerificationStatus,validateUserStatus, getMostPopularBooksController);
+router.get('/category/:id_categoria', validateVerificationStatus,validateUserStatus, getBooksByCategoryController);
+router.get('/search', validateVerificationStatus, validateUserStatus, searchBooksController);
+router.get('/:id', validateVerificationStatus, validateUserStatus, getBookDetailController);
 
-router.post('/', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), createBookController);
-router.put('/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateBookController);
-router.delete('/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), deleteBookController);
-router.get('/', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), listAllBooksController);
+router.post('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), createBookController);
+router.put('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateBookController);
+router.delete('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), deleteBookController);
+router.get('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), listAllBooksController);
 
 export default router;

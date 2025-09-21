@@ -14,6 +14,7 @@ import { verificarToken } from '../middlewares/auth.js';
 import { validateUserStatus } from '../middlewares/validateUserStatus.js';
 import { authorizeRole } from '../middlewares/authRole.js';
 import { ROLES } from '../config/constants.js';
+import { validateVerificationStatus } from '../middlewares/validateVerificationStatus.js';
 
 const router = express.Router();
 
@@ -27,9 +28,9 @@ router.get('/libro/:id_libro', validateUserStatus, viewCommentsController); // V
 router.get('/libro/:id_libro/resumen', validateUserStatus, getBookRatingSummaryController); // Ver resumen de calificaciones
 
 // Cliente autenticado
-router.post('/', verificarToken, validateUserStatus, authorizeRole(ROLES.CLIENTE), createCommentController);
-router.put('/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.CLIENTE), editCommentController);
-router.delete('/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.CLIENTE), deleteCommentController);
-router.get('/mis-comentarios', verificarToken, validateUserStatus, authorizeRole(ROLES.CLIENTE), viewOwnCommentsController);
+router.post('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), createCommentController);
+router.put('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), editCommentController);
+router.delete('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), deleteCommentController);
+router.get('/mis-comentarios', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), viewOwnCommentsController);
 
 export default router;

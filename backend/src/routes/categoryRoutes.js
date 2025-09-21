@@ -9,13 +9,14 @@ import { verificarToken } from '../middlewares/auth.js';
 import { validateUserStatus } from '../middlewares/validateUserStatus.js';
 import { authorizeRole } from '../middlewares/authRole.js';
 import { ROLES } from '../config/constants.js';
+import { validateVerificationStatus } from '../middlewares/validateVerificationStatus.js';
 
 const router = express.Router();
 
 router.get('/', validateUserStatus, listAllCategoriesController);
 
-router.post('/', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), createCategoryController);
-router.put('/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateCategoryController);
-router.delete('/:id', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), deleteCategoryController);
+router.post('/',  verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), createCategoryController);
+router.put('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateCategoryController);
+router.delete('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), deleteCategoryController);
 
 export default router;

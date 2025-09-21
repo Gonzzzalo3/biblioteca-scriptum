@@ -1,6 +1,7 @@
-// pages/user/UserProfilePage.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
+import { formatDate } from "../../utils/formatDate"
 import MainLayout from "../../layouts/MainLayout";
 import UserHeader from "../../components/user/userHeader";
 import PersonalInfoSection from "../../components/user/PersonalInfoSection/PersonalInfoSection";
@@ -11,22 +12,29 @@ import DisableAccountModal from "../../components/user/disableAccountModal";
 
 export default function UserProfilePage() {
   const navigate = useNavigate();
+  const { user } = useUser();
+
+  const [formData, setFormData] = useState(null);
   const [showDisableModal, setShowDisableModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [editingField, setEditingField] = useState(null);
 
-  // Datos simulados del usuario
-  const [formData, setFormData] = useState({
-    id: "USR-001",
-    nombres: "Gonzalo Mauricio",
-    apellidos: "Cáceres Murga",
-    correo: "Gonzalo.caceres@gmail.com",
-    celular: "987654321",
-    rol: "Usuario",
-    estado: "Activo",
-    img: "/users/gonzalo.jpg",
-    created_at: "2025-01-15",
-  });
+  // Inicializar datos desde el contexto
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        id: `USR-${user.id}`,
+        nombres: user.nombres || "",
+        apellidos: user.apellidos || "",
+        correo: user.correo || "",
+        celular: user.celular || "",
+        rol: user.rol || "Usuario",
+        estado: user.estado || "Activo",
+        img: user.img || "/users/default.jpg",
+        created_at: user.createdAt
+      });
+    }
+  }, [user]);
 
   // Edición de campos
   const handleFieldChange = (field, value) => {
@@ -41,12 +49,12 @@ export default function UserProfilePage() {
   const handleApply = () => setShowPasswordModal(true);
 
   const handleConfirmApply = (password) => {
-    // Simula guardado en “BD”
     console.log("Confirmar cambios con contraseña:", password);
     console.log("Datos a guardar:", formData);
     setShowPasswordModal(false);
     setEditingField(null);
     alert("Cambios aplicados correctamente.");
+    // Aquí podrías hacer un PUT al backend para guardar los cambios
   };
 
   // Inhabilitar cuenta
@@ -54,7 +62,17 @@ export default function UserProfilePage() {
     console.log("Inhabilitar cuenta con contraseña:", password);
     setShowDisableModal(false);
     alert("Cuenta inhabilitada.");
+    // Aquí podrías hacer un DELETE o PATCH al backend
   };
+
+  // Mostrar mientras carga
+  if (!formData) {
+    return (
+      <MainLayout>
+        <p className="text-center text-gray-500">Cargando perfil...</p>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout
@@ -73,7 +91,7 @@ export default function UserProfilePage() {
           correo={formData.correo}
           celular={formData.celular}
           rol={formData.rol}
-          createdAt={formData.created_at}
+          createdAt={formatDate(formData.created_at)}
           estado={formData.estado}
         />
 

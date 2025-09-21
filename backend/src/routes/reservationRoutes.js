@@ -12,18 +12,19 @@ import { verificarToken } from '../middlewares/auth.js';
 import { validateUserStatus } from '../middlewares/validateUserStatus.js';
 import { authorizeRole } from '../middlewares/authRole.js';
 import { ROLES } from '../config/constants.js';
+import { validateVerificationStatus } from '../middlewares/validateVerificationStatus.js';
 
 const router = express.Router();
 
 // Cliente
-router.post('/', verificarToken, validateUserStatus, authorizeRole(ROLES.CLIENTE), createReservationController);
-router.put('/:id/cancel', verificarToken, validateUserStatus, authorizeRole(ROLES.CLIENTE), cancelReservationController);
-router.get('/mis-reservas', verificarToken, validateUserStatus, authorizeRole(ROLES.CLIENTE), getUserReservationsController);
+router.post('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), createReservationController);
+router.put('/:id/cancel', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), cancelReservationController);
+router.get('/mis-reservas', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), getUserReservationsController);
 
 // Bibliotecario
-router.get('/', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), getAllReservationsController);
-router.get('/activas', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), getActiveReservationsController);
-router.put('/:id/prestar', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), lendReservationController);
-router.put('/:id/devolver', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), returnReservationController);
+router.get('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), getAllReservationsController);
+router.get('/activas', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), getActiveReservationsController);
+router.put('/:id/prestar', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), lendReservationController);
+router.put('/:id/devolver', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), returnReservationController);
 
 export default router;

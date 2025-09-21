@@ -1,13 +1,18 @@
-// src/pages/auth/Register.jsx
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../layouts/AuthLayout";
 import InputField from "../../components/form/inputField";
 import Button from "../../components/ui/Button";
 import AuthLink from "../../components/auth/AuthLink";
+import { register } from "../../services/auth/auth";
+import { useUser } from "../../context/UserContext";
 
 export default function Register() {
+  const navigate = useNavigate();
+  const { setUser, setAccessToken } = useUser();
+
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -26,7 +31,10 @@ export default function Register() {
 
   const handleNext = (e) => {
     e.preventDefault();
-    // Aquí podrías validar los campos del paso 1 antes de avanzar
+    if (!formData.firstName || !formData.lastName || !formData.phone) {
+      alert("Completa todos los campos antes de continuar.");
+      return;
+    }
     setStep(2);
   };
 
@@ -35,10 +43,37 @@ export default function Register() {
     setStep(1);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí iría la lógica final de registro
-    console.log("Datos enviados:", formData);
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Las contraseñas no coinciden.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await register({
+        nombres: formData.firstName,
+        apellidos: formData.lastName,
+        celular: formData.phone,
+        correo: formData.email,
+        contraseña: formData.password,
+      });
+
+      const { usuario, accessToken } = res.data;
+
+      setUser(usuario);
+      setAccessToken(accessToken);
+
+      navigate("/"); // o redirige a /verify si quieres que confirme el código
+    } catch (err) {
+      console.error("Error al registrar:", err);
+      alert(err.response?.data?.mensaje || "No se pudo crear la cuenta.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -115,8 +150,8 @@ export default function Register() {
               <Button type="button" onClick={handleBack} full>
                 Atrás
               </Button>
-              <Button type="submit" full variant="green">
-                Crear cuenta
+              <Button type="submit" full variant="green" disabled={loading}>
+                {loading ? "Creando cuenta..." : "Crear cuenta"}
               </Button>
             </div>
           </>

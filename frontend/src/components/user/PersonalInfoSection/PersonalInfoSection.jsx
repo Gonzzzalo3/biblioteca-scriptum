@@ -1,5 +1,6 @@
 import { FaIdBadge, FaUser, FaEnvelope, FaPhone, FaUserTag, FaToggleOn, FaCalendarAlt } from "react-icons/fa";
 import FieldRow from "./FieldRow";
+import { formatDate } from "../../../utils/formatDate";
 
 export default function PersonalInfoSection({
   data,
@@ -19,7 +20,7 @@ export default function PersonalInfoSection({
       <FieldRow icon={<FaPhone className="text-green-600" />} value={data.celular} editable isEditing={editingField === "celular"} onEditToggle={() => onFieldEditToggle("celular")} onChange={(v) => onFieldChange("celular", v)} />
       <FieldRow icon={<FaUserTag className="text-green-600" />} value={data.rol} editable={false} />
       <FieldRow icon={<FaToggleOn className="text-green-600" />} value={data.estado} editable={false} />
-      <FieldRow icon={<FaCalendarAlt className="text-green-600" />} value={data.created_at} editable={false} />
+      <FieldRow icon={<FaCalendarAlt className="text-green-600" />} value={formatDate(data.created_at)} editable={false} />
 
       <div className="mt-4 text-right">
         <button

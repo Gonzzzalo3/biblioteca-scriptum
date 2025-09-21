@@ -1,38 +1,50 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import BookDetail from "../../components/bookDetail/bookDetail";
+import { getBookDetail } from "../../services/book/book";
 
 export default function BookDetailPage() {
   const { id } = useParams();
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const book = {
-    id,
-    cover: "/covers/libro1.jpg",
-    title: "El Principito",
-    author: "Antoine de Saint-Exupéry",
-    category: "Ficción",
-    synopsis:
-      "Un piloto se encuentra con un pequeño príncipe que viaja de planeta en planeta, aprendiendo sobre la vida, la amistad y el amor. A través de sus encuentros con distintos personajes, el principito reflexiona sobre la naturaleza humana y la importancia de ver con el corazón. Esta obra, cargada de simbolismo y poesía, ha cautivado a lectores de todas las edades durante generaciones.",
-    stock: 5,
-    comments: [
-      {
-        userImage: "/users/user1.jpg",
-        userName: "María López",
-        rating: 5,
-        text: "Un clásico que me marcó desde la infancia. Lo releo cada año.",
-      },
-      {
-        userImage: "/users/user2.jpg",
-        userName: "Carlos Pérez",
-        rating: 4,
-        text: "Hermosa historia, aunque esperaba un final diferente.",
-      },
-    ],
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0); // mejora UX al navegar
+
+    getBookDetail(id)
+      .then((res) => {
+        const data = res.data?.libro;
+        if (data) {
+          setBook({
+            id: data.id,
+            cover: data.portadaUrl || "/covers/default.jpg",
+            title: data.titulo,
+            author: data.autor,
+            category: data.categoria?.nombre || "Sin categoría",
+            synopsis: data.sinopsis,
+            stock: data.stock,
+            comments: data.comentarios || [],
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("Error al cargar detalle del libro:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [id]);
 
   return (
-    <MainLayout isLoggedIn={true} user={{ name: "Gonzalo Cáceres", email: "gonzalo@example.com" }}>
-      <BookDetail book={book} />
+    <MainLayout>
+      {loading ? (
+        <p className="text-center text-gray-500">Cargando detalle del libro...</p>
+      ) : book ? (
+        <BookDetail book={book} />
+      ) : (
+        <p className="text-center text-red-500">Libro no encontrado.</p>
+      )}
     </MainLayout>
   );
 }

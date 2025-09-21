@@ -13,6 +13,7 @@ export default function Home() {
         const books = Array.isArray(res.data?.libros) ? res.data.libros : [];
 
         const formattedBooks = books.map((book) => ({
+          id: book.id,
           cover: book.portadaUrl || "/covers/default.jpg", // ajusta según tu modelo
           title: book.titulo,
           category: book.categoria?.nombre || "Sin categoría",
