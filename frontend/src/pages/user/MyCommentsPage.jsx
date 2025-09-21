@@ -1,6 +1,6 @@
 import MainLayout from "../../layouts/MainLayout";
-import CommentItem from "../../components/user/CommentItem";
-import BackToProfileButton from "../../components/user/BackToProfileButton";
+import CommentItem from "../../components/bookDetail/commentItem";
+import BackToProfileButton from "../../components/ui/BackToProfileButton";
 
 export default function MyCommentsPage() {
   const user = {
