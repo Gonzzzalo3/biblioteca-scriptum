@@ -6,16 +6,16 @@ const UserContext = createContext();
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken") || null);
+  const [loading, setLoading] = useState(true);
 
-  // Cargar usuario desde localStorage si existe
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setLoading(false);
   }, []);
 
-  // Guardar en localStorage cuando cambia
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
@@ -32,6 +32,14 @@ export function UserProvider({ children }) {
     }
   }, [accessToken]);
 
+  const markUserAsVerified = () => {
+    if (user) {
+      const updatedUser = { ...user, is_verified: true };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setAccessToken(null);
@@ -40,7 +48,17 @@ export function UserProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, accessToken, setAccessToken, logout }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        accessToken,
+        setAccessToken,
+        logout,
+        markUserAsVerified,
+        loading
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

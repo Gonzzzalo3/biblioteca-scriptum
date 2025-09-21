@@ -8,7 +8,6 @@ export default function SuggestionsPage() {
   const handleSuggestionSubmit = (data) => {
     console.log("Sugerencia enviada:", data);
     alert("Gracias por su sugerencia. La hemos recibido correctamente.");
-    // Aquí podrías llamar a tu API para guardar la sugerencia
   };
 
   return (

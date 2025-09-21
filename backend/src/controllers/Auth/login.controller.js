@@ -46,7 +46,8 @@ export async function loginController(req, res) {
         rol: usuario.rol,
         estado: usuario.estado,
         img: usuario.img,
-        createdAt: usuario.createdAt, 
+        createdAt: usuario.createdAt,
+        is_verified: usuario.is_verified,
       },
       accessToken,
     });

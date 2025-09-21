@@ -2,6 +2,9 @@
 import { User } from "../models/User.js";
 
 export async function validateVerificationStatus(req, res, next) {
+  // Si no hay usuario en la request, dejar pasar (ruta pública)
+  if (!req.usuario) return next();
+
   const { id } = req.usuario;
 
   try {

@@ -8,6 +8,7 @@ import { resetPasswordController } from '../controllers/Auth/resetPassword.contr
 import { verificarToken } from '../middlewares/auth.js';
 import { refreshTokenController } from '../controllers/Auth/refreshToken.controller.js';
 import { validateUserStatus } from '../middlewares/validateUserStatus.js';
+import { logoutController } from '../controllers/Auth/logout.controller.js';
 
 
 const router = express.Router();
@@ -24,5 +25,6 @@ router.post('/reset-password', resetPasswordController); // Paso 3
 
 // token que actualiza
 router.post('/refresh-token', refreshTokenController);
+router.post("/logout", logoutController);
 
 export default router;
