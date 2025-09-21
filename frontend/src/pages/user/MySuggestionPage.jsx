@@ -1,5 +1,5 @@
 import MainLayout from "../../layouts/MainLayout";
-import SuggestionItem from "../../components/user/SuggestionItem";
+import SuggestionItem from "../../components/user/suggestionItem";
 
 export default function MySuggestionsPage() {
   const user = {
