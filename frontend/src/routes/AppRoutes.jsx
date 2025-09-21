@@ -7,6 +7,8 @@ import Verify from '../pages/auth/Verify';
 import ForgotPassword from '../pages/auth/forgotPassword';
 import ForgotPasswordCode from '../pages/auth/forgotPasswordCode';
 import ResetPassword from '../pages/auth/resetPassword';
+import Home from '../pages/navBar/HomePage';
+import BookDetailPage from '../pages/details/BookDetailPage';
 
 export default function AppRoutes() {
   return (
@@ -18,6 +20,8 @@ export default function AppRoutes() {
       <Route path="/forgot-password/code" element={<ForgotPasswordCode />} />
       <Route path="/forgot-password/reset" element={<ResetPassword />} />
 
+      <Route path="/" element={<Home />} />
+      <Route path="/books/:id"element={<BookDetailPage />} />
       {/* otras rutas */}
     </Routes>
   );
