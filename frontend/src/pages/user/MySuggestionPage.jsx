@@ -1,5 +1,6 @@
 import MainLayout from "../../layouts/MainLayout";
-import SuggestionItem from "../../components/user/suggestionItem";
+import SuggestionItem from "../../components/user/SuggestionItem";
+import BackToProfileButton from "../../components/user/BackToProfileButton";
 
 export default function MySuggestionsPage() {
   const user = {
@@ -26,6 +27,7 @@ export default function MySuggestionsPage() {
   return (
     <MainLayout isLoggedIn={true} user={user}>
       <div className="max-w-3xl mx-auto space-y-6">
+        <BackToProfileButton />
         <h2 className="text-2xl font-bold">Mis sugerencias</h2>
         {suggestions.length > 0 ? (
           <ul className="space-y-4">
