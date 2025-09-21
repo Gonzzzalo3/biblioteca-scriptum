@@ -7,7 +7,7 @@ export async function viewProfileController(req, res) {
     const { id } = req.usuario;
 
     const usuario = await User.findByPk(id, {
-      attributes: ['id', 'nombres', 'apellidos', 'correo', 'celular', 'rol', 'estado', 'img', 'is_verified']
+      attributes: ['id', 'nombres', 'apellidos', 'correo', 'celular', 'rol', 'estado', 'img', 'is_verified', 'created_at']
     });
 
     if (!usuario) {

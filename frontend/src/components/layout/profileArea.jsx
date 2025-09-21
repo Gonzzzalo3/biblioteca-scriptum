@@ -1,4 +1,5 @@
 import { FaCog } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function ProfileArea({ isLoggedIn, user }) {
   if (isLoggedIn) {
@@ -22,12 +23,13 @@ export default function ProfileArea({ isLoggedIn, user }) {
         </div>
 
         {/* Botón de configuración */}
-        <button
+        <Link
+          to="/my-profile"
           className="ml-4 p-2 text-gray-500 hover:text-green-700 transition-colors"
           aria-label="Configurar perfil"
         >
           <FaCog className="w-5 h-5" />
-        </button>
+        </Link>
       </div>
     );
   }

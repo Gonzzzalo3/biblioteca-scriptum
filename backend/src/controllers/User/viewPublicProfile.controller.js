@@ -7,7 +7,7 @@ export async function viewPublicProfileController(req, res) {
     const { id } = req.params;
 
     const usuario = await User.findByPk(id, {
-      attributes: ['id', 'nombres', 'apellidos', 'img', 'rol']
+      attributes: ['id', 'nombres', 'apellidos', 'img', 'rol', 'created_at']
     });
 
     if (!usuario) {

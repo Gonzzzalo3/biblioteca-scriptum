@@ -1,4 +1,4 @@
-import StarRating from "./StarRating";
+import StarRating from "./starRating";
 
 export default function CommentItem({ comment }) {
   return (

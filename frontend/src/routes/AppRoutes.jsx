@@ -13,6 +13,8 @@ import ReservationPage from '../pages/navBar/ReservationPage';
 import HistoryPage from '../pages/navBar/historyPage';
 import SuggestionsPage from '../pages/navBar/suggestionPage';
 import UserProfilePage from '../pages/user/userProfilePage';
+import MyCommentsPage from '../pages/user/MyCommentsPage';
+import MySuggestionsPage from '../pages/user/MySuggestionPage';
 
 export default function AppRoutes() {
   return (
@@ -31,6 +33,8 @@ export default function AppRoutes() {
       <Route path="/suggestion" element={<SuggestionsPage />} />
 
       <Route path="/my-profile" element={<UserProfilePage />} />
+      <Route path="/my-comments" element={<MyCommentsPage/>} />
+      <Route path="/my-suggestions" element={<MySuggestionsPage />} />
       {/* otras rutas */}
     </Routes>
   );
