@@ -1,28 +1,35 @@
 import { FaCog } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
 
-export default function ProfileArea({ isLoggedIn, user }) {
+export default function ProfileArea() {
+  const { user, accessToken } = useUser();
+  const isLoggedIn = !!accessToken;
+  const primerNombre = user?.nombres?.split(" ")[0] || "";
+  const primerApellido = user?.apellidos?.split(" ")[0] || "";
+
   if (isLoggedIn) {
+    console.log("Usuario en contexto:", user);
+
     return (
       <div className="flex items-center gap-3">
-        {/* Avatar */}
         {user?.avatarUrl ? (
           <img
             src={user.avatarUrl}
-            alt={user.name}
+            alt={user.nombres}
             className="w-10 h-10 rounded-full object-cover"
           />
         ) : (
           <div className="w-10 h-10 bg-blue-400 rounded-full" />
         )}
 
-        {/* Nombre y correo */}
         <div className="flex flex-col leading-tight">
-          <span className="font-semibold text-gray-800">{user?.name}</span>
-          <span className="text-sm text-gray-500">{user?.email}</span>
+          <span className="font-semibold text-gray-800">
+            {`${primerNombre} ${primerApellido}`}
+          </span>
+          <span className="text-sm text-gray-500">{user?.correo}</span>
         </div>
 
-        {/* Botón de configuración */}
         <Link
           to="/my-profile"
           className="ml-4 p-2 text-gray-500 hover:text-green-700 transition-colors"
@@ -36,12 +43,18 @@ export default function ProfileArea({ isLoggedIn, user }) {
 
   return (
     <div className="flex gap-2">
-      <button className="bg-green-600 text-white px-3 py-1 rounded">
+      <Link
+        to="/login"
+        className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+      >
         Iniciar sesión
-      </button>
-      <button className="bg-gray-200 text-gray-800 px-3 py-1 rounded">
+      </Link>
+      <Link
+        to="/register"
+        className="bg-gray-200 text-gray-800 px-3 py-1 rounded hover:bg-gray-300 transition"
+      >
         Registrarse
-      </button>
+      </Link>
     </div>
   );
 }

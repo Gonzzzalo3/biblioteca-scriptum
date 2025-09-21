@@ -1,32 +1,43 @@
+import { useEffect, useState } from "react";
 import MainLayout from "../../layouts/MainLayout";
 import BooksContainer from "../../components/book/bookContainer";
+import { getPopularBooks } from "../../services/book/book";
 
 export default function Home() {
-  const isLoggedIn = true;
-  const user = { name: "Gonzalo Cáceres", email: "gonzalo@example.com" };
+  const [sections, setSections] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Generar muchos libros de ejemplo
-  const manyBooks = Array.from({ length: 20 }, (_, i) => ({
-    cover: `/covers/libro${(i % 5) + 1}.jpg`,
-    title: `Libro ${i + 1}`,
-    category: "Categoría",
-    author: "Autor Desconocido",
-  }));
+  useEffect(() => {
+    getPopularBooks()
+      .then((res) => {
+        const books = Array.isArray(res.data?.libros) ? res.data.libros : [];
 
-  const sections = [
-    {
-      title: "Lo más popular",
-      books: manyBooks,
-    },
-    {
-      title: "Recomendaciones",
-      books: manyBooks,
-    },
-  ];
+        const formattedBooks = books.map((book) => ({
+          cover: book.portadaUrl || "/covers/default.jpg", // ajusta según tu modelo
+          title: book.titulo,
+          category: book.categoria?.nombre || "Sin categoría",
+          author: book.autor || "Autor desconocido",
+        }));
+
+        setSections([
+          { title: "Lo más popular", books: formattedBooks },
+        ]);
+      })
+      .catch((err) => {
+        console.error("Error al cargar libros populares:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
-    <MainLayout isLoggedIn={isLoggedIn} user={user}>
-      <BooksContainer sections={sections} />
+    <MainLayout>
+      {loading ? (
+        <p className="text-center text-gray-500">Cargando libros populares...</p>
+      ) : (
+        <BooksContainer sections={sections} />
+      )}
     </MainLayout>
   );
 }

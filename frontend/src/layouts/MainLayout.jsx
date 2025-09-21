@@ -1,7 +1,11 @@
 import Sidebar from "../components/layout/sidebar/sideBar";
 import Header from "../components/layout/header";
+import { useUser } from "../context/UserContext";
 
-export default function MainLayout({ children, isLoggedIn, user }) {
+export default function MainLayout({ children }) {
+  const { user, accessToken } = useUser();
+  const isLoggedIn = Boolean(accessToken && user);
+
   return (
     <div className="min-h-screen flex">
       {/* Sidebar fija */}

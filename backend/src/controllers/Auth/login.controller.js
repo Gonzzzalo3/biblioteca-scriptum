@@ -29,20 +29,21 @@ export async function loginController(req, res) {
   const refreshToken = generateRefreshToken(payload);
 
   res
-    .cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'Strict',
-      maxAge: 15 * 24 * 60 * 60 * 1000,
-    })
-    .status(200)
-    .json({
-      usuario: {
-        id: usuario.id,
-        nombres: usuario.nombre,
-        correo: usuario.correo,
-        rol: usuario.rol,
-      },
-      accessToken,
-    });
+  .cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Strict',
+    maxAge: 15 * 24 * 60 * 60 * 1000,
+  })
+  .status(200)
+  .json({
+    usuario: {
+      id: usuario.id,
+      nombres: usuario.nombres,
+      apellidos: usuario.apellidos, // ← este campo es clave
+      correo: usuario.correo,
+      rol: usuario.rol,
+    },
+    accessToken,
+  });
 }
