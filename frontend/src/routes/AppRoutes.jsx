@@ -9,6 +9,10 @@ import ForgotPasswordCode from '../pages/auth/forgotPasswordCode';
 import ResetPassword from '../pages/auth/resetPassword';
 import Home from '../pages/navBar/HomePage';
 import BookDetailPage from '../pages/details/BookDetailPage';
+import ReservationPage from '../pages/navBar/ReservationPage';
+import HistoryPage from '../pages/navBar/historyPage';
+import SuggestionsPage from '../pages/navBar/suggestionPage';
+import UserProfilePage from '../pages/user/userProfilePage';
 
 export default function AppRoutes() {
   return (
@@ -22,6 +26,11 @@ export default function AppRoutes() {
 
       <Route path="/" element={<Home />} />
       <Route path="/books/:id"element={<BookDetailPage />} />
+      <Route path="/reservation" element={<ReservationPage />} />
+      <Route path="/history" element={<HistoryPage />} />
+      <Route path="/suggestion" element={<SuggestionsPage />} />
+
+      <Route path="/my-profile" element={<UserProfilePage />} />
       {/* otras rutas */}
     </Routes>
   );

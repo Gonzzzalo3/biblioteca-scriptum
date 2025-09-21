@@ -8,9 +8,9 @@ export default function SidebarNav() {
       {/* Bloque superior con scroll independiente */}
       <nav className="flex flex-col gap-2 p-4 border-t border-gray-400/40 overflow-y-auto">
         <SidebarNavItem to="/" label="Libros" icon={FaBook} />
-        <SidebarNavItem to="/loans" label="Reservas" icon={MdAssignmentReturn} />
+        <SidebarNavItem to="/reservation" label="Reservas" icon={MdAssignmentReturn} />
         <SidebarNavItem to="/history" label="Historial" icon={FaHistory} />
-        <SidebarNavItem to="/suggestions" label="Enviar Sugerencias" icon={FaLightbulb} />
+        <SidebarNavItem to="/suggestion" label="Enviar Sugerencias" icon={FaLightbulb} />
         {/* Si agregas más items, solo esta parte hará scroll */}
       </nav>
 
