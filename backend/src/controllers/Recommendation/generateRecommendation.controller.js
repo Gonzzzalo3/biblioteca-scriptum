@@ -19,7 +19,6 @@ export async function generateRecommendationController(req, res) {
       return res.status(404).json({ mensaje: 'Libro base no encontrado.' });
     }
 
-    // Buscar libros similares en la misma categoría, excluyendo el actual
     const librosSimilares = await Book.findAll({
       where: {
         id_categoria: libroBase.id_categoria,
@@ -29,15 +28,7 @@ export async function generateRecommendationController(req, res) {
       limit: 5
     });
 
-    if (!librosSimilares.length) {
-      return res.status(200).json({
-        mensaje: 'No hay libros similares disponibles para recomendar.',
-        recomendaciones: []
-      });
-    }
-
-    // Crear o encontrar recomendaciones
-    const recomendaciones = await Promise.all(
+    await Promise.all(
       librosSimilares.map(libro =>
         Recommendation.findOrCreate({
           where: { id_usuario, id_libro: libro.id }
@@ -45,9 +36,19 @@ export async function generateRecommendationController(req, res) {
       )
     );
 
+    const todas = await Recommendation.findAll({
+      where: { id_usuario },
+      order: [['createdAt', 'DESC']],
+      attributes: ['id']
+    });
+
+    if (todas.length > 4) {
+      const idsAEliminar = todas.slice(4).map(r => r.id);
+      await Recommendation.destroy({ where: { id: { [Op.in]: idsAEliminar } } });
+    }
+
     res.status(201).json({
-      mensaje: 'Recomendaciones generadas correctamente.',
-      recomendaciones: recomendaciones.map(([rec]) => rec)
+      mensaje: 'Recomendaciones generadas y depuradas correctamente.'
     });
   } catch (error) {
     console.error('Error al generar recomendaciones:', error);
