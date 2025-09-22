@@ -1,4 +1,5 @@
 // src/middlewares/validateUserStatus.js
+import { USER_STATUS } from "../config/constants.js";
 
 export function validateUserStatus(req, res, next) {
   const usuario = req.usuario;

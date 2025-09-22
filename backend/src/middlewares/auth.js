@@ -1,16 +1,11 @@
-// src/middlewares/auth.js
 import jwt from 'jsonwebtoken';
 import { config } from '../config/env.js';
 
-/**
- * Middleware para verificar el token JWT.
- * Requiere formato: Authorization: Bearer <token>
- */
 export function verificarToken(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Token no proporcionado' });
+    return res.status(401).json({ mensaje: 'Token no proporcionado' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -24,6 +19,7 @@ export function verificarToken(req, res, next) {
       error.name === 'TokenExpiredError'
         ? 'Token expirado'
         : 'Token inválido';
-    return res.status(403).json({ error: mensaje });
+    const status = error.name === 'TokenExpiredError' ? 401 : 403;
+    return res.status(status).json({ mensaje });
   }
 }

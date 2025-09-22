@@ -27,7 +27,9 @@ export default function Login() {
       setAccessToken(accessToken);
       navigate("/");
     } catch (err) {
-      setError("Correo o contraseña incorrectos");
+      const backendMsg =
+        err.response?.data?.mensaje || err.response?.data?.error;
+      setError(backendMsg || "Correo o contraseña incorrectos");
     }
   };
 

@@ -1,42 +1,50 @@
+// src/pages/UserProfilePage.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../context/UserContext";
-import { formatDate } from "../../utils/formatDate"
+import { formatDate } from "../../utils/formatDate";
 import MainLayout from "../../layouts/MainLayout";
 import UserHeader from "../../components/user/userHeader";
 import PersonalInfoSection from "../../components/user/PersonalInfoSection/PersonalInfoSection";
 import ActivityCard from "../../components/user/ActivityCard";
 import SettingsCard from "../../components/user/SettingsCard";
 import PasswordConfirmModal from "../../components/user/PasswordConfirmModal";
-import DisableAccountModal from "../../components/user/disableAccountModal";
+import ChangePasswordModal from "../../components/user/Modal/deleteAccountModal";
+import DeleteAccountModal from "../../components/user/Modal/changePasswordModal";
+import { getMyProfile, updateMyProfile, changeMyPassword, deleteMyProfile } from "../../services";
+import { useUser } from "../../context/UserContext";
 
 export default function UserProfilePage() {
   const navigate = useNavigate();
-  const { user } = useUser();
-
+  const { setUser, logout } = useUser();
   const [formData, setFormData] = useState(null);
-  const [showDisableModal, setShowDisableModal] = useState(false);
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [editingField, setEditingField] = useState(null);
 
-  // Inicializar datos desde el contexto
   useEffect(() => {
-    if (user) {
-      setFormData({
-        id: `USR-${user.id}`,
-        nombres: user.nombres || "",
-        apellidos: user.apellidos || "",
-        correo: user.correo || "",
-        celular: user.celular || "",
-        rol: user.rol || "Usuario",
-        estado: user.estado || "Activo",
-        img: user.img || "/users/default.jpg",
-        created_at: user.createdAt
-      });
-    }
-  }, [user]);
+    const fetchProfile = async () => {
+      try {
+        const res = await getMyProfile();
+        const u = res.data.perfil;
+        setFormData({
+          id: `USR-${u.id}`,
+          nombres: u.nombres || "",
+          apellidos: u.apellidos || "",
+          correo: u.correo || "",
+          celular: u.celular || "",
+          rol: u.rol || "Usuario",
+          estado: u.estado || "Activo",
+          img: u.img || "/users/default.jpg",
+          created_at: u.created_at
+        });
+      } catch (err) {
+        console.error("Error cargando perfil:", err);
+      }
+    };
+    fetchProfile();
+  }, []);
 
-  // Edición de campos
   const handleFieldChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -45,27 +53,51 @@ export default function UserProfilePage() {
     setEditingField((prev) => (prev === field ? null : field));
   };
 
-  // Aplicar cambios (abre modal de contraseña)
   const handleApply = () => setShowPasswordModal(true);
 
-  const handleConfirmApply = (password) => {
-    console.log("Confirmar cambios con contraseña:", password);
-    console.log("Datos a guardar:", formData);
-    setShowPasswordModal(false);
-    setEditingField(null);
-    alert("Cambios aplicados correctamente.");
-    // Aquí podrías hacer un PUT al backend para guardar los cambios
+  const handleConfirmApply = async (password) => {
+    try {
+      const payload = {
+        nombres: formData.nombres,
+        apellidos: formData.apellidos,
+        celular: formData.celular,
+        img: formData.img,
+        password
+      };
+      const res = await updateMyProfile(payload);
+      setFormData(res.data.perfil);
+      setUser(res.data.perfil);
+      setShowPasswordModal(false);
+      setEditingField(null);
+      alert("Cambios aplicados correctamente.");
+    } catch (err) {
+      console.error("Error actualizando perfil:", err);
+      alert(err.response?.data?.mensaje || "Error al actualizar el perfil.");
+    }
   };
 
-  // Inhabilitar cuenta
-  const handleDisableAccount = (password) => {
-    console.log("Inhabilitar cuenta con contraseña:", password);
-    setShowDisableModal(false);
-    alert("Cuenta inhabilitada.");
-    // Aquí podrías hacer un DELETE o PATCH al backend
+  const handleChangePassword = async ({ actual, nueva, repetir }) => {
+    try {
+      await changeMyPassword(actual, nueva, repetir);
+      alert("Contraseña actualizada correctamente.");
+      setShowChangePasswordModal(false);
+    } catch (err) {
+      alert(err.response?.data?.mensaje || "Error al cambiar la contraseña.");
+    }
   };
 
-  // Mostrar mientras carga
+  const handleDeleteAccount = async (contraseña) => {
+    try {
+      await deleteMyProfile(contraseña);
+      alert("Cuenta desactivada correctamente.");
+      setShowDeleteAccountModal(false);
+      logout();
+      navigate("/login");
+    } catch (err) {
+      alert(err.response?.data?.mensaje || "Error al eliminar la cuenta.");
+    }
+  };
+
   if (!formData) {
     return (
       <MainLayout>
@@ -109,8 +141,8 @@ export default function UserProfilePage() {
             onViewSuggestions={() => navigate("/my-suggestions")}
           />
           <SettingsCard
-            onChangePassword={() => alert("Cambiar contraseña")}
-            onDisableAccount={() => setShowDisableModal(true)}
+            onChangePassword={() => setShowChangePasswordModal(true)}
+            onDisableAccount={() => setShowDeleteAccountModal(true)}
           />
         </div>
       </div>
@@ -122,10 +154,17 @@ export default function UserProfilePage() {
         />
       )}
 
-      {showDisableModal && (
-        <DisableAccountModal
-          onClose={() => setShowDisableModal(false)}
-          onConfirm={handleDisableAccount}
+      {showChangePasswordModal && (
+        <ChangePasswordModal
+          onClose={() => setShowChangePasswordModal(false)}
+          onConfirm={handleChangePassword}
+        />
+      )}
+
+      {showDeleteAccountModal && (
+        <DeleteAccountModal
+          onClose={() => setShowDeleteAccountModal(false)}
+          onConfirm={handleDeleteAccount}
         />
       )}
     </MainLayout>

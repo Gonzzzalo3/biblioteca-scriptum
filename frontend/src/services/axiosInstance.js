@@ -1,4 +1,3 @@
-// src/services/axiosInstance.js
 import axios from "axios";
 
 const instance = axios.create({
@@ -27,6 +26,7 @@ instance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
+        console.log("🔄 Token expirado, solicitando refresh...");
         const res = await axios.post(
           "http://localhost:3000/api/auth/refresh-token",
           {},
@@ -34,6 +34,7 @@ instance.interceptors.response.use(
         );
 
         const newAccessToken = res.data.accessToken;
+        console.log("Nuevo token recibido:", newAccessToken);
         localStorage.setItem("accessToken", newAccessToken);
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;

@@ -15,6 +15,7 @@ import MyCommentsPage from "../pages/user/MyCommentsPage";
 import MySuggestionsPage from "../pages/user/MySuggestionPage";
 import ProtectedRoute from "./ProtectedRoute";
 import LogoutPage from "../pages/auth/logoutPage";
+import PublicProfilePage from "../pages/user/PublicProfilePage";
 
 export default function AppRoutes() {
   return (
@@ -88,6 +89,15 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <MySuggestionsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile/:id"
+        element={
+          <ProtectedRoute>
+            <PublicProfilePage />
           </ProtectedRoute>
         }
       />
