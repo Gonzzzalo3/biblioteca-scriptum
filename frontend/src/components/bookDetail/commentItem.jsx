@@ -1,24 +1,24 @@
-import StarRating from "./starRating";
+import StarRating from "./StarRating";
 
 export default function CommentItem({ comment }) {
   return (
-    <li className="flex gap-4 p-4 bg-gray-50 rounded-lg shadow-sm">
-      {/* Imagen del usuario */}
+    <li className="flex gap-4 bg-gray-50 p-4 rounded-lg">
       <img
-        src={comment.userImage}
-        alt={comment.userName}
-        className="w-12 h-12 rounded-full object-cover"
+        src={comment.img}
+        alt={`${comment.nombres} ${comment.apellidos}`}
+        className="w-10 h-10 rounded-full object-cover"
       />
-
       <div className="flex-1">
-        {/* Nombre y estrellas */}
         <div className="flex items-center justify-between">
-          <h4 className="font-semibold">{comment.userName}</h4>
-          <StarRating rating={comment.rating} />
+          <p className="font-semibold">
+            {comment.nombres} {comment.apellidos}
+          </p>
+          <StarRating rating={comment.calificacion} />
         </div>
-
-        {/* Texto del comentario */}
-        <p className="text-gray-700 mt-2">{comment.text}</p>
+        <p className="text-sm text-gray-500">
+          {new Date(comment.fecha).toLocaleDateString()}
+        </p>
+        <p className="mt-1">{comment.contenido}</p>
       </div>
     </li>
   );
