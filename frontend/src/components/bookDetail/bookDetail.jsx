@@ -1,15 +1,10 @@
 import { useState } from "react";
 import BookInfo from "./bookInfo";
 import BookComments from "./bookComments";
-import ReserveButton from "../ui/ReserveButton";
 import ReserveModal from "../ui/ReserveModal";
 
-export default function BookDetail({ book }) {
+export default function BookDetail({ book, onCreateComment }) {
   const [showModal, setShowModal] = useState(false);
-
-  const handleReserve = () => {
-    setShowModal(true);
-  };
 
   const handleConfirm = () => {
     setShowModal(false);
@@ -22,7 +17,10 @@ export default function BookDetail({ book }) {
 
       <hr className="my-6 border-gray-300" />
 
-      <BookComments comments={book.comments} />
+      <BookComments
+        comments={book.comments}
+        onCreate={onCreateComment}
+      />
 
       {showModal && (
         <ReserveModal

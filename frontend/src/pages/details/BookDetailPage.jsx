@@ -3,17 +3,15 @@ import { useParams } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import BookDetail from "../../components/bookDetail/bookDetail";
 import { getBookDetail } from "../../services/book/book";
-import { getBookComments } from "../../services/comment/comment";
+import { getBookComments, createComment } from "../../services/comment/comment";
 
 export default function BookDetailPage() {
   const { id } = useParams();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    Promise.all([getBookDetail(id), getBookComments(id)])
+  const loadData = () => {
+    return Promise.all([getBookDetail(id), getBookComments(id)])
       .then(([bookRes, commentsRes]) => {
         const data = bookRes.data?.libro;
         const comentarios = commentsRes.data?.comentarios || [];
@@ -29,6 +27,7 @@ export default function BookDetailPage() {
             stock: data.stock,
             comments: comentarios.map(c => ({
               id: c.id,
+              id_usuario: c.id_usuario,
               contenido: c.contenido,
               calificacion: c.calificacion,
               fecha: c.createdAt,
@@ -45,14 +44,26 @@ export default function BookDetailPage() {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    loadData();
   }, [id]);
+
+  const handleCreateComment = (data) => {
+    return createComment({ ...data, id_libro: book.id }).then(loadData);
+  };
 
   return (
     <MainLayout>
       {loading ? (
         <p className="text-center text-gray-500">Cargando detalle del libro...</p>
       ) : book ? (
-        <BookDetail book={book} />
+        <BookDetail
+          book={book}
+          onCreateComment={handleCreateComment}
+        />
       ) : (
         <p className="text-center text-red-500">Libro no encontrado.</p>
       )}
