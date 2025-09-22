@@ -3,7 +3,13 @@ import BookInfo from "./bookInfo";
 import BookComments from "./bookComments";
 import ReserveModal from "../ui/ReserveModal";
 
-export default function BookDetail({ book, onCreateComment }) {
+export default function BookDetail({
+  book,
+  currentUserId,
+  onCreateComment,
+  onEditComment,
+  onDeleteComment
+}) {
   const [showModal, setShowModal] = useState(false);
 
   const handleConfirm = () => {
@@ -19,7 +25,10 @@ export default function BookDetail({ book, onCreateComment }) {
 
       <BookComments
         comments={book.comments}
+        currentUserId={currentUserId}
         onCreate={onCreateComment}
+        onEdit={onEditComment}
+        onDelete={onDeleteComment}
       />
 
       {showModal && (

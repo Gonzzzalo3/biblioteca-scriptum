@@ -3,10 +3,17 @@ import { useParams } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import BookDetail from "../../components/bookDetail/bookDetail";
 import { getBookDetail } from "../../services/book/book";
-import { getBookComments, createComment } from "../../services/comment/comment";
+import {
+  getBookComments,
+  createComment,
+  editComment,
+  deleteComment
+} from "../../services/comment/comment";
+import { useUser } from "../../context/UserContext";
 
 export default function BookDetailPage() {
   const { id } = useParams();
+  const { user } = useUser();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +32,7 @@ export default function BookDetailPage() {
             category: data.Category?.nombre || "Sin categoría",
             synopsis: data.sinopsis,
             stock: data.stock,
-            comments: comentarios.map(c => ({
+            comments: comentarios.map((c) => ({
               id: c.id,
               id_usuario: c.id_usuario,
               contenido: c.contenido,
@@ -55,6 +62,14 @@ export default function BookDetailPage() {
     return createComment({ ...data, id_libro: book.id }).then(loadData);
   };
 
+  const handleEditComment = (id, data) => {
+    return editComment(id, data).then(loadData);
+  };
+
+  const handleDeleteComment = (id) => {
+    return deleteComment(id).then(loadData);
+  };
+
   return (
     <MainLayout>
       {loading ? (
@@ -62,7 +77,10 @@ export default function BookDetailPage() {
       ) : book ? (
         <BookDetail
           book={book}
+          currentUserId={user?.id}
           onCreateComment={handleCreateComment}
+          onEditComment={handleEditComment}
+          onDeleteComment={handleDeleteComment}
         />
       ) : (
         <p className="text-center text-red-500">Libro no encontrado.</p>
