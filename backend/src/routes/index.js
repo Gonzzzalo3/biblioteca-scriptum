@@ -20,7 +20,7 @@ router.use('/suggestion', suggestionRoutes);
 router.use('/book', bookRoutes);
 router.use('/exemplary', exemplaryRoutes);
 router.use('/reservation', reservationRoutes);
-router.use('/comment', commentRoutes)
-router.use('/recommendation', recommendationRoutes)
+router.use('/comment', commentRoutes);
+router.use('/recommendation', recommendationRoutes);
 
 export default router;

@@ -1,3 +1,4 @@
+// src/controllers/recommendation/getRecommendations.controller.js
 import { Recommendation, Book } from '../../models/index.js';
 
 export async function getRecommendationsController(req, res) {
@@ -9,7 +10,8 @@ export async function getRecommendationsController(req, res) {
       include: {
         model: Book,
         attributes: ['id', 'titulo', 'autor', 'portada', 'sinopsis']
-      }
+      },
+      limit: 4
     });
 
     res.status(200).json({ recomendaciones });

@@ -1,47 +1,101 @@
+import { useEffect, useState } from "react";
 import MainLayout from "../../layouts/MainLayout";
 import ReservationList from "../../components/reservations/ReservationList";
+import { getUserReservations } from "../../services/reservation/reservation";
+import { useUser } from "../../context/UserContext";
+
+const RESERVATION_STATUS = {
+  RESERVADO: "reservado",
+  PRESTADO: "prestado",
+  CANCELADO: "cancelado",
+  DEVUELTO: "devuelto",
+};
 
 export default function ReservationPage() {
-  const isLoggedIn = true;
-  const user = { name: "Gonzalo Cáceres", email: "gonzalo@example.com" };
+  const { user } = useUser();
+  const [pendingReservations, setPendingReservations] = useState([]);
+  const [activeLoans, setActiveLoans] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Datos de ejemplo
-  const pendingReservations = [
-    {
-      cover: "/covers/libro1.jpg",
-      title: "Libro 1",
-      author: "Autor",
-      code: "XX-XXXX",
-      status: "Reservado",
-      dueDate: "20/09/2025",
-    },
-  ];
+  useEffect(() => {
+    getUserReservations()
+      .then((res) => {
+        const reservas = res.data?.reservas || [];
 
-  const activeLoans = [
-    {
-      cover: "/covers/libro2.jpg",
-      title: "Libro 2",
-      author: "Autor",
-      code: "YY-YYYY",
-      status: "En posesión",
-      dueDate: "25/09/2025",
-    },
-    {
-      cover: "/covers/libro3.jpg",
-      title: "Libro 3",
-      author: "Autor",
-      code: "ZZ-ZZZZ",
-      status: "Vencido",
-      dueDate: "15/09/2025",
-    },
-  ];
+        const pending = [];
+        const active = [];
+
+        reservas
+          // Solo mostramos reservas o préstamos activos
+          .filter(
+            (r) =>
+              r.estado.toLowerCase() === RESERVATION_STATUS.RESERVADO ||
+              r.estado.toLowerCase() === RESERVATION_STATUS.PRESTADO
+          )
+          .forEach((r) => {
+            const bookData = r.Exemplary?.Book || {};
+            const fechaFin = r.fecha_fin ? new Date(r.fecha_fin) : null;
+            const hoy = new Date();
+
+            let status = "";
+
+            if (r.estado.toLowerCase() === RESERVATION_STATUS.RESERVADO) {
+              // Reserva vencida si pasó la fecha fin
+              if (fechaFin && fechaFin < hoy) {
+                status = "Vencido";
+              } else {
+                status = "Reservado";
+              }
+              pending.push({
+                cover: bookData.portada || "/covers/default.jpg",
+                title: bookData.titulo || "Sin título",
+                author: bookData.autor || "Desconocido",
+                code: `RES-${r.id}`,
+                status,
+                dueDate: fechaFin ? fechaFin.toLocaleDateString() : "Sin fecha",
+              });
+            }
+
+            if (r.estado.toLowerCase() === RESERVATION_STATUS.PRESTADO) {
+              // Préstamo vencido si pasó la fecha fin
+              if (fechaFin && fechaFin < hoy) {
+                status = "Vencido";
+              } else {
+                status = "En posesión";
+              }
+              active.push({
+                cover: bookData.portada || "/covers/default.jpg",
+                title: bookData.titulo || "Sin título",
+                author: bookData.autor || "Desconocido",
+                code: `RES-${r.id}`,
+                status,
+                dueDate: fechaFin ? fechaFin.toLocaleDateString() : "Sin fecha",
+              });
+            }
+          });
+
+        setPendingReservations(pending);
+        setActiveLoans(active);
+      })
+      .catch((err) => {
+        console.error("Error al obtener reservas:", err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
-    <MainLayout isLoggedIn={isLoggedIn} user={user}>
-      <div className="space-y-8">
-        <ReservationList title="Reservas pendientes" books={pendingReservations} />
-        <ReservationList title="Préstamos activos" books={activeLoans} />
-      </div>
+    <MainLayout isLoggedIn={!!user} user={user}>
+      {loading ? (
+        <p className="text-center text-gray-500">Cargando reservas...</p>
+      ) : (
+        <div className="space-y-8">
+          <ReservationList
+            title="Reservas pendientes"
+            books={pendingReservations}
+          />
+          <ReservationList title="Préstamos activos" books={activeLoans} />
+        </div>
+      )}
     </MainLayout>
   );
 }

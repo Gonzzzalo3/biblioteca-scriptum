@@ -8,6 +8,7 @@ import { getAllReservationsController } from '../controllers/Reservation/getAllR
 import { getActiveReservationsController } from '../controllers/Reservation/getActiveReservations.controller.js';
 import { lendReservationController } from '../controllers/Reservation/lendReservation.controller.js';
 import { returnReservationController } from '../controllers/Reservation/returnReservation.controller.js';
+import { getUserReservationHistoryController } from '../controllers/Reservation/getUserReservationHistory.controller.js'; // ⬅️ nuevo import
 import { verificarToken } from '../middlewares/auth.js';
 import { validateUserStatus } from '../middlewares/validateUserStatus.js';
 import { authorizeRole } from '../middlewares/authRole.js';
@@ -17,14 +18,78 @@ import { validateVerificationStatus } from '../middlewares/validateVerificationS
 const router = express.Router();
 
 // Cliente
-router.post('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), createReservationController);
-router.put('/:id/cancel', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), cancelReservationController);
-router.get('/mis-reservas', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), getUserReservationsController);
+router.post(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  createReservationController
+);
+
+router.put(
+  '/:id/cancel',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  cancelReservationController
+);
+
+router.get(
+  '/mis-reservas',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  getUserReservationsController
+);
+
+// ⬅️ Nuevo endpoint para historial del cliente
+router.get(
+  '/historial',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  getUserReservationHistoryController
+);
 
 // Bibliotecario
-router.get('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), getAllReservationsController);
-router.get('/activas', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), getActiveReservationsController);
-router.put('/:id/prestar', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), lendReservationController);
-router.put('/:id/devolver', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), returnReservationController);
+router.get(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  getAllReservationsController
+);
+
+router.get(
+  '/activas',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  getActiveReservationsController
+);
+
+router.put(
+  '/:id/prestar',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  lendReservationController
+);
+
+router.put(
+  '/:id/devolver',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  returnReservationController
+);
 
 export default router;

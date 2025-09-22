@@ -10,6 +10,7 @@ import {
   deleteComment,
 } from "../../services/comment/comment";
 import { createReservation } from "../../services/reservation/reservation";
+import { generateRecommendations } from "../../services/recommendation/recommendation"; // ⬅️ nuevo import
 import { useUser } from "../../context/UserContext";
 
 export default function BookDetailPage() {
@@ -62,6 +63,19 @@ export default function BookDetailPage() {
     window.scrollTo(0, 0);
     loadData();
   }, [id]);
+
+  // ⬅️ Nuevo efecto para generar recomendaciones automáticamente
+  useEffect(() => {
+    if (book?.id && user?.id) {
+      generateRecommendations({ id_libro: book.id })
+        .then(() => {
+          console.log("Recomendaciones generadas para el usuario");
+        })
+        .catch((err) => {
+          console.error("Error generando recomendaciones:", err);
+        });
+    }
+  }, [book?.id, user?.id]);
 
   const handleCreateComment = (data) => {
     return createComment({ ...data, id_libro: book.id }).then(loadData);
