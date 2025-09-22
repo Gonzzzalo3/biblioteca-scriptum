@@ -1,19 +1,20 @@
 import { useState } from "react";
 import SuggestionTypeSelect from "./suggestionTypeSelect";
 import SuggestionTextArea from "./suggestionTextArea";
+
 export default function SuggestionForm({ onSubmit }) {
-  const [type, setType] = useState("");
-  const [details, setDetails] = useState("");
+  const [tipo, setTipo] = useState("");
+  const [detalles, setDetalles] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!type || !details.trim()) {
+    if (!tipo || !detalles.trim()) {
       alert("Por favor complete todos los campos.");
       return;
     }
-    onSubmit({ type, details });
-    setType("");
-    setDetails("");
+    onSubmit({ tipo, detalles });
+    setTipo("");
+    setDetalles("");
   };
 
   return (
@@ -21,8 +22,14 @@ export default function SuggestionForm({ onSubmit }) {
       onSubmit={handleSubmit}
       className="bg-white p-6 rounded-lg shadow space-y-6"
     >
-      <SuggestionTypeSelect value={type} onChange={(e) => setType(e.target.value)} />
-      <SuggestionTextArea value={details} onChange={(e) => setDetails(e.target.value)} />
+      <SuggestionTypeSelect
+        value={tipo}
+        onChange={(e) => setTipo(e.target.value)}
+      />
+      <SuggestionTextArea
+        value={detalles}
+        onChange={(e) => setDetalles(e.target.value)}
+      />
 
       <button
         type="submit"
