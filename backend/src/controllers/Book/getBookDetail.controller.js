@@ -1,16 +1,15 @@
 // src/controllers/book/getBookDetail.controller.js
-
-import { Book, Category } from '../../models/index.js';
+import { Book, Category, Exemplary } from '../../models/index.js';
 
 export async function getBookDetailController(req, res) {
   try {
     const { id } = req.params;
 
     const libro = await Book.findByPk(id, {
-      include: {
-        model: Category,
-        attributes: ['nombre']
-      }
+      include: [
+        { model: Category, attributes: ['nombre'] },
+        { model: Exemplary, attributes: ['id', 'estado'] }
+      ]
     });
 
     if (!libro) {

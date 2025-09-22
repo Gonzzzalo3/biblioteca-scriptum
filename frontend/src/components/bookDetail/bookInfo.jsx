@@ -8,7 +8,7 @@ export default function BookInfo({ book, onReserve }) {
           <h1 className="text-3xl font-bold mb-2">{book.title}</h1>
           <p className="text-gray-600 mb-4">por {book.author}</p>
         </div>
-        <ReserveButton onClick={onReserve} />
+        {book.stock > 0 && <ReserveButton onClick={onReserve} />}
       </div>
 
       <div className="flex gap-6">

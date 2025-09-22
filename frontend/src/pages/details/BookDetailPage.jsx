@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
-import BookDetail from "../../components/bookDetail/bookDetail";
 import { getBookDetail } from "../../services/book/book";
+import BookDetail from "../../components/bookDetail/bookDetail";
 import {
   getBookComments,
   createComment,
   editComment,
-  deleteComment
+  deleteComment,
 } from "../../services/comment/comment";
+import { createReservation } from "../../services/reservation/reservation";
 import { useUser } from "../../context/UserContext";
 
 export default function BookDetailPage() {
@@ -32,6 +33,10 @@ export default function BookDetailPage() {
             category: data.Category?.nombre || "Sin categoría",
             synopsis: data.sinopsis,
             stock: data.stock,
+            firstEjemplarId:
+              data.Exemplaries?.find(
+                (e) => e.estado.toLowerCase() === "disponible"
+              )?.id || null,
             comments: comentarios.map((c) => ({
               id: c.id,
               id_usuario: c.id_usuario,
@@ -40,8 +45,8 @@ export default function BookDetailPage() {
               fecha: c.createdAt,
               nombres: c.User?.nombres || "",
               apellidos: c.User?.apellidos || "",
-              img: c.User?.img || "/img/usuarios/default.jpg"
-            }))
+              img: c.User?.img || "/img/usuarios/default.jpg",
+            })),
           });
         }
       })
@@ -70,10 +75,18 @@ export default function BookDetailPage() {
     return deleteComment(id).then(loadData);
   };
 
+  const handleReserve = (idEjemplar) => {
+    return createReservation({ id_ejemplar: idEjemplar }).then(() =>
+      loadData()
+    );
+  };
+
   return (
     <MainLayout>
       {loading ? (
-        <p className="text-center text-gray-500">Cargando detalle del libro...</p>
+        <p className="text-center text-gray-500">
+          Cargando detalle del libro...
+        </p>
       ) : book ? (
         <BookDetail
           book={book}
@@ -81,6 +94,7 @@ export default function BookDetailPage() {
           onCreateComment={handleCreateComment}
           onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}
+          onReserve={handleReserve}
         />
       ) : (
         <p className="text-center text-red-500">Libro no encontrado.</p>

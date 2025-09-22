@@ -8,18 +8,29 @@ export default function BookDetail({
   currentUserId,
   onCreateComment,
   onEditComment,
-  onDeleteComment
+  onDeleteComment,
+  onReserve
 }) {
   const [showModal, setShowModal] = useState(false);
 
-  const handleConfirm = () => {
-    setShowModal(false);
-    alert("Reserva confirmada. Recuerde recoger su libro en 3 días.");
+  const handleConfirmReserve = () => {
+    if (!book.firstEjemplarId) {
+      alert("No se encontró un ejemplar disponible para reservar.");
+      return;
+    }
+    onReserve(book.firstEjemplarId)
+      .then(() => {
+        alert("Reserva creada correctamente.");
+        setShowModal(false);
+      })
+      .catch((err) => {
+        alert(err.response?.data?.mensaje || "Error al crear la reserva.");
+      });
   };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
-      <BookInfo book={book} />
+      <BookInfo book={book} onReserve={() => setShowModal(true)} />
 
       <hr className="my-6 border-gray-300" />
 
@@ -34,7 +45,7 @@ export default function BookDetail({
       {showModal && (
         <ReserveModal
           onClose={() => setShowModal(false)}
-          onConfirm={handleConfirm}
+          onConfirm={handleConfirmReserve}
         />
       )}
     </div>
