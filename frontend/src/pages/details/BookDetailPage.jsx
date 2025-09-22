@@ -21,7 +21,7 @@ export default function BookDetailPage() {
             cover: data.portadaUrl || "/covers/default.jpg",
             title: data.titulo,
             author: data.autor,
-            category: data.categoria?.nombre || "Sin categoría",
+            category: data.Category?.nombre || "Sin categoría",
             synopsis: data.sinopsis,
             stock: data.stock,
             comments: data.comentarios || [],

@@ -1,6 +1,4 @@
-// src/controllers/book/getMostPopularBooks.controller.js
-
-import { Book } from '../../models/index.js';
+import { Book, Category } from '../../models/index.js';
 import { sequelize } from '../../config/db.js';
 
 export async function getMostPopularBooksController(req, res) {
@@ -8,10 +6,19 @@ export async function getMostPopularBooksController(req, res) {
     const libros = await Book.findAll({
       attributes: {
         include: [
-          [sequelize.literal(`(
-            SELECT COUNT(*) FROM recommendations WHERE recommendations.id_libro = Book.id
-          )`), 'recomendaciones']
+          [
+            sequelize.literal(`(
+              SELECT COUNT(*) 
+              FROM recommendations 
+              WHERE recommendations.id_libro = Book.id
+            )`),
+            'recomendaciones'
+          ]
         ]
+      },
+      include: {
+        model: Category,           // igual que en getBookDetailController
+        attributes: ['nombre']     // solo el nombre de la categoría
       },
       order: [[sequelize.literal('recomendaciones'), 'DESC']],
       limit: 10
