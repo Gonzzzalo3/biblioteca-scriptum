@@ -1,17 +1,29 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import { getPublicProfile } from "../../services";
 import { formatDate } from "../../utils/formatDate";
 import { FaIdBadge, FaUser, FaUserTag, FaCalendarAlt } from "react-icons/fa";
 import FieldRow from "../../components/user/PersonalInfoSection/FieldRow";
+import { useUser } from "../../context/UserContext";
 
 export default function PublicProfilePage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useUser();
   const [perfil, setPerfil] = useState(null);
   const [error, setError] = useState("");
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
+    if (user?.id && parseInt(id) === user.id) {
+      setRedirecting(true);
+      setTimeout(() => {
+        navigate("/my-profile", { replace: true });
+      }, 1000); // da tiempo para mostrar el mensaje
+      return;
+    }
+
     const fetchProfile = async () => {
       try {
         const res = await getPublicProfile(id);
@@ -30,8 +42,17 @@ export default function PublicProfilePage() {
         setError(err.response?.data?.mensaje || "Error al cargar el perfil.");
       }
     };
+
     fetchProfile();
-  }, [id]);
+  }, [id, user?.id, navigate]);
+
+  if (redirecting) {
+    return (
+      <MainLayout>
+        <p className="text-center text-gray-500">Redirigiendo a tu perfil privado...</p>
+      </MainLayout>
+    );
+  }
 
   if (error) {
     return (

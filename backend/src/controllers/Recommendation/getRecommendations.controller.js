@@ -1,18 +1,20 @@
-// src/controllers/recommendation/getRecommendations.controller.js
-import { Recommendation, Book } from '../../models/index.js';
+import { Recommendation, Book, Category } from '../../models/index.js';
 import { config } from '../../config/env.js';
 
 export async function getRecommendationsController(req, res) {
   try {
     const id_usuario = req.usuario.id;
-
     const baseUrl = config.baseUrl || `${req.protocol}://${req.get('host')}`;
 
     const recomendaciones = await Recommendation.findAll({
       where: { id_usuario },
       include: {
         model: Book,
-        attributes: ['id', 'titulo', 'autor', 'portada', 'sinopsis']
+        attributes: ['id', 'titulo', 'autor', 'portada', 'sinopsis'],
+        include: {
+          model: Category,
+          attributes: ['nombre']
+        }
       },
       limit: 4
     });
@@ -26,7 +28,8 @@ export async function getRecommendationsController(req, res) {
               ...data.Book,
               portadaUrl: data.Book.portada
                 ? `${baseUrl}${data.Book.portada}`
-                : null
+                : null,
+              category: data.Book.Category?.nombre || "Sin categoría"
             }
           : null
       };

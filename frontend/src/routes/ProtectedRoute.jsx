@@ -7,7 +7,7 @@ export default function ProtectedRoute({ children }) {
   const location = useLocation();
 
   if (loading) {
-    return null; // o un spinner de carga
+    return null;
   }
 
   if (!user) {
