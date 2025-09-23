@@ -26,7 +26,7 @@ export default function MyCommentsPage() {
           libro: {
             titulo: c.Book?.titulo || "",
             autor: c.Book?.autor || "",
-            portada: c.Book?.portada || "/covers/default.jpg"
+            portada: c.Book?.portadaUrl || "/covers/default.jpg"
           }
         }));
         setComments(mapped);

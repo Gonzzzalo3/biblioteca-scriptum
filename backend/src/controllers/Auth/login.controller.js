@@ -1,7 +1,7 @@
-// src/controllers/auth/login.controller.js
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwt.js";
 import { User } from "../../models/User.js";
 import { USER_STATUS } from "../../config/constants.js";
+import { config } from "../../config/env.js"; // ← asegúrate de importar esto
 import bcrypt from "bcrypt";
 
 export async function loginController(req, res) {
@@ -15,11 +15,15 @@ export async function loginController(req, res) {
     }
 
     if (usuario.estado === USER_STATUS.SUSPENDIDO) {
-      return res.status(403).json({ mensaje: "Tu cuenta está suspendida. Contacta con soporte para más información." });
+      return res.status(403).json({
+        mensaje: "Tu cuenta está suspendida. Contacta con soporte para más información."
+      });
     }
 
     if (usuario.estado === USER_STATUS.INACTIVO) {
-      return res.status(403).json({ mensaje: "Esta cuenta ha sido desactivada permanentemente. No puedes iniciar sesión." });
+      return res.status(403).json({
+        mensaje: "Esta cuenta ha sido desactivada permanentemente. No puedes iniciar sesión."
+      });
     }
 
     const contraseñaValida = await bcrypt.compare(contraseña, usuario.contraseña);
@@ -36,6 +40,12 @@ export async function loginController(req, res) {
 
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
+
+    // Construir baseUrl y imgUrl
+    const baseUrl = config.baseUrl || `${req.protocol}://${req.get('host')}`;
+    const imgUrl = usuario.img
+      ? `${baseUrl}${usuario.img}`
+      : `${baseUrl}/img/usuarios/default.jpg`;
 
     res
       .cookie("refreshToken", refreshToken, {
@@ -55,6 +65,7 @@ export async function loginController(req, res) {
           rol: usuario.rol,
           estado: usuario.estado,
           img: usuario.img,
+          imgUrl, // ← aquí está la clave
           createdAt: usuario.createdAt,
           is_verified: usuario.is_verified
         },

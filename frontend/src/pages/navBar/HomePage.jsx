@@ -24,7 +24,7 @@ export default function Home() {
           if (recBooks.length > 0) {
             const formattedRec = recBooks.map((rec) => ({
               id: rec.Book?.id,
-              cover: rec.Book?.portada || "/covers/default.jpg",
+              cover: rec.Book?.portadaUrl || "/covers/default.jpg", // ← aquí está el cambio
               title: rec.Book?.titulo || "Sin título",
               category: rec.Book?.Category?.nombre || "Sin categoría",
               author: rec.Book?.autor || "Autor desconocido",

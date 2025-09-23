@@ -45,7 +45,7 @@ router.get(
   getUserReservationsController
 );
 
-// ⬅️ Nuevo endpoint para historial del cliente
+
 router.get(
   '/historial',
   verificarToken,

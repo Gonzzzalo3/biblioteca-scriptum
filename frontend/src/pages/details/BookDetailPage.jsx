@@ -28,7 +28,7 @@ export default function BookDetailPage() {
         if (data) {
           setBook({
             id: data.id,
-            cover: data.portada || "/covers/default.jpg",
+            cover: data.portadaUrl || "/covers/default.jpg",
             title: data.titulo,
             author: data.autor,
             category: data.Category?.nombre || "Sin categoría",
@@ -46,7 +46,7 @@ export default function BookDetailPage() {
               fecha: c.createdAt,
               nombres: c.User?.nombres || "",
               apellidos: c.User?.apellidos || "",
-              img: c.User?.img || "/img/usuarios/default.jpg",
+              img: c.User?.imgUrl || "/img/usuarios/default.jpg",
             })),
           });
         }
@@ -64,7 +64,6 @@ export default function BookDetailPage() {
     loadData();
   }, [id]);
 
-  // ⬅️ Nuevo efecto para generar recomendaciones automáticamente
   useEffect(() => {
     if (book?.id && user?.id) {
       generateRecommendations({ id_libro: book.id })

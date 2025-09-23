@@ -1,14 +1,14 @@
-// src/controllers/reservation/getUserReservationHistory.controller.js
 import { Reservation, ReservationEvent, Exemplary, Book, User } from '../../models/index.js';
+import { config } from '../../config/env.js';
 
 export async function getUserReservationHistoryController(req, res) {
   try {
-    // Validar que el usuario esté autenticado y tenga ID
     if (!req.usuario || !req.usuario.id) {
       return res.status(401).json({ mensaje: 'Usuario no autenticado.' });
     }
 
     const id_usuario = req.usuario.id;
+    const baseUrl = config.baseUrl || `${req.protocol}://${req.get('host')}`;
 
     const eventos = await ReservationEvent.findAll({
       include: [
@@ -19,12 +19,12 @@ export async function getUserReservationHistoryController(req, res) {
           include: [
             {
               model: Exemplary,
-              required: true, 
+              required: true,
               include: [
                 {
                   model: Book,
                   attributes: ['id', 'titulo', 'autor', 'portada'],
-                  required: false 
+                  required: false
                 }
               ]
             },
@@ -48,6 +48,10 @@ export async function getUserReservationHistoryController(req, res) {
       const ejemplar = reserva?.Exemplary;
       const libro = ejemplar?.Book;
 
+      const portadaRelativa = libro?.portada?.startsWith('/')
+        ? libro.portada
+        : `/${libro?.portada || ''}`;
+
       return {
         id_evento: ev.id,
         id_reserva: reserva?.id || null,
@@ -60,13 +64,17 @@ export async function getUserReservationHistoryController(req, res) {
               id: libro.id,
               titulo: libro.titulo,
               autor: libro.autor,
-              portada: libro.portada
+              portada: libro.portada,
+              portadaUrl: libro.portada
+                ? `${baseUrl}${portadaRelativa}`
+                : `${baseUrl}/covers/default.jpg`
             }
           : {
               id: null,
               titulo: '[Libro no disponible]',
               autor: '',
-              portada: '/img/libros/default.jpg'
+              portada: '/img/libros/default.jpg',
+              portadaUrl: `${baseUrl}/covers/default.jpg`
             },
         usuario: reserva?.User
           ? {

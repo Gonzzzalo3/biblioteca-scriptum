@@ -8,7 +8,7 @@ export async function seedLibros() {
       titulo: 'Clean Code',
       autor: 'Robert C. Martin',
       sinopsis: 'Principios y buenas prácticas para escribir código limpio y mantenible.',
-      portada: '/public/img/cleancode.jpg',
+      portada: '/img/libros/cleancode.jpg',
       isbn: '9780132350884',
       stock: 5
     },
@@ -17,7 +17,7 @@ export async function seedLibros() {
       titulo: 'The Pragmatic Programmer',
       autor: 'Andrew Hunt y David Thomas',
       sinopsis: 'Consejos prácticos para desarrolladores que buscan mejorar su enfoque profesional.',
-      portada: '/public/img/pragmatic.jpg',
+      portada: '/img/libros/pragmatic.jpg',
       isbn: '9780201616224',
       stock: 4
     },
@@ -26,7 +26,7 @@ export async function seedLibros() {
       titulo: 'Pedagogía del oprimido',
       autor: 'Paulo Freire',
       sinopsis: 'Obra fundamental sobre educación crítica y liberadora.',
-      portada: '/public/img/freire.jpg',
+      portada: '/img/libros/pedagdeloprim.jpg',
       isbn: '9788429303284',
       stock: 3
     },
@@ -35,7 +35,7 @@ export async function seedLibros() {
       titulo: 'Dune',
       autor: 'Frank Herbert',
       sinopsis: 'Saga épica de ciencia ficción sobre poder, ecología y destino.',
-      portada: '/public/img/dune.jpg',
+      portada: '/img/libros/dune.jpg',
       isbn: '9780441172719',
       stock: 6
     },
@@ -44,7 +44,7 @@ export async function seedLibros() {
       titulo: 'Sapiens: De animales a dioses',
       autor: 'Yuval Noah Harari',
       sinopsis: 'Historia de la humanidad desde una perspectiva evolutiva y cultural.',
-      portada: '/public/img/sapiens.jpg',
+      portada: '/img/libros/sapiens.jpg',
       isbn: '9788499924218',
       stock: 5
     },
@@ -53,7 +53,7 @@ export async function seedLibros() {
       titulo: 'El diseño de todos los días',
       autor: 'Don Norman',
       sinopsis: 'Cómo el diseño influye en la experiencia cotidiana de los usuarios.',
-      portada: '/public/img/norman.jpg',
+      portada: '/img/libros/eldiseñodetodoslosdias.jpg',
       isbn: '9780465050659',
       stock: 2
     },
@@ -62,7 +62,7 @@ export async function seedLibros() {
       titulo: 'Mi planta de naranja lima',
       autor: 'José Mauro de Vasconcelos',
       sinopsis: 'Historia conmovedora de Zezé, un niño sensible en un entorno difícil.',
-      portada: '/public/img/naranjalima.jpg',
+      portada: '/img/libros/miplantanaranja.jpg',
       isbn: '9786070706432',
       stock: 4
     },
@@ -71,7 +71,7 @@ export async function seedLibros() {
       titulo: 'Orgullo y prejuicio',
       autor: 'Jane Austen',
       sinopsis: 'Clásico del romance que explora el amor, el orgullo y la clase social.',
-      portada: '/public/img/orgullo.jpg',
+      portada: '/img/libros/orgulloyprejuicio.jpg',
       isbn: '9788491050298',
       stock: 5
     },
@@ -80,7 +80,7 @@ export async function seedLibros() {
       titulo: 'El nombre de la rosa',
       autor: 'Umberto Eco',
       sinopsis: 'Misterio medieval en una abadía, con tintes filosóficos y detectivescos.',
-      portada: '/public/img/eco.jpg',
+      portada: '/img/libros/elnombredelarosa.jpg',
       isbn: '9788497593798',
       stock: 3
     },
@@ -89,7 +89,7 @@ export async function seedLibros() {
       titulo: 'El señor de los anillos',
       autor: 'J.R.R. Tolkien',
       sinopsis: 'Trilogía épica de fantasía sobre la lucha entre el bien y el mal.',
-      portada: '/public/img/tolkien.jpg',
+      portada: '/img/libros/elsrdelosanillos.jpg',
       isbn: '9788445071413',
       stock: 7
     },
@@ -98,7 +98,7 @@ export async function seedLibros() {
       titulo: 'Los hombres me explican cosas',
       autor: 'Rebecca Solnit',
       sinopsis: 'Ensayos sobre feminismo, poder y la invisibilización de las mujeres.',
-      portada: '/public/img/solnit.jpg',
+      portada: '/img/libros/loshombresmeexplicancosas.jpg',
       isbn: '9788494424270',
       stock: 2
     },
@@ -107,7 +107,7 @@ export async function seedLibros() {
       titulo: 'El hombre en busca de sentido',
       autor: 'Viktor Frankl',
       sinopsis: 'Reflexión psicológica desde la experiencia en campos de concentración.',
-      portada: '/public/img/frankl.jpg',
+      portada: '/img/libros/elhombreenbuscadelsentido.jpg',
       isbn: '9788425422217',
       stock: 4
     },
@@ -116,7 +116,7 @@ export async function seedLibros() {
       titulo: 'Cien años de soledad',
       autor: 'Gabriel García Márquez',
       sinopsis: 'Saga familiar de los Buendía en Macondo, con realismo mágico y drama profundo.',
-      portada: '/public/img/soledad.jpg',
+      portada: '/img/libros/100soledad.jpg',
       isbn: '9780307474728',
       stock: 6
     },
@@ -125,7 +125,7 @@ export async function seedLibros() {
       titulo: 'Neuromante',
       autor: 'William Gibson',
       sinopsis: 'Ciberpunk clásico que define el género y anticipa el internet.',
-      portada: '/public/img/neuromante.jpg',
+      portada: '/img/libros/neuromante.jpg',
       isbn: '9788498727941',
       stock: 3
     },
@@ -134,7 +134,7 @@ export async function seedLibros() {
       titulo: 'La chica del tren',
       autor: 'Paula Hawkins',
       sinopsis: 'Thriller psicológico sobre una mujer que presencia algo extraño desde el tren.',
-      portada: '/public/img/chica.jpg',
+      portada: '/img/libros/chicadeltren.jpg',
       isbn: '9788490628048',
       stock: 5
     },
@@ -143,7 +143,7 @@ export async function seedLibros() {
       titulo: 'Bajo la misma estrella',
       autor: 'John Green',
       sinopsis: 'Historia de amor entre dos adolescentes con enfermedades terminales.',
-      portada: '/public/img/estrella.jpg',
+      portada: '/img/libros/bajolamismaestrella.jpg',
       isbn: '9786073124165',
       stock: 4
     },
@@ -152,7 +152,7 @@ export async function seedLibros() {
       titulo: 'La educación prohibida',
       autor: 'Germán Doin',
       sinopsis: 'Crítica al sistema educativo tradicional y propuestas alternativas.',
-      portada: '/public/img/prohibida.jpg',
+      portada: '/img/libros/educacionprohibida.jpg',
       isbn: '9789871234567',
       stock: 2
     },
@@ -161,7 +161,7 @@ export async function seedLibros() {
       titulo: 'Código limpio para JavaScript',
       autor: 'Diego de Granda',
       sinopsis: 'Buenas prácticas y patrones para escribir JavaScript profesional y mantenible.',
-      portada: '/public/img/jslimpio.jpg',
+      portada: '/img/libros/jslimpio.jpg',
       isbn: '9789876543210',
       stock: 4
     },
@@ -170,7 +170,7 @@ export async function seedLibros() {
       titulo: 'La mente bien ordenada',
       autor: 'Edgar Morin',
       sinopsis: 'Propuesta para una reforma del pensamiento y la educación en el siglo XXI.',
-      portada: '/public/img/morin.jpg',
+      portada: '/img/libros/mentebienordenada.jpg',
       isbn: '9788432315802',
       stock: 3
     },
@@ -179,7 +179,7 @@ export async function seedLibros() {
       titulo: 'Fundación',
       autor: 'Isaac Asimov',
       sinopsis: 'Saga clásica de ciencia ficción sobre el colapso de un imperio galáctico.',
-      portada: '/public/img/fundacion.jpg',
+      portada: '/img/libros/fundacion.jpg',
       isbn: '9788497593799',
       stock: 5
     },
@@ -188,7 +188,7 @@ export async function seedLibros() {
       titulo: 'Breve historia del tiempo',
       autor: 'Stephen Hawking',
       sinopsis: 'Exploración accesible del universo, el tiempo y los agujeros negros.',
-      portada: '/public/img/hawking.jpg',
+      portada: '/img/libros/brevehistoriadeltiempo.jpg',
       isbn: '9780553176988',
       stock: 4
     },
@@ -197,7 +197,7 @@ export async function seedLibros() {
       titulo: 'Steal Like an Artist',
       autor: 'Austin Kleon',
       sinopsis: '10 ideas para desbloquear tu creatividad y aprender a inspirarte sin copiar.',
-      portada: '/public/img/kleon.jpg',
+      portada: '/img/libros/steallikeanArtist.jpg',
       isbn: '9780761169253',
       stock: 2
     },
@@ -206,7 +206,7 @@ export async function seedLibros() {
       titulo: 'El túnel',
       autor: 'Ernesto Sabato',
       sinopsis: 'Novela psicológica sobre obsesión, soledad y percepción distorsionada.',
-      portada: '/public/img/tunel.jpg',
+      portada: '/img/libros/eltunel.jpg',
       isbn: '9789875661234',
       stock: 3
     },
@@ -215,7 +215,7 @@ export async function seedLibros() {
       titulo: 'Como agua para chocolate',
       autor: 'Laura Esquivel',
       sinopsis: 'Historia de amor y cocina ambientada en la Revolución Mexicana.',
-      portada: '/public/img/chocolate.jpg',
+      portada: '/img/libros/aguaparachocolate.jpg',
       isbn: '9786070706433',
       stock: 5
     },
@@ -224,7 +224,7 @@ export async function seedLibros() {
       titulo: 'El silencio de los corderos',
       autor: 'Thomas Harris',
       sinopsis: 'Thriller psicológico con el icónico personaje Hannibal Lecter.',
-      portada: '/public/img/corderos.jpg',
+      portada: '/img/libros/silenciodecorderos.jpg',
       isbn: '9788497593797',
       stock: 4
     },
@@ -233,7 +233,7 @@ export async function seedLibros() {
       titulo: 'Harry Potter y la piedra filosofal',
       autor: 'J.K. Rowling',
       sinopsis: 'Inicio de la saga mágica que marcó a una generación.',
-      portada: '/public/img/hp1.jpg',
+      portada: '/img/libros/hp1.jpg',
       isbn: '9788478884452',
       stock: 6
     },
@@ -242,7 +242,7 @@ export async function seedLibros() {
       titulo: 'Inteligencia emocional',
       autor: 'Daniel Goleman',
       sinopsis: 'Cómo las emociones influyen en el éxito personal y profesional.',
-      portada: '/public/img/goleman.jpg',
+      portada: '/img/libros/inteligenciaemocional.jpg',
       isbn: '9788499086357',
       stock: 3
     }

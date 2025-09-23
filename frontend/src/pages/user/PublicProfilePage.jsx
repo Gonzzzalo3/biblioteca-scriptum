@@ -15,7 +15,17 @@ export default function PublicProfilePage() {
     const fetchProfile = async () => {
       try {
         const res = await getPublicProfile(id);
-        setPerfil(res.data.perfil);
+        const raw = res.data.perfil;
+
+        const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+        const enriched = {
+          ...raw,
+          imgUrl: raw.img
+            ? `${baseUrl}${raw.img}`
+            : `${baseUrl}/img/usuarios/default.jpg`
+        };
+
+        setPerfil(enriched);
       } catch (err) {
         setError(err.response?.data?.mensaje || "Error al cargar el perfil.");
       }
@@ -44,7 +54,7 @@ export default function PublicProfilePage() {
       <div className="space-y-8">
         <div className="flex justify-center">
           <img
-            src={perfil.img}
+            src={perfil.imgUrl}
             alt={`${perfil.nombres} ${perfil.apellidos}`}
             className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-lg"
           />

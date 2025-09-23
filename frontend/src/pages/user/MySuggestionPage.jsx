@@ -18,7 +18,7 @@ export default function MySuggestionsPage() {
           id: s.id,
           id_usuario: s.id_usuario,
           userName: `${s.User?.nombres || ""} ${s.User?.apellidos || ""}`,
-          userImage: s.User?.img || "/img/usuarios/default.jpg",
+          userImage: s.User?.imgUrl || "/img/usuarios/default.jpg",
           type: s.tipo,
           details: s.detalles,
           fecha: s.createdAt

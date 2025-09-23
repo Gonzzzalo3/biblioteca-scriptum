@@ -1,17 +1,30 @@
-// src/context/UserContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 
 const UserContext = createContext();
 
+function formatUser(rawUser) {
+  const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+  const timestamp = Date.now();
+  return {
+    ...rawUser,
+    avatarUrl: rawUser.img
+      ? `${baseUrl}${rawUser.img}?t=${timestamp}`
+      : `${baseUrl}/img/usuarios/default.jpg?t=${timestamp}`,
+  };
+}
+
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken") || null);
+  const [user, setUserRaw] = useState(null);
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("accessToken") || null
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsed = JSON.parse(storedUser);
+      setUserRaw(formatUser(parsed));
     }
     setLoading(false);
   }, []);
@@ -32,16 +45,22 @@ export function UserProvider({ children }) {
     }
   }, [accessToken]);
 
+  const setUser = (rawUser) => {
+    const formatted = formatUser(rawUser);
+    setUserRaw(formatted);
+    localStorage.setItem("user", JSON.stringify(formatted));
+  };
+
   const markUserAsVerified = () => {
     if (user) {
-      const updatedUser = { ...user, is_verified: true };
-      setUser(updatedUser);
+      const updatedUser = formatUser({ ...user, is_verified: true });
+      setUserRaw(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
     }
   };
 
   const logout = () => {
-    setUser(null);
+    setUserRaw(null);
     setAccessToken(null);
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
@@ -56,7 +75,7 @@ export function UserProvider({ children }) {
         setAccessToken,
         logout,
         markUserAsVerified,
-        loading
+        loading,
       }}
     >
       {children}

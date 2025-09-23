@@ -15,11 +15,12 @@ export default function HistoryPage() {
         const historial = res.data?.historial || [];
 
         const mapped = historial.map((h) => ({
-          cover: h.libro?.portada || "/covers/default.jpg",
+          cover: h.libro?.portadaUrl || "/covers/default.jpg",
           title: h.libro?.titulo || "Sin título",
           author: h.libro?.autor || "Desconocido",
           code: `RES-${h.id_reserva || "???"}`,
-          action: mapAction(h.accion), // traducimos la acción a texto amigable
+          rawAction: h.accion?.toLowerCase(), // ← valor original para lógica
+          action: mapAction(h.accion), // ← texto amigable para mostrar
           date: h.fecha_evento
             ? new Date(h.fecha_evento).toLocaleDateString()
             : "Sin fecha",

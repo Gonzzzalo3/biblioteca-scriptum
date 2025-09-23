@@ -17,37 +17,30 @@ export default function ReservationPage() {
   const [activeLoans, setActiveLoans] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const loadData = () => {
+    setLoading(true);
     getUserReservations()
       .then((res) => {
         const reservas = res.data?.reservas || [];
-
         const pending = [];
         const active = [];
 
         reservas
-          // Solo mostramos reservas o préstamos activos
-          .filter(
-            (r) =>
-              r.estado.toLowerCase() === RESERVATION_STATUS.RESERVADO ||
-              r.estado.toLowerCase() === RESERVATION_STATUS.PRESTADO
+          .filter((r) =>
+            [RESERVATION_STATUS.RESERVADO, RESERVATION_STATUS.PRESTADO].includes(
+              r.estado.toLowerCase()
+            )
           )
           .forEach((r) => {
             const bookData = r.Exemplary?.Book || {};
             const fechaFin = r.fecha_fin ? new Date(r.fecha_fin) : null;
             const hoy = new Date();
-
             let status = "";
 
             if (r.estado.toLowerCase() === RESERVATION_STATUS.RESERVADO) {
-              // Reserva vencida si pasó la fecha fin
-              if (fechaFin && fechaFin < hoy) {
-                status = "Vencido";
-              } else {
-                status = "Reservado";
-              }
+              status = fechaFin && fechaFin < hoy ? "Vencido" : "Reservado";
               pending.push({
-                cover: bookData.portada || "/covers/default.jpg",
+                cover: bookData.portadaUrl || "/covers/default.jpg",
                 title: bookData.titulo || "Sin título",
                 author: bookData.autor || "Desconocido",
                 code: `RES-${r.id}`,
@@ -57,14 +50,9 @@ export default function ReservationPage() {
             }
 
             if (r.estado.toLowerCase() === RESERVATION_STATUS.PRESTADO) {
-              // Préstamo vencido si pasó la fecha fin
-              if (fechaFin && fechaFin < hoy) {
-                status = "Vencido";
-              } else {
-                status = "En posesión";
-              }
+              status = fechaFin && fechaFin < hoy ? "Vencido" : "En posesión";
               active.push({
-                cover: bookData.portada || "/covers/default.jpg",
+                cover: bookData.portadaUrl || "/covers/default.jpg",
                 title: bookData.titulo || "Sin título",
                 author: bookData.autor || "Desconocido",
                 code: `RES-${r.id}`,
@@ -81,6 +69,11 @@ export default function ReservationPage() {
         console.error("Error al obtener reservas:", err);
       })
       .finally(() => setLoading(false));
+  };
+
+ 
+  useEffect(() => {
+    loadData();
   }, []);
 
   return (
@@ -92,6 +85,7 @@ export default function ReservationPage() {
           <ReservationList
             title="Reservas pendientes"
             books={pendingReservations}
+            onCancel={loadData}
           />
           <ReservationList title="Préstamos activos" books={activeLoans} />
         </div>

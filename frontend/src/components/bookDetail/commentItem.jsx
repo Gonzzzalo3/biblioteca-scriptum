@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaEdit, FaTrash, FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import StarRating from "./StarRating";
 
 export default function CommentItem({ comment, currentUserId, onEdit, onDelete }) {
@@ -29,9 +30,12 @@ export default function CommentItem({ comment, currentUserId, onEdit, onDelete }
       />
       <div className="flex-1">
         <div className="flex items-center justify-between">
-          <p className="font-semibold">
+          <Link
+            to={`/profile/${comment.id_usuario}`}
+            className="font-semibold text-blue-600 hover:underline"
+          >
             {comment.nombres} {comment.apellidos}
-          </p>
+          </Link>
           <div className="flex items-center gap-2">
             {isOwner && (
               <>

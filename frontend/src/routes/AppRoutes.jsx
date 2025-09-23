@@ -9,13 +9,15 @@ import Home from "../pages/navBar/HomePage";
 import BookDetailPage from "../pages/details/BookDetailPage";
 import ReservationPage from "../pages/navBar/ReservationPage";
 import HistoryPage from "../pages/navBar/historyPage";
-import SuggestionsPage from "../pages/navBar/suggestionPage";
+import SuggestionsPage from "../pages/navBar/SuggestionPage";
 import UserProfilePage from "../pages/user/userProfilePage";
 import MyCommentsPage from "../pages/user/MyCommentsPage";
 import MySuggestionsPage from "../pages/user/MySuggestionPage";
 import ProtectedRoute from "./ProtectedRoute";
 import LogoutPage from "../pages/auth/logoutPage";
 import PublicProfilePage from "../pages/user/PublicProfilePage";
+import SearchPage from "../pages/navBar/searchPage";
+import HelpPage from "../pages/navBar/HelpPage";
 
 export default function AppRoutes() {
   return (
@@ -101,6 +103,25 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/search"
+        element={
+          <ProtectedRoute>
+            <SearchPage />
+          </ProtectedRoute>
+        }
+      />
+
+        <Route
+        path="/help"
+        element={
+          <ProtectedRoute>
+            <HelpPage />
+          </ProtectedRoute>
+        }
+      />
+
     </Routes>
   );
 }

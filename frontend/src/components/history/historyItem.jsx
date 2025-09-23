@@ -8,10 +8,10 @@ export default function HistoryItem({ book }) {
   let statusColor = "text-gray-600";
   let StatusIcon = FaClock;
 
-  if (book.action === "Devuelto") {
+  if (book.rawAction === "devuelto") {
     statusColor = "text-green-600";
     StatusIcon = FaCheckCircle;
-  } else if (book.action === "Recogido") {
+  } else if (book.rawAction === "prestado") {
     if (dueDate && today > dueDate) {
       displayStatus = "Vencido";
       statusColor = "text-red-600";
@@ -21,14 +21,16 @@ export default function HistoryItem({ book }) {
       statusColor = "text-blue-600";
       StatusIcon = FaClock;
     }
-  } else if (book.action === "Reservado") {
+  } else if (book.rawAction === "creado") {
     statusColor = "text-yellow-600";
     StatusIcon = FaClock;
+  } else if (book.rawAction === "cancelar") {
+    statusColor = "text-red-600";
+    StatusIcon = FaTimesCircle;
   }
 
   return (
     <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-      {/* Portada */}
       <div className="flex items-center gap-4">
         <img
           src={book.cover}
@@ -42,7 +44,6 @@ export default function HistoryItem({ book }) {
         </div>
       </div>
 
-      {/* Estado calculado */}
       <div className="text-right">
         <div className={`flex items-center gap-1 justify-end ${statusColor}`}>
           <StatusIcon />

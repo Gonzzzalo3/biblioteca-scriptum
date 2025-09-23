@@ -7,10 +7,10 @@ import { seedRecomendaciones } from './06-recommendations.seeder.js';
 import { seedSugerencias } from './09-suggestions.seeder.js';
 
 export async function runAllSeeders() {
+    await seedUsuarios();
     await seedCategorias();
     await seedLibros();
     await seedEjemplares();
-    await seedUsuarios();
     await seedComentarios();
     await seedRecomendaciones();
     await seedSugerencias();
