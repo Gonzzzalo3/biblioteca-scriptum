@@ -1,6 +1,12 @@
 import { cancelReservation } from "../../services/reservation/reservation";
 
-export default function ReservationItem({ book, onCancel }) {
+export default function ReservationItem({
+  book,
+  modo = "cliente",
+  onCancel,
+  onConfirm,
+  onReturn,
+}) {
   const handleCancel = async () => {
     const id = book.code?.replace("RES-", "");
     if (!id) return;
@@ -11,10 +17,18 @@ export default function ReservationItem({ book, onCancel }) {
     try {
       await cancelReservation(id);
       alert("Reserva cancelada correctamente.");
-      if (onCancel) onCancel(); // recarga desde el padre
+      if (onCancel) onCancel();
     } catch (err) {
       alert(err.response?.data?.mensaje || "Error al cancelar la reserva.");
     }
+  };
+
+  const handleConfirm = () => {
+    if (onConfirm) onConfirm(book);
+  };
+
+  const handleReturn = () => {
+    if (onReturn) onReturn(book);
   };
 
   return (
@@ -29,6 +43,16 @@ export default function ReservationItem({ book, onCancel }) {
           <h3 className="font-semibold text-gray-800">{book.title}</h3>
           <p className="text-sm text-gray-600">por {book.author}</p>
           <p className="text-xs text-gray-500">Código: {book.code}</p>
+          {book.userName && (
+            <div className="flex items-center gap-2 mt-2">
+              <img
+                src={book.userImage}
+                alt={book.userName}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+              <p className="text-sm text-gray-700">{book.userName}</p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -48,12 +72,30 @@ export default function ReservationItem({ book, onCancel }) {
           <p className="text-xs text-gray-500">Vence: {book.dueDate}</p>
         )}
 
-        {book.status === "Reservado" && (
+        {book.status === "Reservado" && modo === "cliente" && (
           <button
             onClick={handleCancel}
             className="mt-2 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition"
           >
             Cancelar
+          </button>
+        )}
+
+        {modo === "bibliotecario" && book.estadoRaw === "reservado" && (
+          <button
+            onClick={handleConfirm}
+            className="mt-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+          >
+            Confirmar préstamo
+          </button>
+        )}
+
+        {modo === "bibliotecario" && book.estadoRaw === "prestado" && (
+          <button
+            onClick={handleReturn}
+            className="mt-2 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
+          >
+            Confirmar devolución
           </button>
         )}
       </div>

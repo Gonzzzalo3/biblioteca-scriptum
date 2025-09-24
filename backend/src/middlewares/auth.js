@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/env.js';
+import { User } from '../models/index.js';
 
-export function verificarToken(req, res, next) {
+export async function verificarToken(req, res, next) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -12,7 +13,15 @@ export function verificarToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, config.jwt.accessSecret);
-    req.usuario = decoded;
+
+
+    const usuario = await User.findByPk(decoded.id);
+
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    req.usuario = usuario; 
     next();
   } catch (error) {
     const mensaje =

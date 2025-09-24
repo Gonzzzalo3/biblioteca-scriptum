@@ -18,7 +18,12 @@ export async function lendReservationController(req, res) {
       await ejemplar.save();
     }
 
+    // Cambiar estado y asignar fecha_fin a 2 semanas desde hoy
     reserva.estado = RESERVATION_STATUS.PRESTADO;
+    const fechaFin = new Date();
+    fechaFin.setDate(fechaFin.getDate() + 14); // 14 días más
+    reserva.fecha_fin = fechaFin;
+
     await reserva.save();
     await syncBookStock(ejemplar.id_libro);
 

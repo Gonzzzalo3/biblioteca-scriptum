@@ -26,7 +26,7 @@ instance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        console.log("🔄 Token expirado, solicitando refresh...");
+        console.log("Token expirado, solicitando refresh...");
         const res = await axios.post(
           "http://localhost:3000/api/auth/refresh-token",
           {},

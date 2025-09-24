@@ -1,5 +1,4 @@
 // src/routes/reservationRoutes.js
-
 import express from 'express';
 import { createReservationController } from '../controllers/Reservation/createReservation.controller.js';
 import { cancelReservationController } from '../controllers/Reservation/cancelReservation.controller.js';
@@ -8,7 +7,8 @@ import { getAllReservationsController } from '../controllers/Reservation/getAllR
 import { getActiveReservationsController } from '../controllers/Reservation/getActiveReservations.controller.js';
 import { lendReservationController } from '../controllers/Reservation/lendReservation.controller.js';
 import { returnReservationController } from '../controllers/Reservation/returnReservation.controller.js';
-import { getUserReservationHistoryController } from '../controllers/Reservation/getUserReservationHistory.controller.js'; // ⬅️ nuevo import
+import { getUserReservationHistoryController } from '../controllers/Reservation/getUserReservationHistory.controller.js';
+import { getAllReservationHistoryController } from '../controllers/Reservation/getAllReservationsHistory.controller.js';
 import { verificarToken } from '../middlewares/auth.js';
 import { validateUserStatus } from '../middlewares/validateUserStatus.js';
 import { authorizeRole } from '../middlewares/authRole.js';
@@ -44,7 +44,6 @@ router.get(
   authorizeRole(ROLES.CLIENTE),
   getUserReservationsController
 );
-
 
 router.get(
   '/historial',
@@ -90,6 +89,16 @@ router.put(
   validateUserStatus,
   authorizeRole(ROLES.BIBLIOTECARIO),
   returnReservationController
+);
+
+// Historial completo para bibliotecario
+router.get(
+  '/historial/completo',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  getAllReservationHistoryController
 );
 
 export default router;

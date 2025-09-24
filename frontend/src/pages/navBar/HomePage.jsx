@@ -4,18 +4,22 @@ import BooksContainer from "../../components/book/bookContainer";
 import { getPopularBooks } from "../../services/book/book";
 import { getUserRecommendations } from "../../services/recommendation/recommendation";
 import { useUser } from "../../context/UserContext";
+import { ROLES } from "../../utils/constants";
+import FloatingActionButton from "../../components/ui/FloatingActionButton";
+import AdminModal from "../../components/admin/AdminModal";
 
 export default function Home() {
   const { user } = useUser();
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const sectionsData = [];
 
-        if (user?.id) {
+        if (user?.id && user?.rol === ROLES.CLIENTE) {
           const recRes = await getUserRecommendations();
           const recBooks = Array.isArray(recRes.data?.recomendaciones)
             ? recRes.data.recomendaciones
@@ -24,7 +28,7 @@ export default function Home() {
           if (recBooks.length > 0) {
             const formattedRec = recBooks.map((rec) => ({
               id: rec.Book?.id,
-              cover: rec.Book?.portadaUrl || "/covers/default.jpg", // ← aquí está el cambio
+              cover: rec.Book?.portadaUrl || "/covers/default.jpg",
               title: rec.Book?.titulo || "Sin título",
               category: rec.Book?.Category?.nombre || "Sin categoría",
               author: rec.Book?.autor || "Autor desconocido",
@@ -64,7 +68,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, [user?.id]);
+  }, [user?.id, user?.rol]);
 
   return (
     <MainLayout>
@@ -72,6 +76,16 @@ export default function Home() {
         <p className="text-center text-gray-500">Cargando libros...</p>
       ) : (
         <BooksContainer sections={sections} />
+      )}
+
+      {/* Botón flotante y modal */}
+      {user?.rol === ROLES.BIBLIOTECARIO && (
+        <>
+          <FloatingActionButton onClick={() => setShowAdminModal(true)} />
+          {showAdminModal && (
+            <AdminModal onClose={() => setShowAdminModal(false)} />
+          )}
+        </>
       )}
     </MainLayout>
   );

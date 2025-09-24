@@ -6,3 +6,14 @@ export const SUGGESTION_TYPES = {
   EXPERIENCIA_USUARIO: "experiencia_usuario",
   GESTION_BIBLIOTECA: "gestion_biblioteca",
 };
+
+export const ROLES = {
+  BIBLIOTECARIO: "bibliotecario",
+  CLIENTE: "cliente"
+}
+
+export const USER_STATUS = {
+  ACTIVO: 'activo',
+  INACTIVO: 'inactivo',
+  SUSPENDIDO: 'suspendido',
+};

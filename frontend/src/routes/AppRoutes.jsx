@@ -18,6 +18,10 @@ import LogoutPage from "../pages/auth/logoutPage";
 import PublicProfilePage from "../pages/user/PublicProfilePage";
 import SearchPage from "../pages/navBar/searchPage";
 import HelpPage from "../pages/navBar/HelpPage";
+import AdminSuggestionPage from "../pages/user/adminSuggestionPage";
+import ReservationHistoryPage from "../pages/user/ReservationHistoryPage";
+import AdminUserOverviewPage from "../pages/navBar/AdminUserOverviewPage";
+import AdminActiveReservationsPage from "../pages/user/AdminActiveReservationsPage";
 
 export default function AppRoutes() {
   return (
@@ -113,7 +117,7 @@ export default function AppRoutes() {
         }
       />
 
-        <Route
+      <Route
         path="/help"
         element={
           <ProtectedRoute>
@@ -122,6 +126,41 @@ export default function AppRoutes() {
         }
       />
 
+      <Route
+        path="/admin/suggestions"
+        element={
+          <ProtectedRoute>
+            <AdminSuggestionPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/reservations"
+        element={
+          <ProtectedRoute>
+            <ReservationHistoryPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/clients"
+        element={
+          <ProtectedRoute>
+            <AdminUserOverviewPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/active-reservations/:id"
+        element={
+          <ProtectedRoute>
+            <AdminActiveReservationsPage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

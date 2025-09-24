@@ -18,8 +18,11 @@ export async function returnReservationController(req, res) {
       await ejemplar.save();
     }
 
+    // Cambiar estado y limpiar fecha_fin
     reserva.estado = RESERVATION_STATUS.DEVUELTO;
+    reserva.fecha_fin = null;   // 👈 aquí se limpia la fecha de fin
     await reserva.save();
+
     await syncBookStock(ejemplar.id_libro);
 
     await ReservationEvent.create({

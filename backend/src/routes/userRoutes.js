@@ -14,6 +14,7 @@ import { validateUserStatus } from "../middlewares/validateUserStatus.js";
 import { ROLES } from "../config/constants.js";
 import { validateVerificationStatus } from "../middlewares/validateVerificationStatus.js";
 import { uploadUserImage } from "../middlewares/uploadUserImage.js";
+import { getAllUsersWithStatusController } from "../controllers/User/getAllUsersWithStatus.controller.js";
 
 const router = express.Router();
 
@@ -54,6 +55,7 @@ router.delete(
   verificarToken,
   validateVerificationStatus,
   validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
   deleteProfileController
 );
 
@@ -73,6 +75,15 @@ router.put(
   validateUserStatus,
   authorizeRole(ROLES.BIBLIOTECARIO),
   updateUserStatusController
+);
+
+router.get(
+  "/usuarios/status",
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  getAllUsersWithStatusController
 );
 
 export default router;

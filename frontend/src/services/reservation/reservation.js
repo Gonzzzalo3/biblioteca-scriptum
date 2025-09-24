@@ -10,7 +10,6 @@ export const cancelReservation = (id) =>
 export const getUserReservations = () =>
   axios.get("/reservation/mis-reservas");
 
-// ⬅️ Nuevo: historial del usuario
 export const getUserReservationHistory = () =>
   axios.get("/reservation/historial");
 
@@ -25,3 +24,6 @@ export const lendReservation = (id) =>
 
 export const returnReservation = (id) =>
   axios.put(`/reservation/${id}/devolver`);
+
+export const getAllReservationHistory = () =>
+  axios.get("/reservation/historial/completo");

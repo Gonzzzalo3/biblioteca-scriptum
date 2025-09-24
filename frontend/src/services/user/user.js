@@ -22,5 +22,8 @@ export const deleteMyProfile = (contraseña) =>
 export const listClients = () =>
   axios.get("/user/clients");
 
-export const updateUserStatus = (id, status) =>
-  axios.put(`/user/update-status/${id}`, { status });
+export const updateUserStatus = (id, accion) =>
+  axios.put(`/user/update-status/${id}`, { accion });
+
+export const getAllUsersWithStatus = () =>
+  axios.get("/user/usuarios/status");

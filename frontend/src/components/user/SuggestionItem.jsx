@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { SUGGESTION_TYPES } from "../../utils/constants";
+import { Link } from "react-router-dom";
 
 const typeLabels = {
   [SUGGESTION_TYPES.LIBRO_RECOMENDADO]: "Libro recomendado",
@@ -36,7 +37,6 @@ export default function SuggestionItem({
 
   return (
     <li className="flex gap-4 p-4 bg-gray-50 rounded-lg shadow-sm">
-      {/* Imagen del usuario */}
       <img
         src={suggestion.userImage}
         alt={suggestion.userName}
@@ -44,9 +44,14 @@ export default function SuggestionItem({
       />
 
       <div className="flex-1">
-        {/* Nombre, tipo y acciones */}
         <div className="flex items-center justify-between">
-          <h4 className="font-semibold">{suggestion.userName}</h4>
+          <Link
+            to={`/profile/${suggestion.id_usuario}`}
+            className="font-semibold text-blue-600 hover:underline"
+          >
+            {suggestion.userName}
+          </Link>
+
           <div className="flex items-center gap-2">
             {isOwner && (
               <>
@@ -74,7 +79,6 @@ export default function SuggestionItem({
           </div>
         </div>
 
-        {/* Contenido */}
         {isEditing ? (
           <div className="mt-3 space-y-2">
             <select

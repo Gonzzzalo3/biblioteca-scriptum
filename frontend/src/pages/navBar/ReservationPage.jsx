@@ -27,9 +27,10 @@ export default function ReservationPage() {
 
         reservas
           .filter((r) =>
-            [RESERVATION_STATUS.RESERVADO, RESERVATION_STATUS.PRESTADO].includes(
-              r.estado.toLowerCase()
-            )
+            [
+              RESERVATION_STATUS.RESERVADO,
+              RESERVATION_STATUS.PRESTADO,
+            ].includes(r.estado.toLowerCase())
           )
           .forEach((r) => {
             const bookData = r.Exemplary?.Book || {};
@@ -71,7 +72,6 @@ export default function ReservationPage() {
       .finally(() => setLoading(false));
   };
 
- 
   useEffect(() => {
     loadData();
   }, []);
@@ -85,9 +85,14 @@ export default function ReservationPage() {
           <ReservationList
             title="Reservas pendientes"
             books={pendingReservations}
+            modo="cliente"
             onCancel={loadData}
           />
-          <ReservationList title="Préstamos activos" books={activeLoans} />
+          <ReservationList
+            title="Préstamos activos"
+            books={activeLoans}
+            modo="cliente"
+          />
         </div>
       )}
     </MainLayout>

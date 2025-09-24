@@ -5,3 +5,4 @@ export * from "./comment/comment";
 export * from "./suggestion/suggestion";
 export * from "./reservation/reservation";
 export * from "./recommendation/recommendation";
+export * from "./category/category";

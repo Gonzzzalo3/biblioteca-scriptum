@@ -10,7 +10,7 @@ import {
   deleteComment,
 } from "../../services/comment/comment";
 import { createReservation } from "../../services/reservation/reservation";
-import { generateRecommendations } from "../../services/recommendation/recommendation"; // ⬅️ nuevo import
+import { generateRecommendations } from "../../services/recommendation/recommendation";
 import { useUser } from "../../context/UserContext";
 
 export default function BookDetailPage() {
@@ -104,6 +104,7 @@ export default function BookDetailPage() {
         <BookDetail
           book={book}
           currentUserId={user?.id}
+          currentUserRole={user?.rol} // ⬅️ nuevo prop
           onCreateComment={handleCreateComment}
           onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}

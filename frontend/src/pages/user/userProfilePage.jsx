@@ -1,4 +1,3 @@
-// src/pages/UserProfilePage.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
@@ -52,6 +51,8 @@ export default function UserProfilePage() {
     };
     fetchProfile();
   }, []);
+
+  const esBibliotecario = formData?.rol === "bibliotecario";
 
   const handleFieldChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -172,11 +173,15 @@ export default function UserProfilePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ActivityCard
             onViewComments={() => navigate("/my-comments")}
-            onViewSuggestions={() => navigate("/my-suggestions")}
+            {...(!esBibliotecario && {
+              onViewSuggestions: () => navigate("/my-suggestions")
+            })}
           />
           <SettingsCard
             onChangePassword={() => setShowChangePasswordModal(true)}
-            onDisableAccount={() => setShowDeleteAccountModal(true)}
+            {...(!esBibliotecario && {
+              onDisableAccount: () => setShowDeleteAccountModal(true)
+            })}
           />
         </div>
       </div>

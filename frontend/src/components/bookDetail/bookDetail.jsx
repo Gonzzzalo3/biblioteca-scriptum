@@ -2,10 +2,13 @@ import { useState } from "react";
 import BookInfo from "./bookInfo";
 import BookComments from "./bookComments";
 import ReserveModal from "../ui/ReserveModal";
+import ReserveButton from "../ui/ReserveButton";
+import { ROLES } from "../../utils/constants";
 
 export default function BookDetail({
   book,
   currentUserId,
+  currentUserRole,
   onCreateComment,
   onEditComment,
   onDeleteComment,
@@ -29,10 +32,16 @@ export default function BookDetail({
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow">
-      <BookInfo book={book} onReserve={() => setShowModal(true)} />
+    <div className="p-6 bg-white rounded-lg shadow space-y-6">
+      <BookInfo
+        book={book}
+        showReserveButton={
+          currentUserRole === ROLES.CLIENTE && book.firstEjemplarId
+        }
+        onReserve={() => setShowModal(true)}
+      />
 
-      <hr className="my-6 border-gray-300" />
+      <hr className="border-gray-300" />
 
       <BookComments
         comments={book.comments}

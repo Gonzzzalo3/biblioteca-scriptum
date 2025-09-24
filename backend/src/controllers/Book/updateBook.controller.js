@@ -1,11 +1,10 @@
 // src/controllers/book/updateBook.controller.js
-
 import { Book } from '../../models/index.js';
 
 export async function updateBookController(req, res) {
   try {
     const { id } = req.params;
-    const { titulo, autor, sinopsis, portada, isbn, stock, id_categoria } = req.body;
+    const { titulo, autor, sinopsis, isbn, stock, id_categoria } = req.body;
 
     const libro = await Book.findByPk(id);
 
@@ -13,13 +12,20 @@ export async function updateBookController(req, res) {
       return res.status(404).json({ mensaje: 'Libro no encontrado.' });
     }
 
+    // Actualizar campos de texto
     libro.titulo = titulo ?? libro.titulo;
     libro.autor = autor ?? libro.autor;
     libro.sinopsis = sinopsis ?? libro.sinopsis;
-    libro.portada = portada ?? libro.portada;
     libro.isbn = isbn ?? libro.isbn;
     libro.stock = stock ?? libro.stock;
     libro.id_categoria = id_categoria ?? libro.id_categoria;
+
+    // Actualizar portada si se subió un archivo nuevo
+    if (req.file) {
+      // Multer guarda el archivo en la carpeta que configuraste
+      // y expone el nombre en req.file.filename
+      libro.portada = `/img/libros/${req.file.filename}`;
+    }
 
     await libro.save();
 
