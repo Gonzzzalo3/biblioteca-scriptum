@@ -11,6 +11,7 @@ export async function seedUsuarios() {
   await User.bulkCreate(
     [
       {
+        id: 1,
         nombres: "Ana",
         apellidos: "González",
         correo: "ana.biblio@demo.com",
@@ -22,6 +23,7 @@ export async function seedUsuarios() {
         img: "/img/usuarios/anagonzales.jpg",
       },
       {
+        id: 2,
         nombres: "Ariel Bryand",
         apellidos: "Astete Vargas",
         correo: "ariel.astete@demo.com",
@@ -33,6 +35,7 @@ export async function seedUsuarios() {
         img: "/img/usuarios/arielastete.jpg",
       },
       {
+        id: 3,
         nombres: "María",
         apellidos: "Torres",
         correo: "maria.cliente@demo.com",
@@ -44,6 +47,7 @@ export async function seedUsuarios() {
         img: "/img/usuarios/mariatorres.jpg",
       },
       {
+        id: 4,
         nombres: "Diego Alexander",
         apellidos: "Veliz Salinas",
         correo: "diego.veliz@demo.com",
