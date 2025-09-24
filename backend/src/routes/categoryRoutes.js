@@ -13,10 +13,41 @@ import { validateVerificationStatus } from '../middlewares/validateVerificationS
 
 const router = express.Router();
 
+/* ────────────────────────────────
+   Rutas de gestión de categorías
+   ──────────────────────────────── */
+
+// Listar todas las categorías (visible para usuarios verificados)
 router.get('/', validateUserStatus, listAllCategoriesController);
 
-router.post('/',  verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), createCategoryController);
-router.put('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateCategoryController);
-router.delete('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), deleteCategoryController);
+// Crear nueva categoría (solo bibliotecarios)
+router.post(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  createCategoryController
+);
+
+// Actualizar categoría existente (solo bibliotecarios)
+router.put(
+  '/:id',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  updateCategoryController
+);
+
+// Eliminar categoría (solo bibliotecarios)
+router.delete(
+  '/:id',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  deleteCategoryController
+);
 
 export default router;

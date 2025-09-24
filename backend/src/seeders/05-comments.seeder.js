@@ -107,7 +107,14 @@ export async function seedComentarios() {
       contenido: 'Una historia intensa, con una atmósfera muy bien lograda.',
       calificacion: 4,
       visible: true
-    }
+    },
+    {
+      id_usuario: 2,
+      id_libro: 28,
+      contenido: 'Lo he leído y probado y solo puedo decir EXCELENTE, perfecto para los apasionados del pollo broster como yo',
+      calificacion: 5,
+      visible: true
+    },
   ], {
     individualHooks: true
   });

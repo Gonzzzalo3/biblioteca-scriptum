@@ -1,4 +1,9 @@
 // src/utils/isSystemEmpty.js
+
+//Este archivo sirve para verificar si el sistema (la base de datos) está vacío.
+//La idea es comprobar si no existen registros en las tablas principales,
+//y en ese caso poder inicializar los seeders con datos por defecto.
+
 import {
   Category,
   Book,
@@ -11,7 +16,9 @@ import {
   ReservationEvent
 } from '../models/index.js';
 
+//Función que revisa si todas las tablas están vacías
 export async function isSystemEmpty() {
+  //Se ejecutan todas las consultas de conteo en paralelo para optimizar el tiempo
   const [
     categorias,
     libros,
@@ -34,6 +41,7 @@ export async function isSystemEmpty() {
     ReservationEvent.count()
   ]);
 
+  //Se devuelve true solo si todas las tablas están vacías
   return (
     categorias === 0 &&
     libros === 0 &&

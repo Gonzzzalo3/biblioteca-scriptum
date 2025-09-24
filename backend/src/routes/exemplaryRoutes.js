@@ -14,10 +14,58 @@ import { validateVerificationStatus } from '../middlewares/validateVerificationS
 
 const router = express.Router();
 
-router.post('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), createExemplaryController);
-router.put('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), updateExemplaryController);
-router.put('/:id/disable', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), disableExemplaryController);
-router.put('/:id/lend', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), lendExemplaryController);
-router.get('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), listAllExemplariesController);
+/* ────────────────────────────────
+   Rutas de gestión de ejemplares (solo bibliotecarios)
+   ──────────────────────────────── */
+
+// Crear nuevo ejemplar
+router.post(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  createExemplaryController
+);
+
+// Actualizar datos de un ejemplar
+router.put(
+  '/:id',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  updateExemplaryController
+);
+
+// Desactivar ejemplar (sin eliminarlo)
+router.put(
+  '/:id/disable',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  disableExemplaryController
+);
+
+// Registrar préstamo de ejemplar
+router.put(
+  '/:id/lend',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  lendExemplaryController
+);
+
+// Listar todos los ejemplares registrados
+router.get(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  listAllExemplariesController
+);
 
 export default router;

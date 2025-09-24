@@ -33,8 +33,6 @@ import {
 
   //inicio del servidor
   app.listen(config.server.port, () => {
-    console.log(
-      `Servidor escuchando en http://localhost:${config.server.port}`
-    );
+    console.log(`Servidor escuchando en ${config.baseUrl}`);
   });
 })();

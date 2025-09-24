@@ -18,7 +18,11 @@ import { getAllUsersWithStatusController } from "../controllers/User/getAllUsers
 
 const router = express.Router();
 
-// Public profile (no token required)
+/* ────────────────────────────────
+   Perfil público (sin token)
+   ──────────────────────────────── */
+
+// Ver perfil público de cualquier usuario
 router.get(
   "/profile/:id",
   validateUserStatus,
@@ -26,7 +30,11 @@ router.get(
   viewPublicProfileController
 );
 
-// Protected routes (require token + active status)
+/* ────────────────────────────────
+   Perfil privado (usuario autenticado)
+   ──────────────────────────────── */
+
+// Ver perfil propio
 router.get(
   "/profile",
   verificarToken,
@@ -34,8 +42,10 @@ router.get(
   validateUserStatus,
   viewProfileController
 );
+
+// Editar perfil propio (con imagen opcional)
 router.put(
-  '/profile',
+  "/profile",
   verificarToken,
   validateVerificationStatus,
   validateUserStatus,
@@ -43,6 +53,7 @@ router.put(
   editProfileController
 );
 
+// Cambiar contraseña
 router.put(
   "/change-password",
   verificarToken,
@@ -50,6 +61,8 @@ router.put(
   validateUserStatus,
   changePasswordController
 );
+
+// Desactivar cuenta propia
 router.delete(
   "/profile",
   verificarToken,
@@ -59,7 +72,11 @@ router.delete(
   deleteProfileController
 );
 
-// Admin-only routes (bibliotecario)
+/* ────────────────────────────────
+   Gestión de usuarios (solo bibliotecarios)
+   ──────────────────────────────── */
+
+// Listar todos los clientes registrados
 router.get(
   "/clients",
   verificarToken,
@@ -68,6 +85,8 @@ router.get(
   authorizeRole(ROLES.BIBLIOTECARIO),
   listUsersController
 );
+
+// Bloquear o desbloquear usuario
 router.put(
   "/update-status/:id",
   verificarToken,
@@ -77,6 +96,7 @@ router.put(
   updateUserStatusController
 );
 
+// Ver estado general de todos los usuarios
 router.get(
   "/usuarios/status",
   verificarToken,

@@ -12,7 +12,7 @@ import { Recommendation } from './Recommendation.js';
 import { Reservation } from './Reservation.js';
 import { ReservationEvent } from './ReservationEvent.js';
 
-// Relaciones
+// Relaciones: Acá se definirán las relaciones de uno a muchos y muchos a uno mediante su id
 Category.hasMany(Book, { foreignKey: 'id_categoria' });
 Book.belongsTo(Category, { foreignKey: 'id_categoria' });
 
@@ -43,7 +43,7 @@ ReservationEvent.belongsTo(Reservation, { foreignKey: 'id_reserva' });
 User.hasMany(Suggestion, { foreignKey: 'id_usuario' });
 Suggestion.belongsTo(User, { foreignKey: 'id_usuario' });
 
-// Exportación centralizada
+//Se exportan todos los modelos ya con susrelaciones para poder usarlos luego
 export {
   sequelize,
   User,

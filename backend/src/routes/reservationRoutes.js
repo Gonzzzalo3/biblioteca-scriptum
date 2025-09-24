@@ -1,4 +1,5 @@
 // src/routes/reservationRoutes.js
+
 import express from 'express';
 import { createReservationController } from '../controllers/Reservation/createReservation.controller.js';
 import { cancelReservationController } from '../controllers/Reservation/cancelReservation.controller.js';
@@ -17,7 +18,11 @@ import { validateVerificationStatus } from '../middlewares/validateVerificationS
 
 const router = express.Router();
 
-// Cliente
+/* ────────────────────────────────
+   Rutas para clientes autenticados
+   ──────────────────────────────── */
+
+// Crear nueva reservación
 router.post(
   '/',
   verificarToken,
@@ -27,6 +32,7 @@ router.post(
   createReservationController
 );
 
+// Cancelar una reservación activa
 router.put(
   '/:id/cancel',
   verificarToken,
@@ -36,6 +42,7 @@ router.put(
   cancelReservationController
 );
 
+// Ver reservaciones activas del usuario
 router.get(
   '/mis-reservas',
   verificarToken,
@@ -45,6 +52,7 @@ router.get(
   getUserReservationsController
 );
 
+// Ver historial de reservaciones del usuario
 router.get(
   '/historial',
   verificarToken,
@@ -54,7 +62,11 @@ router.get(
   getUserReservationHistoryController
 );
 
-// Bibliotecario
+/* ────────────────────────────────
+   Rutas para bibliotecarios
+   ──────────────────────────────── */
+
+// Ver todas las reservaciones del sistema
 router.get(
   '/',
   verificarToken,
@@ -64,6 +76,7 @@ router.get(
   getAllReservationsController
 );
 
+// Ver solo las reservaciones activas
 router.get(
   '/activas',
   verificarToken,
@@ -73,6 +86,7 @@ router.get(
   getActiveReservationsController
 );
 
+// Registrar préstamo de una reservación
 router.put(
   '/:id/prestar',
   verificarToken,
@@ -82,6 +96,7 @@ router.put(
   lendReservationController
 );
 
+// Registrar devolución de una reservación
 router.put(
   '/:id/devolver',
   verificarToken,
@@ -91,7 +106,7 @@ router.put(
   returnReservationController
 );
 
-// Historial completo para bibliotecario
+// Ver historial completo de reservaciones
 router.get(
   '/historial/completo',
   verificarToken,

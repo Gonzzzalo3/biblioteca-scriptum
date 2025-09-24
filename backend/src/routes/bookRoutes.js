@@ -18,24 +18,35 @@ import { uploadBookCover } from "../middlewares/uploadBookCover.js";
 
 const router = express.Router();
 
+/* ────────────────────────────────
+   Rutas públicas para usuarios verificados
+   ──────────────────────────────── */
+
+// Libros más populares
 router.get(
   "/popular",
   validateVerificationStatus,
   validateUserStatus,
   getMostPopularBooksController
 );
+
+// Libros por categoría
 router.get(
   "/category/:id_categoria",
   validateVerificationStatus,
   validateUserStatus,
   getBooksByCategoryController
 );
+
+// Búsqueda de libros
 router.get(
   "/search",
   validateVerificationStatus,
   validateUserStatus,
   searchBooksController
 );
+
+// Detalle de un libro específico
 router.get(
   "/:id",
   validateVerificationStatus,
@@ -43,6 +54,11 @@ router.get(
   getBookDetailController
 );
 
+/* ────────────────────────────────
+   Rutas protegidas para bibliotecarios
+   ──────────────────────────────── */
+
+// Crear nuevo libro (con portada)
 router.post(
   "/",
   verificarToken,
@@ -52,6 +68,8 @@ router.post(
   validateUserStatus,
   createBookController
 );
+
+// Actualizar libro existente
 router.put(
   "/:id",
   verificarToken,
@@ -61,6 +79,8 @@ router.put(
   authorizeRole(ROLES.BIBLIOTECARIO),
   updateBookController
 );
+
+// Eliminar libro
 router.delete(
   "/:id",
   verificarToken,
@@ -69,6 +89,8 @@ router.delete(
   authorizeRole(ROLES.BIBLIOTECARIO),
   deleteBookController
 );
+
+// Listar todos los libros (modo administrativo)
 router.get(
   "/",
   verificarToken,

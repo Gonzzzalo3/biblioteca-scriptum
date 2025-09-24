@@ -13,13 +13,38 @@ import { validateVerificationStatus } from '../middlewares/validateVerificationS
 
 const router = express.Router();
 
-// Generar recomendaciones (al visitar o reservar un libro)
-router.post('/generate', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), generateRecommendationController);
+/* ────────────────────────────────
+   Rutas de recomendaciones (cliente autenticado)
+   ──────────────────────────────── */
+
+// Generar recomendaciones personalizadas (al visitar o reservar un libro)
+router.post(
+  '/generate',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  generateRecommendationController
+);
 
 // Ver recomendaciones activas del usuario
-router.get('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), getRecommendationsController);
+router.get(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  getRecommendationsController
+);
 
 // Limpiar recomendaciones obsoletas (libros ya reservados)
-router.delete('/clear', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), clearOldRecommendationsController);
+router.delete(
+  '/clear',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  clearOldRecommendationsController
+);
 
 export default router;

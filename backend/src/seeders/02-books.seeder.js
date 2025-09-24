@@ -245,6 +245,15 @@ export async function seedLibros() {
       portada: '/img/libros/inteligenciaemocional.jpg',
       isbn: '9788499086357',
       stock: 3
+    },
+    {
+      id_categoria: 2,
+      titulo: '10 recetas secretas de pollo crispy',
+      autor: 'Tony Sanders',
+      sinopsis: 'Libro donde aprenderás 10 recetas deliciosas para hacer en casa',
+      portada: '/img/libros/10recetas.jpg',
+      isbn: '9786250106432',
+      stock: 4
     }
   ], {
     individualHooks: true

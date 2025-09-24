@@ -15,16 +15,72 @@ import { validateVerificationStatus } from '../middlewares/validateVerificationS
 
 const router = express.Router();
 
-router.post('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), createSuggestionController);
+/* ────────────────────────────────
+   Rutas para clientes autenticados
+   ──────────────────────────────── */
 
-router.put('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), updateSuggestionController);
+// Crear nueva sugerencia
+router.post(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  createSuggestionController
+);
 
-router.delete('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), deleteOwnSuggestionController);
+// Editar sugerencia propia
+router.put(
+  '/:id',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  updateSuggestionController
+);
 
-router.get('/my', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), listOwnSuggestionController);
+// Eliminar sugerencia propia
+router.delete(
+  '/:id',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  deleteOwnSuggestionController
+);
 
-router.get('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), listAllSuggestionController);
+// Listar todas las sugerencias propias
+router.get(
+  '/my',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  listOwnSuggestionController
+);
 
-router.get('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), getSuggestionByIdController);
+/* ────────────────────────────────
+   Rutas para bibliotecarios
+   ──────────────────────────────── */
+
+// Listar todas las sugerencias del sistema
+router.get(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  listAllSuggestionController
+);
+
+// Ver detalle de una sugerencia específica
+router.get(
+  '/:id',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  getSuggestionByIdController
+);
 
 export default router;

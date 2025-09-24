@@ -18,19 +18,88 @@ import { validateVerificationStatus } from '../middlewares/validateVerificationS
 
 const router = express.Router();
 
+/* ────────────────────────────────
+   Rutas administrativas (bibliotecario)
+   ──────────────────────────────── */
 
-// Bibliotecario
-router.put('/:id/desactivar', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), disableCommentController);
-router.put('/:id/restaurar', verificarToken, validateUserStatus, authorizeRole(ROLES.BIBLIOTECARIO), restoreCommentController);
+// Desactivar comentario
+router.put(
+  '/:id/desactivar',
+  verificarToken,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  disableCommentController
+);
 
-// Público / Cliente
-router.get('/libro/:id_libro', validateUserStatus, viewCommentsController); // Ver comentarios visibles de un libro
-router.get('/libro/:id_libro/resumen', validateUserStatus, getBookRatingSummaryController); // Ver resumen de calificaciones
+// Restaurar comentario desactivado
+router.put(
+  '/:id/restaurar',
+  verificarToken,
+  validateUserStatus,
+  authorizeRole(ROLES.BIBLIOTECARIO),
+  restoreCommentController
+);
 
-// Cliente autenticado
-router.post('/', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), createCommentController);
-router.put('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), editCommentController);
-router.delete('/:id', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), deleteCommentController);
-router.get('/mis-comentarios', verificarToken, validateVerificationStatus, validateUserStatus, authorizeRole(ROLES.CLIENTE), viewOwnCommentsController);
+/* ────────────────────────────────
+   Rutas públicas (usuarios verificados)
+   ──────────────────────────────── */
+
+// Ver comentarios visibles de un libro
+router.get(
+  '/libro/:id_libro',
+  validateUserStatus,
+  viewCommentsController
+);
+
+// Ver resumen de calificaciones de un libro
+router.get(
+  '/libro/:id_libro/resumen',
+  validateUserStatus,
+  getBookRatingSummaryController
+);
+
+/* ────────────────────────────────
+   Rutas privadas (cliente autenticado)
+   ──────────────────────────────── */
+
+// Crear nuevo comentario
+router.post(
+  '/',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  createCommentController
+);
+
+// Editar comentario propio
+router.put(
+  '/:id',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  editCommentController
+);
+
+// Eliminar comentario propio
+router.delete(
+  '/:id',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  deleteCommentController
+);
+
+// Ver todos los comentarios propios
+router.get(
+  '/mis-comentarios',
+  verificarToken,
+  validateVerificationStatus,
+  validateUserStatus,
+  authorizeRole(ROLES.CLIENTE),
+  viewOwnCommentsController
+);
 
 export default router;
