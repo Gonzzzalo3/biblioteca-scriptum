@@ -1,9 +1,12 @@
 import { useState } from "react";
 import BookForm from "./BookForm";
 
+// Componente modal para administración de libros
 export default function AdminModal({ onClose }) {
+  // Estado para definir la acción actual (agregar, editar o eliminar)
   const [actionType, setActionType] = useState("add");
 
+  // Renderiza el formulario dinámico según la acción seleccionada
   const renderForm = () => {
     const props = { mode: actionType, onClose };
     return <BookForm {...props} />;
@@ -12,6 +15,7 @@ export default function AdminModal({ onClose }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-xl p-6 space-y-6">
+        {/* Encabezado del modal */}
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-semibold">Panel de administrador</h2>
           <button
@@ -22,7 +26,7 @@ export default function AdminModal({ onClose }) {
           </button>
         </div>
 
-        {/* Botones de acción */}
+        {/* Botones para seleccionar tipo de acción */}
         <div className="grid grid-cols-3 gap-4">
           {["add", "edit", "delete"].map((action) => (
             <button
@@ -39,7 +43,7 @@ export default function AdminModal({ onClose }) {
           ))}
         </div>
 
-        {/* Formulario dinámico (solo libros) */}
+        {/* Sección del formulario dinámico */}
         <div className="pt-4">{renderForm()}</div>
       </div>
     </div>

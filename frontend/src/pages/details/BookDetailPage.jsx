@@ -13,12 +13,15 @@ import { createReservation } from "../../services/reservation/reservation";
 import { generateRecommendations } from "../../services/recommendation/recommendation";
 import { useUser } from "../../context/UserContext";
 
+// Página que muestra el detalle de un libro, incluyendo comentarios, disponibilidad y acciones del usuario
 export default function BookDetailPage() {
-  const { id } = useParams();
-  const { user } = useUser();
-  const [book, setBook] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { id } = useParams(); // ID del libro desde la URL
+  const { user } = useUser(); // Usuario autenticado desde el contexto
 
+  const [book, setBook] = useState(null); // Estado del libro
+  const [loading, setLoading] = useState(true); // Estado de carga
+
+  // Carga el detalle del libro y sus comentarios
   const loadData = () => {
     return Promise.all([getBookDetail(id), getBookComments(id)])
       .then(([bookRes, commentsRes]) => {
@@ -59,11 +62,13 @@ export default function BookDetailPage() {
       });
   };
 
+  // Carga inicial al montar el componente o cambiar el ID
   useEffect(() => {
     window.scrollTo(0, 0);
     loadData();
   }, [id]);
 
+  // Genera recomendaciones personalizadas si hay usuario y libro cargado
   useEffect(() => {
     if (book?.id && user?.id) {
       generateRecommendations({ id_libro: book.id })
@@ -76,22 +81,24 @@ export default function BookDetailPage() {
     }
   }, [book?.id, user?.id]);
 
+  // Crea un nuevo comentario y recarga los datos
   const handleCreateComment = (data) => {
     return createComment({ ...data, id_libro: book.id }).then(loadData);
   };
 
+  // Edita un comentario existente y recarga los datos
   const handleEditComment = (id, data) => {
     return editComment(id, data).then(loadData);
   };
 
+  // Elimina un comentario y recarga los datos
   const handleDeleteComment = (id) => {
     return deleteComment(id).then(loadData);
   };
 
+  // Crea una reserva de ejemplar y recarga los datos
   const handleReserve = (idEjemplar) => {
-    return createReservation({ id_ejemplar: idEjemplar }).then(() =>
-      loadData()
-    );
+    return createReservation({ id_ejemplar: idEjemplar }).then(() => loadData());
   };
 
   return (
@@ -104,7 +111,7 @@ export default function BookDetailPage() {
         <BookDetail
           book={book}
           currentUserId={user?.id}
-          currentUserRole={user?.rol} // ⬅️ nuevo prop
+          currentUserRole={user?.rol}
           onCreateComment={handleCreateComment}
           onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}

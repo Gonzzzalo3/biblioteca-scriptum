@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
+// Lista de imágenes locales utilizadas en el carrusel
 const imagenes = [
   '/assets/auth1.png',
   '/assets/auth2.png',
@@ -9,20 +10,27 @@ const imagenes = [
   '/assets/auth4.png',
 ];
 
+// Componente que rota imágenes de fondo con efecto de transición
 export default function AuthImageRotator() {
+  // Índice actual de la imagen mostrada
   const [index, setIndex] = useState(0);
+
+  // Estado para controlar la opacidad (fade-in / fade-out)
   const [fade, setFade] = useState(true);
 
+  // Efecto que inicia el ciclo de rotación de imágenes
   useEffect(() => {
     const intervalo = setInterval(() => {
-      setFade(false); // inicia fade-out
+      setFade(false); // Inicia transición de salida
 
       setTimeout(() => {
+        // Avanza al siguiente índice de imagen
         setIndex((prev) => (prev + 1) % imagenes.length);
-        setFade(true); // inicia fade-in
-      }, 500); // duración del fade-out
-    }, 7000);
+        setFade(true); // Inicia transición de entrada
+      }, 500); // Duración del fade-out
+    }, 7000); // Intervalo entre imágenes
 
+    // Limpieza del intervalo al desmontar el componente
     return () => clearInterval(intervalo);
   }, []);
 

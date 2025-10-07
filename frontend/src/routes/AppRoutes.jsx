@@ -1,31 +1,43 @@
 import { Routes, Route } from "react-router-dom";
+
+// Páginas públicas de autenticación
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Verify from "../pages/auth/Verify";
 import ForgotPassword from "../pages/auth/forgotPassword";
 import ForgotPasswordCode from "../pages/auth/forgotPasswordCode";
 import ResetPassword from "../pages/auth/resetPassword";
+import LogoutPage from "../pages/auth/logoutPage";
+
+// Páginas privadas de navegación general
 import Home from "../pages/navBar/HomePage";
 import BookDetailPage from "../pages/details/BookDetailPage";
 import ReservationPage from "../pages/navBar/ReservationPage";
 import HistoryPage from "../pages/navBar/historyPage";
 import SuggestionsPage from "../pages/navBar/SuggestionPage";
+import SearchPage from "../pages/navBar/searchPage";
+import HelpPage from "../pages/navBar/HelpPage";
+
+// Páginas privadas del usuario autenticado
 import UserProfilePage from "../pages/user/userProfilePage";
 import MyCommentsPage from "../pages/user/MyCommentsPage";
 import MySuggestionsPage from "../pages/user/MySuggestionPage";
-import ProtectedRoute from "./ProtectedRoute";
-import LogoutPage from "../pages/auth/logoutPage";
 import PublicProfilePage from "../pages/user/PublicProfilePage";
-import SearchPage from "../pages/navBar/searchPage";
-import HelpPage from "../pages/navBar/HelpPage";
+
+// Páginas administrativas
 import AdminSuggestionPage from "../pages/user/adminSuggestionPage";
 import ReservationHistoryPage from "../pages/user/ReservationHistoryPage";
 import AdminUserOverviewPage from "../pages/navBar/AdminUserOverviewPage";
 import AdminActiveReservationsPage from "../pages/user/AdminActiveReservationsPage";
 
+// Componente que protege rutas privadas mediante validación de sesión
+import ProtectedRoute from "./ProtectedRoute";
+
+// Componente que define todas las rutas de la aplicación
 export default function AppRoutes() {
   return (
     <Routes>
+      {/* Rutas públicas de autenticación */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify" element={<Verify />} />
@@ -34,6 +46,7 @@ export default function AppRoutes() {
       <Route path="/forgot-password/reset" element={<ResetPassword />} />
       <Route path="/logout" element={<LogoutPage />} />
 
+      {/* Rutas privadas protegidas por sesión */}
       <Route
         path="/"
         element={
@@ -98,7 +111,6 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/profile/:id"
         element={
@@ -107,7 +119,6 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/search"
         element={
@@ -116,7 +127,6 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/help"
         element={
@@ -126,6 +136,7 @@ export default function AppRoutes() {
         }
       />
 
+      {/* Rutas administrativas protegidas */}
       <Route
         path="/admin/suggestions"
         element={
@@ -134,7 +145,6 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/admin/reservations"
         element={
@@ -143,7 +153,6 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/admin/clients"
         element={
@@ -152,7 +161,6 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
       <Route
         path="/admin/active-reservations/:id"
         element={

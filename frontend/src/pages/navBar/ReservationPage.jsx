@@ -4,6 +4,7 @@ import ReservationList from "../../components/reservations/ReservationList";
 import { getUserReservations } from "../../services/reservation/reservation";
 import { useUser } from "../../context/UserContext";
 
+// Estados posibles de una reserva, utilizados para filtrar y clasificar
 const RESERVATION_STATUS = {
   RESERVADO: "reservado",
   PRESTADO: "prestado",
@@ -11,14 +12,18 @@ const RESERVATION_STATUS = {
   DEVUELTO: "devuelto",
 };
 
+// Página que muestra al usuario sus reservas activas y préstamos en curso
 export default function ReservationPage() {
   const { user } = useUser();
-  const [pendingReservations, setPendingReservations] = useState([]);
-  const [activeLoans, setActiveLoans] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const [pendingReservations, setPendingReservations] = useState([]); // Reservas aún no recogidas
+  const [activeLoans, setActiveLoans] = useState([]); // Libros actualmente prestados
+  const [loading, setLoading] = useState(true); // Estado de carga para mostrar feedback visual
+
+  // Carga y clasifica las reservas del usuario
   const loadData = () => {
     setLoading(true);
+
     getUserReservations()
       .then((res) => {
         const reservas = res.data?.reservas || [];
@@ -38,6 +43,7 @@ export default function ReservationPage() {
             const hoy = new Date();
             let status = "";
 
+            // Clasifica como reserva pendiente
             if (r.estado.toLowerCase() === RESERVATION_STATUS.RESERVADO) {
               status = fechaFin && fechaFin < hoy ? "Vencido" : "Reservado";
               pending.push({
@@ -50,6 +56,7 @@ export default function ReservationPage() {
               });
             }
 
+            // Clasifica como préstamo activo
             if (r.estado.toLowerCase() === RESERVATION_STATUS.PRESTADO) {
               status = fechaFin && fechaFin < hoy ? "Vencido" : "En posesión";
               active.push({
@@ -72,6 +79,7 @@ export default function ReservationPage() {
       .finally(() => setLoading(false));
   };
 
+  // Carga inicial al montar el componente
   useEffect(() => {
     loadData();
   }, []);

@@ -1,19 +1,29 @@
 import { useState } from "react";
 
+// Componente que representa un modal para cambiar la contraseña del usuario
 export default function ChangePasswordModal({ onClose, onConfirm }) {
+  // Estado local para la contraseña actual ingresada por el usuario
   const [actual, setActual] = useState("");
+
+  // Estado local para la nueva contraseña propuesta
   const [nueva, setNueva] = useState("");
+
+  // Estado local para la confirmación de la nueva contraseña
   const [repetir, setRepetir] = useState("");
 
+  // Maneja el envío del formulario y pasa los datos al controlador externo
   const handleSubmit = (e) => {
     e.preventDefault();
-    onConfirm({ actual, nueva, repetir });
+    onConfirm({ actual, nueva, repetir }); // Envía las tres contraseñas al callback
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded shadow-lg w-full max-w-sm">
+        {/* Título del modal */}
         <h2 className="text-lg font-semibold mb-4">Cambiar contraseña</h2>
+
+        {/* Formulario para ingresar y confirmar nueva contraseña */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Contraseña actual</label>
@@ -45,16 +55,18 @@ export default function ChangePasswordModal({ onClose, onConfirm }) {
               required
             />
           </div>
+
+          {/* Botones de acción: cancelar o guardar */}
           <div className="flex justify-end space-x-2">
             <button
               type="button"
-              onClick={onClose}
+              onClick={onClose} // Cierra el modal sin guardar cambios
               className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
             >
               Cancelar
             </button>
             <button
-              type="submit"
+              type="submit" // Envía el formulario para procesar el cambio
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
               Guardar

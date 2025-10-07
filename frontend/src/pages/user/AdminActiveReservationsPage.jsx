@@ -1,4 +1,3 @@
-// src/pages/admin/AdminActiveReservationsPage.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
@@ -10,19 +9,24 @@ import {
 } from "../../services/reservation/reservation";
 import { useUser } from "../../context/UserContext";
 
+// Estados relevantes para clasificar reservas activas
 const RESERVATION_STATUS = {
   RESERVADO: "reservado",
   PRESTADO: "prestado",
 };
 
+// Página administrativa que muestra todas las reservas activas y vencidas de los usuarios
 export default function AdminActiveReservationsPage() {
   const { user } = useUser();
-  const [vencidas, setVencidas] = useState([]);
-  const [activas, setActivas] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const [vencidas, setVencidas] = useState([]); // Reservas vencidas
+  const [activas, setActivas] = useState([]); // Reservas vigentes
+  const [loading, setLoading] = useState(true); // Estado de carga
+
+  // Carga y clasifica las reservas activas según fecha y estado
   const loadData = () => {
     setLoading(true);
+
     getActiveReservations()
       .then((res) => {
         const reservas = res.data?.reservas || [];
@@ -63,10 +67,13 @@ export default function AdminActiveReservationsPage() {
         setVencidas(vencidasTemp);
         setActivas(activasTemp);
       })
-      .catch(() => {})
+      .catch(() => {
+        // Silencioso por diseño
+      })
       .finally(() => setLoading(false));
   };
 
+  // Confirma el préstamo de una reserva
   const handleConfirm = async (reserva) => {
     const id = reserva.code?.replace("RES-", "");
     if (!id) return;
@@ -85,6 +92,7 @@ export default function AdminActiveReservationsPage() {
     }
   };
 
+  // Confirma la devolución de una reserva
   const handleReturn = async (reserva) => {
     const id = reserva.code?.replace("RES-", "");
     if (!id) return;
@@ -103,6 +111,7 @@ export default function AdminActiveReservationsPage() {
     }
   };
 
+  // Carga inicial al montar el componente
   useEffect(() => {
     loadData();
   }, []);

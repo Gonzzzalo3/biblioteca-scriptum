@@ -5,23 +5,27 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import { logoutRequest } from "../../services";
 
+// Página que ejecuta el proceso de cierre de sesión del usuario
 export default function LogoutPage() {
-  const { logout } = useUser();
-  const navigate = useNavigate();
+  const { logout } = useUser(); // Función de limpieza del contexto
+  const navigate = useNavigate(); // Hook de navegación
 
   useEffect(() => {
+    // Función que realiza el logout en backend y frontend
     const doLogout = async () => {
       try {
-        await logoutRequest();
+        await logoutRequest(); // Intenta cerrar sesión en el servidor
       } catch (err) {
-        console.error(err);
+        console.error(err); // Registra errores si ocurren
       } finally {
-        logout();
-        navigate("/login");
+        logout(); // Limpia el estado local y almacenamiento
+        navigate("/login"); // Redirige al login
       }
     };
-    doLogout();
+
+    doLogout(); // Ejecuta al montar el componente
   }, []);
 
+  // Mensaje visual mientras se procesa el cierre
   return <p className="p-4">Cerrando sesión...</p>;
 }

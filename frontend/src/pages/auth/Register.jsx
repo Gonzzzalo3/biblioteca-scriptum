@@ -7,12 +7,18 @@ import AuthLink from "../../components/auth/AuthLink";
 import { register } from "../../services/auth/auth";
 import { useUser } from "../../context/UserContext";
 
+// Página de registro de nuevos usuarios con flujo en dos pasos
 export default function Register() {
   const navigate = useNavigate();
   const { setUser, setAccessToken } = useUser();
 
+  // Estado para controlar el paso actual del formulario
   const [step, setStep] = useState(1);
+
+  // Estado para controlar el envío del formulario
   const [loading, setLoading] = useState(false);
+
+  // Estado para almacenar los datos del formulario
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -22,6 +28,7 @@ export default function Register() {
     confirmPassword: "",
   });
 
+  // Actualiza los campos del formulario
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -29,6 +36,7 @@ export default function Register() {
     });
   };
 
+  // Valida y avanza al segundo paso
   const handleNext = (e) => {
     e.preventDefault();
     if (!formData.firstName || !formData.lastName || !formData.phone) {
@@ -38,11 +46,13 @@ export default function Register() {
     setStep(2);
   };
 
+  // Regresa al primer paso
   const handleBack = (e) => {
     e.preventDefault();
     setStep(1);
   };
 
+  // Envía el formulario de registro
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,6 +64,7 @@ export default function Register() {
     setLoading(true);
 
     try {
+      // Llama al servicio de registro
       const res = await register({
         nombres: formData.firstName,
         apellidos: formData.lastName,
@@ -64,10 +75,12 @@ export default function Register() {
 
       const { usuario, accessToken } = res.data;
 
+      // Guarda usuario y token en el contexto
       setUser(usuario);
       setAccessToken(accessToken);
 
-      navigate("/"); // o redirige a /verify si quieres que confirme el código
+      // Redirige al home (o a /verify si se requiere validación)
+      navigate("/");
     } catch (err) {
       console.error("Error al registrar:", err);
       alert(err.response?.data?.mensaje || "No se pudo crear la cuenta.");
@@ -78,10 +91,12 @@ export default function Register() {
 
   return (
     <AuthLayout>
+      {/* Formulario dividido en dos pasos */}
       <form
         className="w-full flex flex-col gap-4"
         onSubmit={step === 1 ? handleNext : handleSubmit}
       >
+        {/* Paso 1: datos personales */}
         {step === 1 && (
           <>
             <InputField
@@ -117,6 +132,7 @@ export default function Register() {
           </>
         )}
 
+        {/* Paso 2: credenciales */}
         {step === 2 && (
           <>
             <InputField
@@ -158,6 +174,7 @@ export default function Register() {
         )}
       </form>
 
+      {/* Enlaces auxiliares */}
       <div className="w-full flex justify-between text-sm text-gray-600 mt-2">
         <AuthLink to="/login">¿Ya tienes cuenta? Inicia sesión</AuthLink>
         <AuthLink to="/forgot">¿Olvidaste tu contraseña?</AuthLink>

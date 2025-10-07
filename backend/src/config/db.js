@@ -1,11 +1,14 @@
 // src/config/db.js
 
-//En esta archivo se configura con Sequelize la base de datos, asignándole de valores las variables de entorno como parámetros
+/*En esta archivo se configura con Sequelize la base de datos, asignándole 
+de valores las variables de entorno como parámetros*/
 
 import { Sequelize } from "sequelize"; //módulo de sequelize
 import { config } from "./env.js"; //importando el objeto config de /env.js
 
-//creando una nueva instancia de objeto de Sequelize y se le asigna los valores para poder realizar una conexión a la base de datos
+/*creando una nueva instancia de objeto de Sequelize y se le asigna los valores para poder 
+realizar una conexión a la base de datos*/
+
 export const sequelize = new Sequelize(
   config.db.name, //nombre de la bd
   config.db.user, //usuario de la bd

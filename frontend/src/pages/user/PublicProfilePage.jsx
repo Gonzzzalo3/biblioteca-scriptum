@@ -15,16 +15,21 @@ import FieldRow from "../../components/user/PersonalInfoSection/FieldRow";
 import { useUser } from "../../context/UserContext";
 import { USER_STATUS } from "../../utils/constants";
 
+// Página que muestra el perfil público de un usuario.
+// Si el usuario autenticado accede a su propio perfil público, se redirige automáticamente a su perfil privado.
 export default function PublicProfilePage() {
-  const { id } = useParams();
+  const { id } = useParams(); // ID del perfil público desde la URL
   const navigate = useNavigate();
-  const { user } = useUser();
-  const [perfil, setPerfil] = useState(null);
-  const [error, setError] = useState("");
-  const [redirecting, setRedirecting] = useState(false);
-  const [loadingStatus, setLoadingStatus] = useState(false);
+  const { user } = useUser(); // Usuario autenticado
 
+  const [perfil, setPerfil] = useState(null); // Datos del perfil público
+  const [error, setError] = useState(""); // Mensaje de error en caso de fallo
+  const [redirecting, setRedirecting] = useState(false); // Estado de redirección automática
+  const [loadingStatus, setLoadingStatus] = useState(false); // Estado de carga para el botón de suspensión
+
+  // Efecto que se ejecuta al montar el componente o cambiar el ID
   useEffect(() => {
+    // Si el usuario intenta ver su propio perfil público, se redirige al privado
     if (user?.id && parseInt(id) === user.id) {
       setRedirecting(true);
       setTimeout(() => {
@@ -33,13 +38,14 @@ export default function PublicProfilePage() {
       return;
     }
 
+    // Carga el perfil público desde el backend
     const fetchProfile = async () => {
       try {
         const res = await getPublicProfile(id);
         const raw = res.data.perfil;
 
-        const baseUrl =
-          import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+        // Construcción de URL de imagen con fallback a variable de entorno
+        const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
         const enriched = {
           ...raw,
           estado: raw.estado?.toLowerCase(),
@@ -57,6 +63,7 @@ export default function PublicProfilePage() {
     fetchProfile();
   }, [id, user?.id, navigate]);
 
+  // Alterna el estado del usuario entre suspendido y activo
   const handleToggleStatus = async () => {
     const accion =
       perfil.estado === USER_STATUS.SUSPENDIDO ? "desbloquear" : "bloquear";
@@ -86,6 +93,7 @@ export default function PublicProfilePage() {
     }
   };
 
+  // Renderizado condicional según estado de redirección, error o carga
   if (redirecting) {
     return (
       <MainLayout>
@@ -115,6 +123,7 @@ export default function PublicProfilePage() {
   return (
     <MainLayout>
       <div className="space-y-8">
+        {/* Imagen de perfil */}
         <div className="flex justify-center">
           <img
             src={perfil.imgUrl}
@@ -123,6 +132,7 @@ export default function PublicProfilePage() {
           />
         </div>
 
+        {/* Información pública del usuario */}
         <div className="bg-white p-6 rounded-lg shadow space-y-4">
           <h3 className="text-lg font-semibold border-b pb-2">
             Información pública
@@ -165,6 +175,7 @@ export default function PublicProfilePage() {
             editable={false}
           />
 
+          {/* Botón de suspensión/desbloqueo visible solo para bibliotecarios */}
           {user?.rol === "bibliotecario" && (
             <div className="flex justify-end mt-4">
               <button

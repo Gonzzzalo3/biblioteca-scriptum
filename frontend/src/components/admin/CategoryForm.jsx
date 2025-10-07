@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
+// Componente para gestionar el formulario de categorías (agregar, editar, eliminar)
 export default function CategoryForm({ mode, onClose }) {
+  // Lista de categorías disponibles (actualmente simuladas)
   const [categories, setCategories] = useState([]);
+
+  // Término de búsqueda para filtrar categorías
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Categoría seleccionada para edición o eliminación
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // Carga inicial de categorías simuladas
   useEffect(() => {
     setCategories([
       { id: 1, nombre: "Ficción", descripcion: "Narrativa imaginativa" },
@@ -15,15 +22,18 @@ export default function CategoryForm({ mode, onClose }) {
     ]);
   }, []);
 
+  // Filtra categorías según el término de búsqueda
   const filteredCategories = categories.filter((cat) =>
     cat.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Selecciona una categoría desde la lista
   const handleSelectCategory = (cat) => {
     setSelectedCategory(cat);
     setSearchTerm(cat.nombre);
   };
 
+  // Renderiza el campo de búsqueda y resultados dinámicos
   const renderSearchField = () => (
     <div className="relative">
       <label className="block mb-1">Buscar categoría</label>
@@ -41,6 +51,7 @@ export default function CategoryForm({ mode, onClose }) {
         />
       </div>
 
+      {/* Lista de resultados filtrados */}
       {searchTerm && !selectedCategory && (
         <ul className="mt-2 border border-gray-300 rounded max-h-40 overflow-y-auto bg-white shadow-sm">
           {filteredCategories.map((cat) => (
@@ -62,6 +73,7 @@ export default function CategoryForm({ mode, onClose }) {
 
   return (
     <div className="space-y-4 text-sm">
+      {/* Título dinámico según el modo */}
       <h3 className="text-sm font-semibold">
         {mode === "add"
           ? "Añadir nueva categoría"
@@ -70,6 +82,7 @@ export default function CategoryForm({ mode, onClose }) {
           : "Eliminar categoría"}
       </h3>
 
+      {/* Campos para agregar nueva categoría */}
       {mode === "add" && (
         <>
           <input
@@ -85,8 +98,10 @@ export default function CategoryForm({ mode, onClose }) {
         </>
       )}
 
+      {/* Campo de búsqueda en modo edición o eliminación */}
       {(mode === "edit" || mode === "delete") && renderSearchField()}
 
+      {/* Campo de descripción editable si hay categoría seleccionada */}
       {mode === "edit" && selectedCategory && (
         <>
           <textarea
@@ -98,6 +113,7 @@ export default function CategoryForm({ mode, onClose }) {
         </>
       )}
 
+      {/* Vista de confirmación en modo eliminación */}
       {mode === "delete" && selectedCategory && (
         <div className="border border-gray-200 rounded px-3 py-2 bg-gray-50">
           <p className="text-sm text-gray-700">
@@ -106,6 +122,7 @@ export default function CategoryForm({ mode, onClose }) {
         </div>
       )}
 
+      {/* Botones de acción */}
       <div className="flex justify-end gap-2 pt-2">
         <button
           onClick={onClose}

@@ -5,15 +5,20 @@ import BackToProfileButton from "../../components/ui/BackToProfileButton";
 import { listAllSuggestions } from "../../services/suggestion/suggestion";
 import { useUser } from "../../context/UserContext";
 
+// Página administrativa que muestra todas las sugerencias enviadas por los usuarios
 export default function AdminSuggestionPage() {
   const { user } = useUser();
-  const [suggestions, setSuggestions] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const [suggestions, setSuggestions] = useState([]); // Lista de sugerencias recibidas
+  const [loading, setLoading] = useState(true); // Estado de carga para mostrar feedback visual
+
+  // Carga todas las sugerencias desde el backend
   const loadData = () => {
     listAllSuggestions()
       .then((res) => {
         const data = res.data?.sugerencias || [];
+
+        // Formatea cada sugerencia para visualización
         const mapped = data.map((s) => ({
           id: s.id,
           id_usuario: s.id_usuario,
@@ -21,8 +26,9 @@ export default function AdminSuggestionPage() {
           userImage: s.User?.imgUrl || "/img/usuarios/default.jpg",
           type: s.tipo,
           details: s.detalles,
-          fecha: s.createdAt
+          fecha: s.createdAt,
         }));
+
         setSuggestions(mapped);
       })
       .catch((err) => {
@@ -33,14 +39,17 @@ export default function AdminSuggestionPage() {
       });
   };
 
+  // Carga inicial al montar el componente
   useEffect(() => {
     loadData();
   }, []);
 
+  // Maneja la edición de una sugerencia
   const handleEditSuggestion = (id, data) => {
     updateSuggestion(id, data).then(loadData);
   };
 
+  // Maneja la eliminación de una sugerencia
   const handleDeleteSuggestion = (id) => {
     deleteSuggestion(id).then(loadData);
   };

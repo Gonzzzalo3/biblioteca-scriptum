@@ -1,12 +1,13 @@
-import axios from "../axiosInstance";
+import axios from "../axiosInstance"; // Instancia con baseURL dinámica y token gestionado automáticamente
 
+// Genera nuevas recomendaciones para el usuario actual
 export const generateRecommendations = (data) =>
   axios.post("/recommendation/generate", data);
 
-// Ver recomendaciones activas del usuario
+// Obtiene las recomendaciones activas del usuario autenticado
 export const getUserRecommendations = () =>
   axios.get("/recommendation");
 
-// Limpiar recomendaciones obsoletas (libros ya reservados)
+// Elimina recomendaciones obsoletas (por ejemplo, libros ya reservados)
 export const clearOldRecommendations = () =>
   axios.delete("/recommendation/clear");

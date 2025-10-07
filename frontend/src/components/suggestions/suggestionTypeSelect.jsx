@@ -1,6 +1,9 @@
+// src/components/suggestions/suggestionTypeSelect.jsx
 import { SUGGESTION_TYPES } from "../../utils/constants";
 
+// Componente que representa el selector de tipo de sugerencia
 export default function SuggestionTypeSelect({ value, onChange }) {
+  // Opciones disponibles para el tipo de sugerencia
   const options = [
     { label: "Libro recomendado", value: SUGGESTION_TYPES.LIBRO_RECOMENDADO },
     { label: "Error en contenido", value: SUGGESTION_TYPES.ERROR_EN_CONTENIDO },
@@ -12,10 +15,13 @@ export default function SuggestionTypeSelect({ value, onChange }) {
 
   return (
     <div>
+      {/* Etiqueta descriptiva del campo */}
       <label className="block font-semibold mb-2">Tipo de sugerencia:</label>
+
+      {/* Selector desplegable con opciones definidas */}
       <select
-        value={value}
-        onChange={onChange}
+        value={value} // Valor actual seleccionado
+        onChange={onChange} // Función que actualiza el estado al cambiar
         className="w-full border border-gray-300 rounded p-2"
       >
         <option value="">Seleccione a qué irá enfocada su sugerencia</option>

@@ -1,5 +1,7 @@
+// src/components/reservations/ReservationItem.jsx
 import { cancelReservation } from "../../services/reservation/reservation";
 
+// Componente que representa una tarjeta de reserva, con acciones según el modo y estado
 export default function ReservationItem({
   book,
   modo = "cliente",
@@ -7,35 +9,39 @@ export default function ReservationItem({
   onConfirm,
   onReturn,
 }) {
+  // Maneja la cancelación de la reserva por parte del cliente
   const handleCancel = async () => {
-    const id = book.code?.replace("RES-", "");
+    const id = book.code?.replace("RES-", ""); // Extrae el ID de la reserva
     if (!id) return;
 
     const confirm = window.confirm("¿Estás seguro de que deseas cancelar esta reserva?");
     if (!confirm) return;
 
     try {
-      await cancelReservation(id);
+      await cancelReservation(id); // Llama al servicio de cancelación
       alert("Reserva cancelada correctamente.");
-      if (onCancel) onCancel();
+      if (onCancel) onCancel(); // Ejecuta callback si está definido
     } catch (err) {
       alert(err.response?.data?.mensaje || "Error al cancelar la reserva.");
     }
   };
 
+  // Maneja la confirmación del préstamo por parte del bibliotecario
   const handleConfirm = () => {
     if (onConfirm) onConfirm(book);
   };
 
+  // Maneja la confirmación de devolución por parte del bibliotecario
   const handleReturn = () => {
     if (onReturn) onReturn(book);
   };
 
   return (
     <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+      {/* Sección izquierda con información del libro y usuario */}
       <div className="flex items-center gap-4">
         <img
-          src={book.cover}
+          src={book.cover} // Ruta de imagen del libro
           alt={book.title}
           className="w-24 h-32 object-cover rounded shadow"
         />
@@ -43,10 +49,12 @@ export default function ReservationItem({
           <h3 className="font-semibold text-gray-800">{book.title}</h3>
           <p className="text-sm text-gray-600">por {book.author}</p>
           <p className="text-xs text-gray-500">Código: {book.code}</p>
+
+          {/* Información del usuario si está presente */}
           {book.userName && (
             <div className="flex items-center gap-2 mt-2">
               <img
-                src={book.userImage}
+                src={book.userImage} // Ruta de imagen del usuario
                 alt={book.userName}
                 className="w-8 h-8 rounded-full object-cover"
               />
@@ -56,6 +64,7 @@ export default function ReservationItem({
         </div>
       </div>
 
+      {/* Sección derecha con estado y acciones */}
       <div className="text-right space-y-2">
         <p
           className={`text-sm font-medium ${
@@ -68,10 +77,13 @@ export default function ReservationItem({
         >
           {book.status}
         </p>
+
+        {/* Fecha de vencimiento si está disponible */}
         {book.dueDate && (
           <p className="text-xs text-gray-500">Vence: {book.dueDate}</p>
         )}
 
+        {/* Botón de cancelación para clientes con reserva activa */}
         {book.status === "Reservado" && modo === "cliente" && (
           <button
             onClick={handleCancel}
@@ -81,6 +93,7 @@ export default function ReservationItem({
           </button>
         )}
 
+        {/* Botón de confirmación de préstamo para bibliotecarios */}
         {modo === "bibliotecario" && book.estadoRaw === "reservado" && (
           <button
             onClick={handleConfirm}
@@ -90,6 +103,7 @@ export default function ReservationItem({
           </button>
         )}
 
+        {/* Botón de confirmación de devolución para bibliotecarios */}
         {modo === "bibliotecario" && book.estadoRaw === "prestado" && (
           <button
             onClick={handleReturn}

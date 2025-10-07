@@ -1,8 +1,8 @@
-// src/pages/HelpPage.jsx
 import MainLayout from "../../layouts/MainLayout";
 import HelpSection from "../../components/help/HelpSection";
 import HelpItem from "../../components/help/HelpItem";
 
+// Página que presenta el centro de ayuda con secciones informativas y canales de contacto
 export default function HelpPage() {
   return (
     <MainLayout>

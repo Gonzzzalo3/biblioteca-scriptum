@@ -8,17 +8,22 @@ import { ROLES } from "../../utils/constants";
 import FloatingActionButton from "../../components/ui/FloatingActionButton";
 import AdminModal from "../../components/admin/AdminModal";
 
+// Página principal del sistema. Muestra libros recomendados y populares.
+// También habilita funciones administrativas si el usuario tiene rol de bibliotecario.
 export default function Home() {
-  const { user } = useUser();
-  const [sections, setSections] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showAdminModal, setShowAdminModal] = useState(false);
+  const { user } = useUser(); // Usuario autenticado desde el contexto
 
+  const [sections, setSections] = useState([]); // Secciones de libros a mostrar
+  const [loading, setLoading] = useState(true); // Estado de carga
+  const [showAdminModal, setShowAdminModal] = useState(false); // Control de visibilidad del modal administrativo
+
+  // Carga inicial de datos al montar el componente o cambiar el usuario
   useEffect(() => {
     const fetchData = async () => {
       try {
         const sectionsData = [];
 
+        // Si el usuario es cliente, se cargan recomendaciones personalizadas
         if (user?.id && user?.rol === ROLES.CLIENTE) {
           const recRes = await getUserRecommendations();
           const recBooks = Array.isArray(recRes.data?.recomendaciones)
@@ -41,6 +46,7 @@ export default function Home() {
           }
         }
 
+        // Se cargan libros populares para todos los usuarios
         const popRes = await getPopularBooks();
         const popBooks = Array.isArray(popRes.data?.libros)
           ? popRes.data.libros
@@ -78,7 +84,7 @@ export default function Home() {
         <BooksContainer sections={sections} />
       )}
 
-      {/* Botón flotante y modal */}
+      {/* Funcionalidad exclusiva para bibliotecarios */}
       {user?.rol === ROLES.BIBLIOTECARIO && (
         <>
           <FloatingActionButton onClick={() => setShowAdminModal(true)} />

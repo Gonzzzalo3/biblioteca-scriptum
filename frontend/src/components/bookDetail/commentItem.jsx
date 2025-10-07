@@ -1,20 +1,27 @@
+// src/components/bookDetail/commentItem.jsx
 import { useState } from "react";
 import { FaEdit, FaTrash, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import StarRating from "./StarRating";
 
+// Componente que representa un comentario individual con opciones de edición y eliminación
 export default function CommentItem({ comment, currentUserId, onEdit, onDelete }) {
+  // Verifica si el comentario pertenece al usuario actual
   const isOwner = Number(comment.id_usuario) === Number(currentUserId);
+
+  // Estados locales para edición
   const [isEditing, setIsEditing] = useState(false);
   const [contenido, setContenido] = useState(comment.contenido);
   const [calificacion, setCalificacion] = useState(comment.calificacion);
 
+  // Elimina el comentario tras confirmación
   const handleDelete = () => {
     if (window.confirm("¿Seguro que quieres eliminar este comentario?")) {
       onDelete(comment.id);
     }
   };
 
+  // Guarda los cambios realizados en el comentario
   const handleSave = () => {
     if (!contenido.trim() || calificacion === 0) return;
     onEdit(comment.id, { contenido, calificacion });
@@ -23,19 +30,25 @@ export default function CommentItem({ comment, currentUserId, onEdit, onDelete }
 
   return (
     <li className="flex gap-4 bg-gray-50 p-4 rounded-lg">
+      {/* Imagen del usuario que comentó */}
       <img
         src={comment.img}
         alt={`${comment.nombres} ${comment.apellidos}`}
         className="w-10 h-10 rounded-full object-cover"
       />
+
+      {/* Contenido del comentario */}
       <div className="flex-1">
         <div className="flex items-center justify-between">
+          {/* Enlace al perfil del usuario */}
           <Link
             to={`/profile/${comment.id_usuario}`}
             className="font-semibold text-blue-600 hover:underline"
           >
             {comment.nombres} {comment.apellidos}
           </Link>
+
+          {/* Acciones disponibles si el usuario es el autor */}
           <div className="flex items-center gap-2">
             {isOwner && (
               <>
@@ -55,13 +68,17 @@ export default function CommentItem({ comment, currentUserId, onEdit, onDelete }
                 </button>
               </>
             )}
+            {/* Visualización de calificación si no está en modo edición */}
             {!isEditing && <StarRating rating={comment.calificacion} />}
           </div>
         </div>
+
+        {/* Fecha del comentario */}
         <p className="text-sm text-gray-500">
           {new Date(comment.fecha).toLocaleDateString()}
         </p>
 
+        {/* Modo edición: textarea + estrellas + botones */}
         {isEditing ? (
           <div className="mt-2 space-y-2">
             <textarea

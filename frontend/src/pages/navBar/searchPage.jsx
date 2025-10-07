@@ -4,24 +4,30 @@ import MainLayout from "../../layouts/MainLayout";
 import BooksContainer from "../../components/book/bookContainer";
 import { searchBooks } from "../../services/book/book";
 
+// Página que muestra los resultados de búsqueda de libros según el parámetro "q" en la URL
 export default function SearchPage() {
-  const [searchParams] = useSearchParams();
-  const query = searchParams.get("q") || "";
-  const [sections, setSections] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams(); // Hook para acceder a los parámetros de búsqueda
+  const query = searchParams.get("q") || ""; // Extrae el término de búsqueda
 
+  const [sections, setSections] = useState([]); // Sección de resultados formateados
+  const [loading, setLoading] = useState(true); // Estado de carga para mostrar feedback visual
+
+  // Efecto que se ejecuta cada vez que cambia el término de búsqueda
   useEffect(() => {
+    // Si el término está vacío o solo contiene espacios, se limpia la vista
     if (!query.trim()) {
       setSections([]);
       setLoading(false);
       return;
     }
 
+    // Realiza la búsqueda de libros en el backend
     const fetchData = async () => {
       try {
         const res = await searchBooks(query);
         const books = Array.isArray(res.data?.libros) ? res.data.libros : [];
 
+        // Formatea los resultados para el componente visual
         const formattedBooks = books.map((book) => ({
           id: book.id,
           cover: book.portadaUrl || "/covers/default.jpg",

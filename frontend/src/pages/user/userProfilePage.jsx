@@ -9,6 +9,7 @@ import SettingsCard from "../../components/user/SettingsCard";
 import PasswordConfirmModal from "../../components/user/PasswordConfirmModal";
 import ChangePasswordModal from "../../components/user/Modal/deleteAccountModal";
 import DeleteAccountModal from "../../components/user/Modal/changePasswordModal";
+
 import {
   getMyProfile,
   updateMyProfile,
@@ -17,21 +18,28 @@ import {
 } from "../../services";
 import { useUser } from "../../context/UserContext";
 
+// Página que muestra el perfil privado del usuario autenticado, con opciones de edición, seguridad y actividad
 export default function UserProfilePage() {
   const navigate = useNavigate();
   const { setUser, logout } = useUser();
-  const [formData, setFormData] = useState(null);
-  const [selectedImageFile, setSelectedImageFile] = useState(null);
-  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
-  const [editingField, setEditingField] = useState(null);
 
+  const [formData, setFormData] = useState(null); // Datos del perfil del usuario
+  const [selectedImageFile, setSelectedImageFile] = useState(null); // Imagen seleccionada para actualizar
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false); // Modal para eliminar cuenta
+  const [showPasswordModal, setShowPasswordModal] = useState(false); // Modal para confirmar cambios
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); // Modal para cambiar contraseña
+  const [editingField, setEditingField] = useState(null); // Campo actualmente en edición
+
+  /**
+   * Carga el perfil del usuario al montar el componente.
+   * Formatea los datos para visualización y edición.
+   */
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const res = await getMyProfile();
         const u = res.data.perfil;
+
         setFormData({
           id: `USR-${u.id}`,
           nombres: u.nombres || "",
@@ -42,28 +50,36 @@ export default function UserProfilePage() {
           estado: u.estado || "Activo",
           img: u.imgUrl
             ? `${u.imgUrl}?t=${Date.now()}`
-            : `/img/usuarios/default.jpg?t=${Date.now()}`,
+            : `/img/usuarios/default.jpg?t=${Date.now()}`, // Ruta relativa válida
           created_at: u.created_at,
         });
       } catch (err) {
         console.error("Error cargando perfil:", err);
       }
     };
+
     fetchProfile();
   }, []);
 
   const esBibliotecario = formData?.rol === "bibliotecario";
 
+  // Actualiza el valor de un campo editable
   const handleFieldChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Alterna el estado de edición de un campo
   const handleFieldEditToggle = (field) => {
     setEditingField((prev) => (prev === field ? null : field));
   };
 
+  // Solicita confirmación de contraseña antes de aplicar cambios
   const handleApply = () => setShowPasswordModal(true);
 
+  /**
+   * Aplica los cambios al perfil del usuario.
+   * Incluye actualización de imagen si se ha seleccionado una nueva.
+   */
   const handleConfirmApply = async (password) => {
     try {
       const fd = new FormData();
@@ -99,8 +115,8 @@ export default function UserProfilePage() {
           : `/img/usuarios/default.jpg?t=${Date.now()}`,
         created_at: perfil.createdAt,
       });
-      setUser(perfil);
 
+      setUser(perfil);
       setShowPasswordModal(false);
       setEditingField(null);
       setSelectedImageFile(null);
@@ -111,6 +127,7 @@ export default function UserProfilePage() {
     }
   };
 
+  // Cambia la contraseña del usuario
   const handleChangePassword = async ({ actual, nueva, repetir }) => {
     try {
       await changeMyPassword(actual, nueva, repetir);
@@ -121,6 +138,7 @@ export default function UserProfilePage() {
     }
   };
 
+  // Elimina la cuenta del usuario
   const handleDeleteAccount = async (contraseña) => {
     try {
       await deleteMyProfile(contraseña);
@@ -133,6 +151,7 @@ export default function UserProfilePage() {
     }
   };
 
+  // Renderizado condicional mientras se cargan los datos
   if (!formData) {
     return (
       <MainLayout>
@@ -151,6 +170,7 @@ export default function UserProfilePage() {
       }}
     >
       <div className="space-y-8">
+        {/* Encabezado con imagen y nombre */}
         <UserHeader
           img={formData.img}
           nombres={formData.nombres}
@@ -162,6 +182,7 @@ export default function UserProfilePage() {
           }}
         />
 
+        {/* Sección de información editable */}
         <PersonalInfoSection
           data={formData}
           editingField={editingField}
@@ -170,22 +191,24 @@ export default function UserProfilePage() {
           onApply={handleApply}
         />
 
+        {/* Tarjetas de actividad y configuración */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ActivityCard
             onViewComments={() => navigate("/my-comments")}
             {...(!esBibliotecario && {
-              onViewSuggestions: () => navigate("/my-suggestions")
+              onViewSuggestions: () => navigate("/my-suggestions"),
             })}
           />
           <SettingsCard
             onChangePassword={() => setShowChangePasswordModal(true)}
             {...(!esBibliotecario && {
-              onDisableAccount: () => setShowDeleteAccountModal(true)
+              onDisableAccount: () => setShowDeleteAccountModal(true),
             })}
           />
         </div>
       </div>
 
+      {/* Modales condicionales */}
       {showPasswordModal && (
         <PasswordConfirmModal
           onClose={() => setShowPasswordModal(false)}

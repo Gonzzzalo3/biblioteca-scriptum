@@ -1,13 +1,17 @@
+// src/components/history/historyItem.jsx
 import { FaCheckCircle, FaTimesCircle, FaClock } from "react-icons/fa";
 
+// Componente que representa un ítem del historial de préstamos del usuario
 export default function HistoryItem({ book }) {
   const today = new Date();
   const dueDate = book.dueDate ? new Date(book.dueDate) : null;
 
+  // Estado visual por defecto
   let displayStatus = book.action;
   let statusColor = "text-gray-600";
   let StatusIcon = FaClock;
 
+  // Lógica de visualización según tipo de acción
   if (book.rawAction === "devuelto") {
     statusColor = "text-green-600";
     StatusIcon = FaCheckCircle;
@@ -31,9 +35,10 @@ export default function HistoryItem({ book }) {
 
   return (
     <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+      {/* Información del libro */}
       <div className="flex items-center gap-4">
         <img
-          src={book.cover}
+          src={book.cover} //Si esta ruta se construye manualmente con localhost, debe reemplazarse por variable de entorno
           alt={book.title}
           className="w-24 h-32 object-cover rounded shadow"
         />
@@ -44,6 +49,7 @@ export default function HistoryItem({ book }) {
         </div>
       </div>
 
+      {/* Estado y fecha */}
       <div className="text-right">
         <div className={`flex items-center gap-1 justify-end ${statusColor}`}>
           <StatusIcon />

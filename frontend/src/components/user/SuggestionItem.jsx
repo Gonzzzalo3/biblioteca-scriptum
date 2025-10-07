@@ -3,6 +3,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { SUGGESTION_TYPES } from "../../utils/constants";
 import { Link } from "react-router-dom";
 
+// Diccionario de etiquetas legibles para cada tipo de sugerencia
 const typeLabels = {
   [SUGGESTION_TYPES.LIBRO_RECOMENDADO]: "Libro recomendado",
   [SUGGESTION_TYPES.ERROR_EN_CONTENIDO]: "Error en contenido",
@@ -12,23 +13,29 @@ const typeLabels = {
   [SUGGESTION_TYPES.GESTION_BIBLIOTECA]: "Gestión de biblioteca",
 };
 
+// Componente que representa una sugerencia individual con opción de edición y eliminación
 export default function SuggestionItem({
   suggestion,
   currentUserId,
   onEdit,
   onDelete,
 }) {
+  // Determina si el usuario actual es el autor de la sugerencia
   const isOwner = Number(suggestion.id_usuario) === Number(currentUserId);
+
+  // Estados locales para edición
   const [isEditing, setIsEditing] = useState(false);
   const [tipo, setTipo] = useState(suggestion.type);
   const [detalles, setDetalles] = useState(suggestion.details);
 
+  // Maneja la eliminación de la sugerencia con confirmación
   const handleDelete = () => {
     if (window.confirm("¿Seguro que quieres eliminar esta sugerencia?")) {
       onDelete(suggestion.id);
     }
   };
 
+  // Maneja el guardado de los cambios realizados en la sugerencia
   const handleSave = () => {
     if (!tipo || !detalles.trim()) return;
     onEdit(suggestion.id, { tipo, detalles });
@@ -37,6 +44,7 @@ export default function SuggestionItem({
 
   return (
     <li className="flex gap-4 p-4 bg-gray-50 rounded-lg shadow-sm">
+      {/* Imagen del usuario que hizo la sugerencia */}
       <img
         src={suggestion.userImage}
         alt={suggestion.userName}
@@ -44,15 +52,17 @@ export default function SuggestionItem({
       />
 
       <div className="flex-1">
+        {/* Encabezado con nombre del usuario y acciones */}
         <div className="flex items-center justify-between">
           <Link
-            to={`/profile/${suggestion.id_usuario}`}
+            to={`/profile/${suggestion.id_usuario}`} // Enlace al perfil del autor
             className="font-semibold text-blue-600 hover:underline"
           >
             {suggestion.userName}
           </Link>
 
           <div className="flex items-center gap-2">
+            {/* Acciones disponibles solo para el autor */}
             {isOwner && (
               <>
                 <button
@@ -71,6 +81,7 @@ export default function SuggestionItem({
                 </button>
               </>
             )}
+            {/* Etiqueta del tipo de sugerencia (solo si no está en modo edición) */}
             {!isEditing && (
               <span className="text-sm text-gray-600">
                 {typeLabels[suggestion.type] || "Sin categoría"}
@@ -79,6 +90,7 @@ export default function SuggestionItem({
           </div>
         </div>
 
+        {/* Área editable si el usuario está modificando la sugerencia */}
         {isEditing ? (
           <div className="mt-3 space-y-2">
             <select
@@ -119,7 +131,7 @@ export default function SuggestionItem({
             </div>
           </div>
         ) : (
-          <p className="text-gray-700 mt-2">{suggestion.details}</p>
+          <p className="text-gray-700 mt-2">{suggestion.details}</p> // Detalle de la sugerencia en modo lectura
         )}
       </div>
     </li>
